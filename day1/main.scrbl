@@ -50,7 +50,7 @@ Rather than counting matches with @racket[regexp-match*], we could also convert 
 
 @section{At what point does the elevator enter the basement?}
 
-The elevator is in the basement whenever it's at a negative-valued floor. So instead of looking at its ultimate destination, we need to follow the elevator along its travels, computing its intermediate destinations, and watch for the first time it reaches a negative floor.
+The elevator is in the basement whenever it's at a negative-valued floor. So instead of looking at its ultimate destination, we need to follow the elevator along its travels, computing its intermediate destinations, and stop as soon as it reaches a negative floor.
 
 We could characterize this as a problem of tracking @italic{cumulative values} or @italic{state}. Either way, @racket[for/fold] is the weapon of choice. We'll determine the relative movement at each step, and collect these in a list. (The @racket[get-destination] function is used within the loop to convert each parenthesis into a relative movement, either @racket[1] or @racket[-1].) On each loop, @racket[for/fold] checks the cumulative value of these positions, and stops when they imply a basement value. The length of this list is our answer.
 
