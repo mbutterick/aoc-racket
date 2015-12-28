@@ -34,7 +34,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 @subsection{Alternate approach}
 
-Rather than counting matches with @racket[regexp-match*], we could also convert the string of parentheses into a string of numbers directly.
+Rather than counting matches with @racket[regexp-match*], we could also convert the string of parentheses directly into a list of numbers.
 
 @chunk[<q1-alt>
        (define (elevator-string->ints str)
