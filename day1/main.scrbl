@@ -1,9 +1,18 @@
 #lang scribble/lp2
-@(require scribble/manual "../helper.rkt")
+@(require scribble/manual aoc-racket/helper)
 
 @aoc-title[1]
 
-Our @(input) is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
+Our @link-rp["day1/input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
+
+@chunk[<day1>
+       <setup>
+       <q1>
+       <q1-alt>
+       <q2>
+       <q2-alt>
+       <test>]
+
 
 @section{Where does the elevator land?}
 
@@ -108,13 +117,4 @@ The two are similar. The choice comes down to readability and efficiency — me
          (check-equal? (q2-for/first input-str) 1795)
          (check-equal? (q2-for/or input-str) 1795))]
 
-@section{Joining the parts}
-
-@chunk[<*>
-       <setup>
-       <q1>
-       <q1-alt>
-       <q2>
-       <q2-alt>
-       <test>]
 
