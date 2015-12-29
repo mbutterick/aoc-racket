@@ -3,7 +3,7 @@
 
 @aoc-title[1]
 
-Our @link-rp["day1/input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
+Our @link-rp["day1-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
 
 @chunk[<day1>
        <setup>
@@ -110,7 +110,7 @@ The two are similar. The choice comes down to readability and efficiency — me
 
 @chunk[<test>
        (module+ test
-         (define input-str (file->string "input.txt"))
+         (define input-str (file->string "day1-input.txt"))
          (check-equal? (q1 input-str) 74)
          (check-equal? (q1-alt input-str) 74)
          (check-equal? (q2 input-str) 1795)

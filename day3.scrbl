@@ -3,7 +3,7 @@
 
 @aoc-title[3]
 
-Our @link-rp["day3/input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
+Our @link-rp["day3-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
 
 In essence, this a two-dimensional version of the elevator problem in @secref["day-1"].
 
@@ -98,7 +98,7 @@ The solution works the same as before — the only new task is to split the inpu
 
 @chunk[<test>
        (module+ test
-         (define input-str (file->string "input.txt"))
+         (define input-str (file->string "day3-input.txt"))
          (check-equal? (q1 input-str) 2565)
          (check-equal? (q1-complex input-str) 2565)
          (check-equal? (q2 input-str) 2639))]

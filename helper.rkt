@@ -14,5 +14,5 @@
      (with-syntax ([rp-name (generate-temporary)])
        #'(begin
            (require racket/runtime-path)
-           (define-runtime-path rp-name (expand-user-path where))
+           (define-runtime-path rp-name where)
            @(link (path->string rp-name) text-args ...)))]))

@@ -3,7 +3,7 @@
 
 @aoc-title[2]
 
-Our @link-rp["day2/input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
+Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
 
 @chunk[<day2>
        <setup>
@@ -59,6 +59,6 @@ We take the same approach, with a new @racket[box->ribbon] function.
 
 @chunk[<test>
        (module+ test
-         (define input-str (file->string "input.txt"))
+         (define input-str (file->string "day2-input.txt"))
          (check-equal? (q1 input-str) 1586300)
          (check-equal? (q2 input-str) 3737498))]
