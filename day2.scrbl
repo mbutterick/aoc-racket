@@ -15,9 +15,10 @@ Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimens
 
 According to the problem, the paper needed to wrap a present is the surface area of the box (= the sum of the areas of the sides) plus the area of the smallest side. 
 
-This is a traditional setup for the devastating one-two punch of @racket[map] and @racket[apply]. First we need to parse our input file into a list of box dimensions. Then we'll write a function to compute surface area from box dimensions. We'll @racket[map] that function across the list of boxes, and then @racket[apply] the @racket[+] operator to our list of results to get the answer.
+First we need to parse our input file into a list of box dimensions. We'll model each box as a list of three dimensions. (The question doesn't need us to keep height / width / depth straight, so we won't worry about it.)
 
-First, we need to convert the input from text. We'll model each box as a list of three dimensions. (The question doesn't need us to keep height / width / depth straight, so we won't worry about it.)
+Then we have a traditional setup for the devastating one-two punch of @racket[map] and @racket[apply]. We'll write a function to compute surface area from box dimensions. Then we'll @racket[map] that function across the list of boxes, and finally @racket[apply] the @racket[+] operator to our list of results to get the answer.
+
 
 @chunk[<setup>
        (require racket rackunit)
