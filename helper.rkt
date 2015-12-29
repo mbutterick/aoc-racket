@@ -6,7 +6,7 @@
 
 (define (aoc-title which)
   (define which-str (number->string which))
-  @title[#:style manual-doc-style]{@link[@string-append["http://adventofcode.com/day/" @which-str]]{Day @which-str}})
+  @title[#:style manual-doc-style #:tag (format "day-~a" which-str)]{@link[@string-append["http://adventofcode.com/day/" @which-str]]{Day @which-str}})
 
 (define-syntax (link-rp stx)
   (syntax-case stx ()
