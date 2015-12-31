@@ -47,7 +47,7 @@ Once the whole cell path is computed, the answer is found by removing duplicate 
 
 @subsection{Alternate approach: complex numbers}
 
-Rather than use Cartesian coordinates, we could rely on Racket's built-in support for complex numbers to trace the path in the complex plane. Complex numbers have a real and an imaginary part — e.g, @racket[3+4i] — and thus, represent points in a plane just as well as Cartesian coordinates. The advantage is that complex numbers are atomic values, not lists. We can add them normally, without resort to @racket[map]. (It's not essential for this problem, but math jocks might remember that complex numbers can be rotated 90 degrees by multiplying by @racket[+i].)
+Rather than use Cartesian coordinates, we could rely on Racket's built-in support for complex numbers to trace the path in the complex plane. Complex numbers have a real and an imaginary part — e.g, @racket[3+4i] — and thus, represent points in a plane just as well as Cartesian coordinates. The advantage is that complex numbers are atomic values, not lists. We can add them normally, without resort to @racket[map]. (It's not essential for this problem, but math jocks might remember that complex numbers can be rotated 90 degrees counterclockwise by multiplying by @tt{+i}.)
 
 Again, the problem has nothing to do with complex numbers inherently. Like pairs and lists, they're just another option for encoding dual-valued data.
 
@@ -56,11 +56,11 @@ Again, the problem has nothing to do with complex numbers inherently. Like pairs
          (define start 0)
          (define east 1)
          (define moves (for/list ([s (in-list (regexp-match* #rx"." str))])
-                                 (case s
-                                   [(">") east]
-                                   [("^") (* east +i)]
-                                   [("<") (* east +i +i)]
-                                   [("v") (* east +i +i +i)])))
+                                 (* east (expt +i (case s
+                                                    [(">") 0]
+                                                    [("^") 1]
+                                                    [("<") 2]
+                                                    [("v") 3])))))
          (for/fold ([cells-so-far (list start)])
                    ([next-move (in-list moves)])
            (define current-cell (car cells-so-far))
