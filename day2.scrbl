@@ -6,9 +6,9 @@
 Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
 
 @chunk[<day2>
-       <setup>
-       <q1>
-       <test>]
+       <day2-setup>
+       <day2-q1>
+       <day2-test>]
 
 
 @section{How much paper is needed to wrap the boxes?}
@@ -20,13 +20,13 @@ First we need to parse our input file into a list of box dimensions. We'll model
 Then we have a traditional setup for the devastating one-two punch of @racket[map] and @racket[apply]. We'll write a function to compute surface area from box dimensions. Then we'll @racket[map] that function across the list of boxes, and finally @racket[apply] the @racket[+] operator to our list of results to get the answer.
 
 
-@chunk[<setup>
+@chunk[<day2-setup>
        (require racket rackunit)
        (define (string->boxes str)
          (for/list ([ln (in-list (string-split str "\n"))])
                    (map string->number (string-split ln "x"))))]
 
-@chunk[<q1>
+@chunk[<day2-q1>
        (define (box->paper box)
          (match-define (list x y z) box)
          (define sides (list (* x y) (* y z) (* x z)))
@@ -42,7 +42,7 @@ According to the problem, the ribbon needed is the perimeter of the smallest sid
 
 We take the same approach, with a new @racket[box->ribbon] function.
 
-@chunk[<q1>
+@chunk[<day2-q1>
        (define (box->ribbon box)
          (match-define (list x y z) box)
          (define (perimeter dim1 dim2) (* 2 (+ dim1 dim2)))
@@ -58,7 +58,7 @@ We take the same approach, with a new @racket[box->ribbon] function.
 @section{Testing our input}
 
 
-@chunk[<test>
+@chunk[<day2-test>
        (module+ test
          (define input-str (file->string "day2-input.txt"))
          (check-equal? (q1 input-str) 1586300)

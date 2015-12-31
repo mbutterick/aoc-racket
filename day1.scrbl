@@ -6,12 +6,12 @@
 Our @link-rp["day1-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
 
 @chunk[<day1>
-       <setup>
-       <q1>
-       <q1-alt>
-       <q2>
-       <q2-alt>
-       <test>]
+       <day1-setup>
+       <day1-q1>
+       <day1-q1-alt>
+       <day1-q2>
+       <day1-q2-alt>
+       <day1-test>]
 
 
 @section{Where does the elevator land?}
@@ -20,7 +20,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 @racket[regexp-match*] will return a list of all occurrences of one string within another. The length of this list is the number of occurrences. Therefore, we can use it to count the ups and downs.
 
-@chunk[<setup>
+@chunk[<day1-setup>
        (require racket rackunit)
        (define up-char #\()
        (define down-char #\))
@@ -33,7 +33,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 
 
-@chunk[<q1>
+@chunk[<day1-q1>
        (define (q1 str)
          (displayln (format "ups = ~a" (get-ups str)))
          (displayln (format "downs = ~a" (get-downs str)))
@@ -41,11 +41,11 @@ The building has an indefinite number of floors in both directions. So the ultim
          (displayln (format "destination = ~a" destination))
          destination)]
 
-@subsection{Alternate approach}
+@subsection{Alternate approach: numerical conversion}
 
 Rather than counting matches with @racket[regexp-match*], we could also convert the string of parentheses directly into a list of numbers.
 
-@chunk[<q1-alt>
+@chunk[<day1-q1-alt>
        (define (elevator-string->ints str)
          (for/list ([c (in-string str)])
                    (if (equal? c up-char)
@@ -57,7 +57,7 @@ Rather than counting matches with @racket[regexp-match*], we could also convert 
          (displayln (format "destination = ~a" destination))
          destination)]
 
-@section{At what point does the elevator enter the basement?}
+@section[#:tag "q2"]{At what point does the elevator enter the basement?}
 
 The elevator is in the basement whenever it's at a negative-valued floor. So instead of looking at its ultimate destination, we need to follow the elevator along its travels, computing its intermediate destinations, and stop as soon as it reaches a negative floor.
 
@@ -66,7 +66,7 @@ We could characterize this as a problem of tracking @italic{cumulative values} o
 @margin-note{Nothing wrong with @racket[foldl] and @racket[foldr], but @racket[for/fold] is more flexible, and makes more readable code.}
 
 
-@chunk[<q2>
+@chunk[<day1-q2>
        (define (in-basement? movements)
          (negative? (apply + movements)))  
        
@@ -81,13 +81,13 @@ We could characterize this as a problem of tracking @italic{cumulative values} o
          (displayln (format "basement entered at position = ~a" basement-position))
          basement-position)]
 
-@subsection{Alternate approaches}
+@subsection{Alternate approaches: @tt{for/first} or @tt{for/or}}
 
 When you need to stop a loop the first time a condition occurs, you can also consider @racket[for/first] or @racket[for/or]. The difference is that @racket[for/first] ends after the first evaluation of the body, but @racket[for/or] evaluates the body every time, and ends the first time the body is not @racket[#f].
 
 The two are similar. The choice comes down to readability and efficiency — meaning, if each iteration of the loop is expensive, you probably will want to cache intermediate values, which means you might as well use @racket[for/fold].
 
-@chunk[<q2-alt>       
+@chunk[<day1-q2-alt>       
        (define (q2-for/first str)
          (define basement-position
            (let ([ints (elevator-string->ints str)]) 
@@ -108,7 +108,7 @@ The two are similar. The choice comes down to readability and efficiency — me
 
 @section{Testing our input}
 
-@chunk[<test>
+@chunk[<day1-test>
        (module+ test
          (define input-str (file->string "day1-input.txt"))
          (check-equal? (q1 input-str) 74)

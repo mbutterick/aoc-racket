@@ -5,14 +5,14 @@
 
 Our @link-rp["day3-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
 
-In essence, this a two-dimensional version of the elevator problem in @secref["day-1"].
+In essence, this a two-dimensional version of the elevator problem in Day 1.
 
 @chunk[<day3>
-       <setup>
-       <q1>
-       <q1-complex>
-       <q2>
-       <test>]
+       <day3-setup>
+       <day3-q1>
+       <day3-q1-complex>
+       <day3-q2>
+       <day3-test>]
 
 @section{How many grid cells are visited?}
 
@@ -22,11 +22,11 @@ For dual-valued data, whether to use @seclink["pairs" #:doc '(lib "scribblings/g
 
 Once the whole cell path is computed, the answer is found by removing duplicate cells and counting how many remain.
 
-@chunk[<setup>
+@chunk[<day3-setup>
        (require racket rackunit)
        ]
 
-@chunk[<q1>
+@chunk[<day3-q1>
        (define (string->cells str)
          (define start '(0 0))
          (match-define (list east north west south) '((1 0) (0 1) (-1 0) (0 -1)))
@@ -45,13 +45,13 @@ Once the whole cell path is computed, the answer is found by removing duplicate 
        (define (q1 str)
          (length (remove-duplicates (string->cells str))))]
 
-@subsection{Alternate approach}
+@subsection{Alternate approach: complex numbers}
 
 Rather than use Cartesian coordinates, we could rely on Racket's built-in support for complex numbers to trace the path in the complex plane. Complex numbers have a real and an imaginary part — e.g, @racket[3+4i] — and thus, represent points in a plane just as well as Cartesian coordinates. The advantage is that complex numbers are atomic values, not lists. We can add them normally, without resort to @racket[map]. (It's not essential for this problem, but math jocks might remember that complex numbers can be rotated 90 degrees by multiplying by @racket[+i].)
 
 Again, the problem has nothing to do with complex numbers inherently. Like pairs and lists, they're just another option for encoding dual-valued data.
 
-@chunk[       <q1-complex>
+@chunk[       <day3-q1-complex>
        (define (string->complex-cells str)
          (define start 0)
          (define east 1)
@@ -77,7 +77,7 @@ By ``split'', the puzzle envisions two people starting at the origin, with one f
 
 The solution works the same as before — the only new task is to split the input into two strings, and then send them through our existing @racket[string->cells] function.
 
-@chunk[<q2>
+@chunk[<day3-q2>
        (define (split-odds-and-evens str)
          (define-values (odd-chars even-chars)
            (for/fold ([odds-so-far empty][evens-so-far empty])
@@ -96,7 +96,7 @@ The solution works the same as before — the only new task is to split the inpu
 
 @section{Testing our input}
 
-@chunk[<test>
+@chunk[<day3-test>
        (module+ test
          (define input-str (file->string "day3-input.txt"))
          (check-equal? (q1 input-str) 2565)
