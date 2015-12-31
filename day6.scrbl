@@ -107,9 +107,9 @@ Since the only part that changes between the solutions is the bulb functions, we
          (count-lights lights))
        
        (define (make-str-converter bulb-func-converter)
-         (λ (line)
+         (λ (str)
            (match-define (list* _ action coordinates)
-             (regexp-match #px"^(.*?)(\\d+),(\\d+) through (\\d+),(\\d+)$" line))
+             (regexp-match #px"^(.*?)(\\d+),(\\d+) through (\\d+),(\\d+)$" str))
            (list* (bulb-func-converter (string-trim action))
                   (map string->number coordinates))))
        
