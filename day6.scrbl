@@ -28,8 +28,8 @@ Each instruction consists of two pieces. First, an operation: either @italic{tu
          
          (define (action->bulb-func action)
            (case action
-             [("turn off") (thunk* 0)]
              [("turn on") (thunk* 1)]
+             [("turn off") (thunk* 0)]
              [else (λ(bulb) (if (= bulb 1) 0 1))]))
          
          (list* (action->bulb-func (string-trim action))
@@ -115,8 +115,8 @@ Since the only part that changes between the solutions is the bulb functions, we
        
        (define q1-bulb-func-converter
          (λ(action) (case action
-                      [("turn off") (thunk* 0)]
                       [("turn on") (thunk* 1)]
+                      [("turn off") (thunk* 0)]
                       [else (λ(bulb) (if (= bulb 1) 0 1))])))
        
        (define q2-bulb-func-converter
