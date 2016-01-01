@@ -38,7 +38,7 @@ becomes
 
 (@racket[wire-value-cache] is just a performance enhancement, so that wire values don't have to be computed multiple times.)
 
-One gotcha when using syntax transformers is that newly defined identifiers can mask others. For instance, one of the wires in our input is named @tt{if}. When our syntax transformer defines the @tt{if} function, it will override the usual meaning of @racket[if]. There are plenty of elegant ways to handle these kind of namespace collisions. But because this is a puzzle, we'll take the cheap way out: we won't use @racket[if] elsewhere in our code, and instead use @racket[cond].
+One gotcha when using syntax transformers is that newly defined identifiers can mask others. For instance, one of the wires in our input is named @tt{if}. When our syntax transformer defines the @tt{if} function, it will override the usual meaning of @racket[if]. There are plenty of elegant ways to prevent these name collisions. (The most important of which is called @italic{syntax hygiene}, and permeates the design of Racket's syntax-transformation system.) But because this is a puzzle, we'll take the cheap way out: we won't use @racket[if] elsewhere in our code, and instead use @racket[cond].
 
 @chunk[<day7-setup>
        (require racket rackunit
