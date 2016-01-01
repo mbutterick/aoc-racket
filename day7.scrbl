@@ -20,21 +20,21 @@ In other languages, creating functions from text strings would be a difficult tr
 
 The @racket[convert-input-to-wire-functions] syntax transformer takes the input strings and converts them into syntax that looks more like Racket code, so that a line like
 
-@tt{bn RSHIFT 2 -> bo}
+@racket["bn RSHIFT 2 -> bo"]
 
 becomes
 
-@tt{(wire bn RSHIFT 2 -> bo)}
+@racket[(wire bn RSHIFT 2 -> bo)]
 
 Then the @racket[wire] transformer moves the arguments around to define functions, by matching the three definition patterns that appear in the input. Thus, syntax like
 
-@tt{(wire bn RSHIFT 2 -> bo)}
+@racket[(wire bn RSHIFT 2 -> bo)]
 
 becomes
 
-@tt{(define (bo) (RSHIFT (evaluate-arg bn) (evaluate-arg 2))}
+@racket[(define (bo) (RSHIFT (evaluate-arg bn) (evaluate-arg 2)))]
 
-@racket[evaluate-arg] lets us handle the fact that some of the arguments for our wires are other wires, and some arguments are numbers. Rather than detect these differences in our syntax transformer, we'll just wrap every input argument with @racket[evaluate-arg], which will do the right thing.
+@racket[evaluate-arg] lets us handle the fact that some of the arguments for our wires are other wires, and some arguments are numbers. Rather than detect these differences during the syntax-transformation phase, we'll just wrap every input argument with @racket[evaluate-arg], which will do the right thing in the next phase.
 
 (@racket[wire-value-cache] is just a performance enhancement, so that wire values don't have to be computed multiple times.)
 
@@ -43,7 +43,6 @@ One gotcha when using syntax transformers is that newly defined identifiers can 
 @chunk[<day7-setup>
        (require racket rackunit
                 (for-syntax racket/base racket/file racket/string))
-       
        
        (define-syntax (convert-input-to-wire-functions stx)
          (syntax-case stx ()
@@ -75,7 +74,7 @@ One gotcha when using syntax transformers is that newly defined identifiers can 
                      
        ]
 
-We also need to implement our 16-bit math operations. As we saw above, our syntax transformers are generating code that looks like, for instance, @tt{(RSHIFT (evaluate-arg bn) (evaluate-arg 2)}. This code won't work unless we've defined an @racket[RSHIFT] function too.
+We also need to implement our 16-bit math operations. As we saw above, our syntax transformers are generating code that looks like, for instance, @racket[(RSHIFT (evaluate-arg bn) (evaluate-arg 2))]. This code won't work unless we've defined an @racket[RSHIFT] function too.
 
 These next definitions use @racket[define-syntax-rule] as a shortcut, which is another syntax transformer.
 
