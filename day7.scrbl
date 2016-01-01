@@ -107,7 +107,7 @@ After that, we just evaluate wire function @racket[a] to get our answer.
 
 Having done the heavy lifting, this is easy. We'll redefine wire function @racket[b] to produce the new value, and then check the value of @racket[a] again.
 
-Ordinarily, as a safety measure, Racket won't let you redefine functions. But we can circumvent this limitation by setting @racket[compile-enforce-module-constants] to @racket[#f]. We'll also need to reset our cache, since this change will change all the other wire values too.
+Ordinarily, as a safety measure, Racket won't let you redefine functions. But we can circumvent this limitation by setting @racket[compile-enforce-module-constants] to @racket[#f]. We'll also need to reset our cache, since this change will affect the other wires too.
 
 
 
