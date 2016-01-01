@@ -15,3 +15,4 @@
 @include-section[(submod "day4.scrbl" doc)]
 @include-section[(submod "day5.scrbl" doc)]
 @include-section[(submod "day6.scrbl" doc)]
+@include-section[(submod "day7.scrbl" doc)]

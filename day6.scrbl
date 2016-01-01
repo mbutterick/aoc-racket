@@ -3,7 +3,7 @@
 
 @aoc-title[6]
 
-Our @link-rp["day6-input.txt"]{input} is a list instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
+Our @link-rp["day6-input.txt"]{input} is a list of instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
 
 @chunk[<day6>
        <day6-setup>
