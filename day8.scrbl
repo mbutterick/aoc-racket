@@ -29,7 +29,7 @@ The literal length of the string is trivial — use @racket[string-length]. The
 
 
 
-@section{What is the difference between the re-encoded length of the literal string, and the original length?}
+@section{What's the difference between the re-encoded length of the literal string, and the original length?}
 
 This question simply comes down to — do you know how to use the string-formatting functions in your programming language?
 
