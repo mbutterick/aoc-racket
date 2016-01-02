@@ -19,8 +19,6 @@ Also, whereas a path between cities had a start and end, a seating arrangement i
 
 Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the input data and put the happiness scores into a hash table. Then we'll loop through all possible seating arrangements with @racket[in-permutations] and see what the best score is.
 
-Math jocks might note that because our seating arrangement is circular, our permutations will include a lot of ``rotationally equivalent'' arrangements — e.g., @racket['(A B C D)] is the same as @racket['(B C D A)] and @racket['(C D A B)]. If we had more people, or the happiness function were more expensive, we might want to prune out these equivalent arrangements as a performance optimization. But in this case, it's unnecessary.
-
 
 
 @chunk[<day13-setup>
@@ -48,6 +46,7 @@ Math jocks might note that because our seating arrangement is circular, our perm
                                                     
        ]
 
+
 @chunk[<day13-q1>
        
        (define (q1 input-str)
@@ -58,6 +57,9 @@ Math jocks might note that because our seating arrangement is circular, our perm
            (for/list ([table-arrangement (in-permutations names)])
                      (calculate-happiness table-arrangement)))
          (apply max table-arrangement-scores))]
+
+
+@margin-note{Math jocks might note that because our seating arrangement is circular, our permutations will include a lot of ``rotationally equivalent'' arrangements — e.g., @racket['(A B C D)] is the same as @racket['(B C D A)] and @racket['(C D A B)]. If we had more people, or the happiness function were more expensive, we might want to prune out these equivalent arrangements as a performance optimization. But in this case, it's unnecessary.}
 
 
 
