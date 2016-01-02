@@ -80,7 +80,6 @@ We can reuse our hash table of @racket[happiness-scores], but we have to update 
                           (list "me" name) 0
                           (list name "me") 0))
          
-         (define names-with-me (cons "me" names))
          (define table-arrangement-scores
            (for/list ([partial-table-arrangement (in-permutations names)])
                      (calculate-happiness (cons "me" partial-table-arrangement))))
