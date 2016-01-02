@@ -3,7 +3,7 @@
 
 @aoc-title[11]
 
-@link["http://adventofcode.com/day/1q"]{The puzzle}. Our @link-rp["day11-input.txt"]{input} is a short alphabetic key that represents a password.
+@link["http://adventofcode.com/day/11"]{The puzzle}. Our @link-rp["day11-input.txt"]{input} is a short alphabetic key that represents a password.
 
 @chunk[<day11>
        <day11-setup>
