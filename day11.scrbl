@@ -88,7 +88,7 @@ We take the answer to question 1 and use it as input to the same function.
          (find-next-valid-password (q1 input-key)))       ]
 
 
-@section{Testing Day 10}
+@section{Testing Day 11}
 
 @chunk[<day11-test>
        (module+ test
