@@ -15,9 +15,9 @@
 
 The puzzle asks us to compute the @italic{look and say} sequence invented by mathematician John Conway. Each iteration of the sequence is the description of the last step if you said it in numbers. So @racket[1] becomes ``one 1'', written @racket[11]; @racket[11] becomes ``two ones'', or @racket[21], then @racket[1211], @racket[111221], and so on.
 
-As in @secref{Day_1}, this puzzle relies on cumulative state, so we'll loop using @racket[for/fold]. To generate the new string for each pass of the loop, we'll use @racket[regexp-match*] to find every contiguous run of digits. Each digit run will be converted into a list with the number of digits and the digit. Then all these lists are concatenated into a new string, and the process repeats.
+As in @secref{Day_1}, this puzzle relies on cumulative state, so we'll loop using @racket[for/fold]. To generate the new string for each pass of the loop, we'll use @racket[regexp-match*] to find every contiguous run of digits. Each digit run is converted into a list with the number of digits and the digit itself. Then all these lists are concatenated into a new string, and the loop repeats.
 
-The second part of the puzzle is just going to change the number of iterations. So we'll make one function that we can use for both parts.
+The second part of the puzzle is just going to change the number of iterations. So we'll make one function that can be used for both parts.
 
 @chunk[<day10-setup>
        (require racket rackunit)
@@ -44,7 +44,7 @@ The second part of the puzzle is just going to change the number of iterations. 
 
 @section{After 50 iterations?}
 
-We just run the same @racket[look-and-say] function 50 times rather than 40.
+We use the same @racket[look-and-say] function, but with an iteration argument of @racket[50] rather than @racket[40].
 
 @chunk[<day10-q2>
        
