@@ -12,7 +12,7 @@
        <day7-q2>
        <day7-test>]
 
-@section{What is the signal on wire @tt{a}?}
+@section{What's the signal on wire @tt{a}?}
 
 The first question we should ask is — how do we model a wire? We're told that it's a thing with inputs that can be evaluated to get a value. So it sounds a lot like a function. Thus, what we'll do is convert our wire descriptions into functions, and then run the function called @racket[a].
 
@@ -103,7 +103,7 @@ After that, we just evaluate wire function @racket[a] to get our answer.
 
 
 
-@section{What is the signal on wire @tt{a} if wire @tt{b} is overridden with @tt{a}'s original value?}
+@section{What's the signal on wire @tt{a} if wire @tt{b} is overridden with @tt{a}'s original value?}
 
 Having done the heavy lifting, this is easy. We'll redefine wire function @racket[b] to produce the new value, and then check the value of @racket[a] again.
 
