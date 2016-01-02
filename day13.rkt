@@ -56,7 +56,7 @@ I'm in a math-jock mood, so let's make a performance optimization. It's unnecess
 
 Notice that because our seating arrangement is circular, our permutations will include a lot of ``rotationally equivalent'' arrangements — e.g., @racket['(A B C ...)] is the same as @racket['(B C ... A)], @racket['(C ... A B)], etc. If we have @racket[_n] elements, each distinct arrangement will have @racket[_n] rotationally equivalent arrangements. We can save time by only checking one of each set.
 
-How? By only looking at arrangements starting with a particular name. Doesn't matter which. This will work because every name has to appear in every arrangement. To do this, we could generate all the permtuations and use a @racket[#:when] clause to select the ones we want. But it's even more efficient to only permute @racket[(sub1 _n)] names, and then @racket[cons] our target name onto each partial arrangement, which will produce the same set of arrangements. Thus we only have to generate and score @racket[(/ 1 _n)] of the original permutations.
+How? By only looking at arrangements starting with a particular name. Doesn't matter which. This will work because every name has to appear in every arrangement. To do this, we could generate all the permutations and use a @racket[#:when] clause to select the ones we want. But it's even more efficient to only permute @racket[(sub1 _n)] names, and then @racket[cons] our target name onto each partial arrangement, which will produce the same set of arrangements. Thus we only have to generate and score @racket[(/ 1 _n)] of the original permutations.
 
 @chunk[<day13-q1>
        
