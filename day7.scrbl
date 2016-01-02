@@ -124,7 +124,7 @@ Ordinarily, as a safety measure, Racket won't let you redefine functions. But we
        ]
 
 
-@section{Testing our input}
+@section{Testing Day 7}
 
 @chunk[<day7-test>
        (module+ test
