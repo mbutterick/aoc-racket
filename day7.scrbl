@@ -18,19 +18,21 @@ The first question we should ask is — how do we model a wire? We're told that
 
 In other languages, creating functions from text strings would be a difficult trick. But this facility is built into Racket with @racket[define-syntax]. Essentially our program will run in two phases: in the syntax-transformation phase, we'll read in the list of wire descriptions and expand them into code that represents functions. In the second phase, the program — including our new functions, created via syntax transformation — will compile & run as usual.
 
-The @racket[convert-input-to-wire-functions] syntax transformer takes the input strings and converts them into syntax that looks more like Racket code, so that a line like
+The @racket[convert-input-to-wire-functions] transformer takes the input strings and first converts each into a @italic{datum} — that is, a fragment of Racket code. So an input string like this:
 
 @racket["bn RSHIFT 2 -> bo"]
 
-becomes
+becomes a datum like this:
 
 @racket[(wire bn RSHIFT 2 -> bo)]
 
-Then the @racket[wire] transformer moves the arguments around to define functions, by matching the three definition patterns that appear in the input. Thus, syntax like
+Next, this transformer converts the datums into @italic{syntax}, a process that adds contextual information (for instance, the meanings of identifiers) so the code can be evaluated.
+
+Then the @racket[wire] transformer moves the arguments around to define functions, by matching the three definition patterns that appear in the input. Thus, syntax like this:
 
 @racket[(wire bn RSHIFT 2 -> bo)]
 
-becomes
+becomes:
 
 @racket[(define (bo) (RSHIFT (evaluate-arg bn) (evaluate-arg 2)))]
 
