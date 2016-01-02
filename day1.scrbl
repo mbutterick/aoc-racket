@@ -3,7 +3,7 @@
 
 @aoc-title[1]
 
-Our @link-rp["day1-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
+@link["http://adventofcode.com/day/1"]{The puzzle}. Our @link-rp["day1-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
 
 @chunk[<day1>
        <day1-setup>
@@ -106,7 +106,7 @@ The two are similar. The choice comes down to readability and efficiency — me
          basement-position)]
 
 
-@section{Testing our input}
+@section{Testing Day 1}
 
 @chunk[<day1-test>
        (module+ test

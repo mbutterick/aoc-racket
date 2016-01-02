@@ -3,7 +3,7 @@
 
 @aoc-title[2]
 
-Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
+@link["http://adventofcode.com/day/2"]{The puzzle}. Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
 
 @chunk[<day2>
        <day2-setup>
@@ -55,7 +55,7 @@ We take the same approach, with a new @racket[box->ribbon] function.
          (apply + (map box->ribbon boxes)))]
 
 
-@section{Testing our input}
+@section{Testing Day 2}
 
 
 @chunk[<day2-test>

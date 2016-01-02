@@ -3,9 +3,10 @@
 
 @aoc-title[3]
 
-Our @link-rp["day3-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
+@link["http://adventofcode.com/day/3"]{The puzzle}. Our @link-rp["day3-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
 
-In essence, this a two-dimensional version of the elevator problem in Day 1.
+In essence, this a two-dimensional version of the elevator problem in @secref{Day_1}.
+
 
 @chunk[<day3>
        <day3-setup>
@@ -94,7 +95,7 @@ The solution works the same as before — the only new task is to split the inpu
                   (append (string->cells odd-str) (string->cells even-str)))))
        ]
 
-@section{Testing our input}
+@section{Testing Day 3}
 
 @chunk[<day3-test>
        (module+ test

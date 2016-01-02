@@ -3,7 +3,7 @@
 
 @aoc-title[6]
 
-Our @link-rp["day6-input.txt"]{input} is a list of instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
+@link["http://adventofcode.com/day/6"]{The puzzle}. Our @link-rp["day6-input.txt"]{input} is a list of instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
 
 @chunk[<day6>
        <day6-setup>
@@ -126,7 +126,7 @@ Since the only part that changes between the solutions is the bulb functions, we
                       [else (λ(bulb) (+ bulb 2))])))
        ]
 
-@section{Testing our input}
+@section{Testing Day 6}
 
 @chunk[<day6-test>
        (module+ test

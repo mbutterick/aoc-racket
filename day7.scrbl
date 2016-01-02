@@ -3,7 +3,7 @@
 
 @aoc-title[7]
 
-Our @link-rp["day7-input.txt"]{input} describes an electrical circuit, with each line of the file describing the signal provided to a particular wire.
+@link["http://adventofcode.com/day/7"]{The puzzle}. Our @link-rp["day7-input.txt"]{input} describes an electrical circuit, with each line of the file describing the signal provided to a particular wire.
 
 @chunk[<day7>
        <day7-setup>
@@ -126,7 +126,6 @@ Ordinarily, as a safety measure, Racket won't let you redefine functions. But we
 
 @chunk[<day7-test>
        (module+ test
-         (define input-strs (file->lines "day7-input.txt"))
          (check-equal? (q1) 46065)
          (check-equal? (q2) 14134))]
 

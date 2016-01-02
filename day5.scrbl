@@ -3,7 +3,7 @@
 
 @aoc-title[5]
 
-Our @link-rp["day5-input.txt"]{input} is a list of random-looking but not really random text strings.
+@link["http://adventofcode.com/day/5"]{The puzzle}. Our @link-rp["day5-input.txt"]{input} is a list of random-looking but not really random text strings.
 
 @chunk[<day5>
        <day5-setup>
@@ -68,7 +68,7 @@ Again, a test of your regexp-writing skills.
        (define (q2 words)
          (length (filter nicer? words)))]
 
-@section{Testing our input}
+@section{Testing Day 5}
 
 @chunk[<day5-test>
        (module+ test
