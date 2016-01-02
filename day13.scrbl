@@ -46,6 +46,7 @@ Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the
                                                     
        ]
 
+I'm in a math-jock mood, so let's make a performance optimization. It's unnecessary for this problem, but when we use @racket[in-permutations] — which can grow ludicrously huge — we should ask how we might prune the options. Notice that because our seating arrangement is circular, our permutations will include a lot of ``rotationally equivalent'' arrangements — e.g., @racket['(A B C ...)] is the same as @racket['(B C ... A)], @racket['(C ... A B)], etc. We can save time by only checking one of each set. How? By only looking at arrangements starting with a particular name. Doesn't matter which. This will work because every name has to appear in every arrangement. To do this, we could generate all the permtuations and use a @racket[#:when] clause to select the ones we want. But it's even more efficient to only permute @italic{n - 1} names, and then @racket[cons] our target name onto each partial arrangement, which will produce the same set of arrangements.
 
 @chunk[<day13-q1>
        
@@ -54,12 +55,9 @@ Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the
          (define names
            (remove-duplicates (flatten (hash-keys happiness-scores))))
          (define table-arrangement-scores
-           (for/list ([table-arrangement (in-permutations names)])
-                     (calculate-happiness table-arrangement)))
+           (for/list ([partial-table-arrangement (in-permutations (cdr names))])
+                     (calculate-happiness (cons (car names) partial-table-arrangement))))
          (apply max table-arrangement-scores))]
-
-
-@margin-note{Math jocks might note that because our seating arrangement is circular, our permutations will include a lot of ``rotationally equivalent'' arrangements — e.g., @racket['(A B C D)] is the same as @racket['(B C D A)] and @racket['(C D A B)]. If we had more people, or the happiness function were more expensive, we might want to prune out these equivalent arrangements as a performance optimization. But in this case, it's unnecessary.}
 
 
 
@@ -80,8 +78,8 @@ We can reuse our hash table of @racket[happiness-scores], but we have to update 
          
          (define names-with-me (cons "me" names))
          (define table-arrangement-scores
-           (for/list ([table-arrangement (in-permutations names-with-me)])
-                     (calculate-happiness table-arrangement)))
+           (for/list ([partial-table-arrangement (in-permutations names)])
+                     (calculate-happiness (cons "me" partial-table-arrangement))))
          (apply max table-arrangement-scores))
                                   
        ]
