@@ -3,6 +3,8 @@
 
 @aoc-title[12]
 
+@defmodule[aoc-racket/day12]
+
 @link["http://adventofcode.com/day/12"]{The puzzle}. Our @link-rp["day12-input.txt"]{input} is, unfortunately, a @link["http://json.org/"]{JSON} file.
 
 @chunk[<day12>
@@ -24,6 +26,7 @@ If you're new to Racket, notice the @italic{recursive descent} pattern used in @
 
 @chunk[<day12-setup>
        (require racket rackunit json)
+       (provide (all-defined-out))
        
        (define (string->jsexpr str)
          (read-json (open-input-string str)))

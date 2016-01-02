@@ -3,6 +3,8 @@
 
 @aoc-title[10]
 
+@defmodule[aoc-racket/day10]
+
 @link["http://adventofcode.com/day/10"]{The puzzle}. Our @link-rp["day10-input.txt"]{input} is a short numeric key.
 
 @chunk[<day10>
@@ -21,6 +23,7 @@ The second part of the puzzle is just going to change the number of iterations. 
 
 @chunk[<day10-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        
        (define (look-and-say iterations input-key)
           (for/fold ([start input-key])

@@ -5,20 +5,24 @@
 
 @author[(author+email "Matthew Butterick" "mb@mbtype.com")]
 
-@defmodule[aoc-racket] 
+@defmodule[aoc-racket]
+
+@italic{Dedicated to curious characters everywhere, especially those learning Racket.}
 
 @local-table-of-contents[]
 
-@include-section[(submod "day1.scrbl" doc)]
-@include-section[(submod "day2.scrbl" doc)]
-@include-section[(submod "day3.scrbl" doc)]
-@include-section[(submod "day4.scrbl" doc)]
-@include-section[(submod "day5.scrbl" doc)]
-@include-section[(submod "day6.scrbl" doc)]
-@include-section[(submod "day7.scrbl" doc)]
-@include-section[(submod "day8.scrbl" doc)]
-@include-section[(submod "day9.scrbl" doc)]
-@include-section[(submod "day10.scrbl" doc)]
-@include-section[(submod "day11.scrbl" doc)]
-@include-section[(submod "day12.scrbl" doc)]
-@include-section[(submod "day13.scrbl" doc)]
+@include-section[(submod "day1.rkt" doc)]
+@include-section[(submod "day2.rkt" doc)]
+@include-section[(submod "day3.rkt" doc)]
+@include-section[(submod "day4.rkt" doc)]
+@include-section[(submod "day5.rkt" doc)]
+@include-section[(submod "day6.rkt" doc)]
+@include-section[(submod "day7.rkt" doc)]
+@include-section[(submod "day8.rkt" doc)]
+@include-section[(submod "day9.rkt" doc)]
+@include-section[(submod "day10.rkt" doc)]
+@include-section[(submod "day11.rkt" doc)]
+@include-section[(submod "day12.rkt" doc)]
+@include-section[(submod "day13.rkt" doc)]
+
+@index-section[]

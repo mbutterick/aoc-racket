@@ -3,6 +3,8 @@
 
 @aoc-title[2]
 
+@defmodule[aoc-racket/day2]
+
 @link["http://adventofcode.com/day/2"]{The puzzle}. Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
 
 @chunk[<day2>
@@ -22,6 +24,7 @@ Then we have a traditional setup for the devastating one-two punch of @racket[ma
 
 @chunk[<day2-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        (define (string->boxes str)
          (for/list ([ln (in-list (string-split str "\n"))])
                    (map string->number (string-split ln "x"))))]

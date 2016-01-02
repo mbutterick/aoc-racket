@@ -4,6 +4,8 @@
 
 @aoc-title[4]
 
+@defmodule[aoc-racket/day4]
+
 @link["http://adventofcode.com/day/4"]{The puzzle}. Our @link-rp["day4-input.txt"]{input} is a string of eight characters that represents part of a key for making an MD5 hash.
 
 @chunk[<day4>
@@ -21,6 +23,7 @@ Whether or not you already know what an MD5 hash is, you can search the Racket d
 
 @chunk[<day4-setup>
        (require racket rackunit openssl/md5)
+       (provide (all-defined-out))
        ]
 
 @chunk[<day4-q1>

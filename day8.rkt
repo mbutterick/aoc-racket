@@ -3,6 +3,8 @@
 
 @aoc-title[8]
 
+@defmodule[aoc-racket/day8]
+
 @link["http://adventofcode.com/day/8"]{The puzzle}. Our @link-rp["day8-input.txt"]{input} consists of a list of seemingly random strings within quotation marks.
 
 @chunk[<day8>
@@ -19,6 +21,7 @@ The literal length of the string is trivial — use @racket[string-length]. The
 
 @chunk[<day8-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
 ]
 
 @chunk[<day8-q1>

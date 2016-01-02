@@ -3,6 +3,8 @@
 
 @aoc-title[11]
 
+@defmodule[aoc-racket/day11]
+
 @link["http://adventofcode.com/day/11"]{The puzzle}. Our @link-rp["day11-input.txt"]{input} is a short alphabetic key that represents a password.
 
 @chunk[<day11>
@@ -34,6 +36,7 @@ The @racket[three-consecutive-letters?] test works by converting the letters to 
 
 @chunk[<day11-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        
        (define (increment-password password)
          (define (increment-letter c)

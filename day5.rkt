@@ -3,6 +3,8 @@
 
 @aoc-title[5]
 
+@defmodule[aoc-racket/day5]
+
 @link["http://adventofcode.com/day/5"]{The puzzle}. Our @link-rp["day5-input.txt"]{input} is a list of random-looking but not really random text strings.
 
 @chunk[<day5>
@@ -26,6 +28,7 @@ This is a job for @racket[regexp-match]. There's nothing tricky here (except for
 
 @chunk[<day5-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        ]
 
 @chunk[<day5-q1>

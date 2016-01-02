@@ -3,6 +3,8 @@
 
 @aoc-title[1]
 
+@defmodule[aoc-racket/day1]
+
 @link["http://adventofcode.com/day/1"]{The puzzle}. Our @link-rp["day1-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
 
 @chunk[<day1>
@@ -22,6 +24,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 @chunk[<day1-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        (define up-char #\()
        (define down-char #\))
        
@@ -35,11 +38,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 @chunk[<day1-q1>
        (define (q1 str)
-         (displayln (format "ups = ~a" (get-ups str)))
-         (displayln (format "downs = ~a" (get-downs str)))
-         (define destination (get-destination str))
-         (displayln (format "destination = ~a" destination))
-         destination)]
+         (get-destination str))]
 
 @subsection{Alternate approach: numerical conversion}
 
@@ -53,9 +52,7 @@ Rather than counting matches with @racket[regexp-match*], we could also convert 
                        -1)))
        
        (define (q1-alt str)
-         (define destination (apply + (elevator-string->ints str)))
-         (displayln (format "destination = ~a" destination))
-         destination)]
+         (apply + (elevator-string->ints str)))]
 
 @section[#:tag "q2"]{At what point does the elevator enter the basement?}
 
@@ -77,15 +74,13 @@ We could characterize this as a problem of tracking @italic{cumulative values} o
                       #:break (in-basement? movements-so-far))
              (cons (get-destination (~a c)) movements-so-far)))
          
-         (define basement-position (length relative-movements))         
-         (displayln (format "basement entered at position = ~a" basement-position))
-         basement-position)]
+         (length relative-movements))]
 
 @subsection{Alternate approaches: @tt{for/first} or @tt{for/or}}
 
 When you need to stop a loop the first time a condition occurs, you can also consider @racket[for/first] or @racket[for/or]. The difference is that @racket[for/first] ends after the first evaluation of the body, but @racket[for/or] evaluates the body every time, and ends the first time the body is not @racket[#f].
 
-The two are similar. The choice comes down to readability and efficiency — meaning, if each iteration of the loop is expensive, you probably will want to cache intermediate values, which means you might as well use @racket[for/fold].
+The two are similar. The choice comes down to readability and efficiency — meaning, if each iteration of the loop is expensive, you'll probably want to cache intermediate values, which means you might as well use @racket[for/fold].
 
 @chunk[<day1-q2-alt>       
        (define (q2-for/first str)
@@ -94,7 +89,6 @@ The two are similar. The choice comes down to readability and efficiency — me
              (for/first ([idx (in-range (length ints))]
                          #:when (negative? (apply + (take ints idx))))
                         idx)))
-         (displayln (format "basement entered at position = ~a" basement-position))
          basement-position)
        
        (define (q2-for/or str)
@@ -102,7 +96,6 @@ The two are similar. The choice comes down to readability and efficiency — me
            (let ([ints (elevator-string->ints str)]) 
              (for/or ([idx (in-range (length ints))])
                      (and (negative? (apply + (take ints idx))) idx))))
-         (displayln (format "basement entered at position = ~a" basement-position))
          basement-position)]
 
 

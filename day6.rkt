@@ -3,6 +3,8 @@
 
 @aoc-title[6]
 
+@defmodule[aoc-racket/day6]
+
 @link["http://adventofcode.com/day/6"]{The puzzle}. Our @link-rp["day6-input.txt"]{input} is a list of instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
 
 @chunk[<day6>
@@ -47,6 +49,7 @@ We'll define our functions for setting and counting the lights separately, since
 
 @chunk[<day6-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        
        (define (set-lights lights arglist)
          (match-define (list bulb-func x1 y1 x2 y2) arglist)

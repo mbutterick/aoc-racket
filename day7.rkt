@@ -3,6 +3,8 @@
 
 @aoc-title[7]
 
+@defmodule[aoc-racket/day7]
+
 @link["http://adventofcode.com/day/7"]{The puzzle}. Our @link-rp["day7-input.txt"]{input} describes an electrical circuit, with each line of the file describing the signal provided to a particular wire.
 
 @chunk[<day7>
@@ -45,6 +47,7 @@ One gotcha when using syntax transformers is that identifiers introduced by a tr
 @chunk[<day7-setup>
        (require racket rackunit
                 (for-syntax racket/base racket/file racket/string))
+       (provide (all-defined-out))
        
        (define-syntax (convert-input-to-wire-functions stx)
          (syntax-case stx ()

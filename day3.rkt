@@ -3,6 +3,8 @@
 
 @aoc-title[3]
 
+@defmodule[aoc-racket/day3]
+
 @link["http://adventofcode.com/day/3"]{The puzzle}. Our @link-rp["day3-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
 
 In essence, this a two-dimensional version of the elevator problem in @secref{Day_1}.
@@ -25,6 +27,7 @@ Once the whole cell path is computed, the answer is found by removing duplicate 
 
 @chunk[<day3-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        ]
 
 @chunk[<day3-q1>

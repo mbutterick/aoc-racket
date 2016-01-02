@@ -3,6 +3,8 @@
 
 @aoc-title[13]
 
+@defmodule[aoc-racket/day13]
+
 @link["http://adventofcode.com/day/13"]{The puzzle}. Our @link-rp["day13-input.txt"]{input} is a list of descriptions of ``happiness units'' that would be gained or lost among eight people sitting next to each other at a dinner table.
 
 @chunk[<day13>
@@ -23,6 +25,7 @@ Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the
 
 @chunk[<day13-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        
        (define happiness-scores (make-hash))
        

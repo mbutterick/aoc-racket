@@ -3,6 +3,8 @@
 
 @aoc-title[9]
 
+@defmodule[aoc-racket/day9]
+
 @link["http://adventofcode.com/day/9"]{The puzzle}. Our @link-rp["day9-input.txt"]{input} consists of a list of distances between fictional cities, e.g., @italic{AlphaCentauri to Straylight = 133}.
 
 @chunk[<day9>
@@ -23,6 +25,7 @@ In the second part, we'll loop through every possible path between the cities wi
 
 @chunk[<day9-setup>
        (require racket rackunit)
+       (provide (all-defined-out))
        
        (define distances (make-hash))
        
