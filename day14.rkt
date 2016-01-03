@@ -67,7 +67,7 @@ As in @secref{Day_7}, we'll use @racket[define-syntax] to set up the reindeer fu
 
 The new rule is that after each second of travel, the reindeer in the lead gets one point. Thus, the winner after 2503 seconds is not the reindeer that has traveled farthest, but that has gathered the most points — in other words, has been in the lead for the longest time.
 
-This question is similar to the last. But instead of simulating one race, we have to simulate 2503 races, each one ending a second later than the last. After each second, we calculate the winning reindeer, and add it to our list of winners. After 2503 seconds, we find out how many times the winningest reindeer appears on the list. To do this, we'll use the helper function @racket[frequency-hash] from @racketmodname[sugar/list]. (You could also do it with @racket[for/fold], but tracking nine reindeer in parallel is unwieldy.)
+This question is similar to the last. But instead of simulating one race, we have to simulate 2503 races, each one ending a second later than the last. After each second, we calculate the winning reindeer, and add it to our list of winners. After 2503 seconds, we find out how many times the winningest reindeer appears on the list. To do this, we'll use the helper function @racket[frequency-hash] from @racketmodname[sugar/list]. (You could also do it with @racket[for/fold], but controlling nine reindeer in parallel is unwieldy. Just ask Santa.)
 
 @chunk[<day14-q2>
        
