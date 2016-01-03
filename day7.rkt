@@ -46,7 +46,7 @@ One gotcha when using syntax transformers is that identifiers introduced by a tr
 
 @chunk[<day7-setup>
        (require racket rackunit
-                (for-syntax racket/base racket/file racket/string))
+                (for-syntax racket/file racket/string))
        (provide (all-defined-out))
        
        (define-syntax (convert-input-to-wire-functions stx)

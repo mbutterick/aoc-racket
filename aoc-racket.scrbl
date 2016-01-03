@@ -1,5 +1,5 @@
 #lang scribble/manual
-@(require (for-label racket rackunit))
+@(require (for-label racket rackunit sugar/list))
 
 @title{Advent of Code solutions & explanations}
 
@@ -24,5 +24,6 @@
 @include-section[(submod "day11.rkt" doc)]
 @include-section[(submod "day12.rkt" doc)]
 @include-section[(submod "day13.rkt" doc)]
+@include-section[(submod "day14.rkt" doc)]
 
 @index-section[]
