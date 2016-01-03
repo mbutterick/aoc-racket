@@ -5,3 +5,5 @@ Install from the command line:
     raco pkg install git://github.com/mbutterick/aoc-racket/
 
 Explanations will be installed automatically as part of the Scribble documentation.
+
+[Or read it without installing.](http://pkg-build.racket-lang.org/doc/aoc-racket/)
