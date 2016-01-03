@@ -74,7 +74,7 @@ How? By only looking at arrangements starting with a particular name. Doesn't ma
 
 @section{What's the optimal happiness score, including ourself in the seating?}
 
-We can reuse our hash table of @racket[happiness-scores], but we have to update it with scores for ourself seated next to every other person, which in every case is @racket[0]. Then we find the optimal score the same way.
+We can reuse our hash table of @racket[happiness-scores], but we have to update it with scores for ourself seated next to every other person, which in every case is @racket[0]. (The meaning of @racket[(in-list (list list (compose1 reverse list)))] is a small puzzle I leave for you.) Then we find the optimal score the same way.
 
 @chunk[<day13-q2>
        
@@ -82,11 +82,9 @@ We can reuse our hash table of @racket[happiness-scores], but we have to update 
          (define names
            (remove-duplicates (flatten (hash-keys happiness-scores))))
          
-         (for ([name (in-list names)])
-              (define me-duo (list "me" name))
-              (hash-set*! happiness-scores
-                          me-duo 0
-                          (reverse me-duo) 0))
+         (for* ([name (in-list names)]
+                [proc (in-list (list list (compose1 reverse list)))])
+               (hash-set! happiness-scores (proc "me" name) 0))
          
          (define table-arrangement-scores
            (for/list ([partial-table-arrangement (in-permutations names)])
