@@ -17,9 +17,9 @@
 
 This is a lot like @secref{Day_9}, where we had to compute the optimal path between cities. In that puzzle, the distance between city A and city B was a single number. In this case, the ``happiness score'' between person A and person B is the sum of two numbers — A's happiness being next to B, and B's happiness being next to A. (Unlike distances, happiness scores can be negative.)
 
-Also, whereas a path between cities had a start and end, a seating arrangement is circular. So if we model a seating arrangement as a list of people, we have to compute the happiness between each pair of people, but also between the last and first, to capture the circularity of the arrangement.
+Also, whereas a path between cities had a start and end, a seating arrangement is circular. So if we model a seating arrangement as a list of people, we have to compute the happiness between each duo of people, but also between the last and first, to capture the circularity of the arrangement.
 
-Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the input data and put the happiness scores into a hash table. Then we'll loop through all possible seating arrangements with @racket[in-permutations] and see what the best score is.
+Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the input data and put the happiness scores into a hash table — the keys will be of the form @racket[(list name1 name2)] and the values will be the happiness scores for that duo, in that order. Then we'll loop through all possible seating arrangements with @racket[in-permutations] and see what the best score is.
 
 
 
@@ -39,14 +39,14 @@ Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the
        
        (define (calculate-happiness table-arrangement)
          (define table-arrangement-rotated-one-place
-           (append (cdr table-arrangement) (list (car table-arrangement))))
-         (define clockwise-pairs
+           (append (drop table-arrangement 1) (take table-arrangement 1)))
+         (define clockwise-duos
            (map list table-arrangement table-arrangement-rotated-one-place))
-         (define counterclockwise-pairs (map reverse clockwise-pairs))
-         (define all-pairs (append clockwise-pairs counterclockwise-pairs))
-         (for/sum ([pair (in-list all-pairs)])
-                  (hash-ref happiness-scores pair)))
-                                                    
+         (define counterclockwise-duos (map reverse clockwise-duos))
+         (define all-duos (append clockwise-duos counterclockwise-duos))
+         (for/sum ([duo (in-list all-duos)])
+                  (hash-ref happiness-scores duo)))
+                                                   
        ]
 
 
@@ -66,7 +66,8 @@ How? By only looking at arrangements starting with a particular name. Doesn't ma
            (remove-duplicates (flatten (hash-keys happiness-scores))))
          (define table-arrangement-scores
            (for/list ([partial-table-arrangement (in-permutations (cdr names))])
-                     (calculate-happiness (cons (car names) partial-table-arrangement))))
+                     (define table-arrangement (cons (car names) partial-table-arrangement))
+                     (calculate-happiness table-arrangement)))
          (apply max table-arrangement-scores))]
 
 
@@ -82,15 +83,17 @@ We can reuse our hash table of @racket[happiness-scores], but we have to update 
            (remove-duplicates (flatten (hash-keys happiness-scores))))
          
          (for ([name (in-list names)])
+              (define me-duo (list "me" name))
               (hash-set*! happiness-scores
-                          (list "me" name) 0
-                          (list name "me") 0))
+                          me-duo 0
+                          (reverse me-duo) 0))
          
          (define table-arrangement-scores
            (for/list ([partial-table-arrangement (in-permutations names)])
-                     (calculate-happiness (cons "me" partial-table-arrangement))))
+                     (define table-arrangement (cons "me" partial-table-arrangement))
+                     (calculate-happiness table-arrangement)))
          (apply max table-arrangement-scores))
-                                  
+                                              
        ]
 
 
