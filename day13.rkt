@@ -83,8 +83,8 @@ We can reuse our hash table of @racket[happiness-scores], but we have to update 
            (remove-duplicates (flatten (hash-keys happiness-scores))))
          
          (for* ([name (in-list names)]
-                [proc (in-list (list list (compose1 reverse list)))])
-               (hash-set! happiness-scores (proc "me" name) 0))
+                [duo-proc (in-list (list list (compose1 reverse list)))])
+               (hash-set! happiness-scores (duo-proc "me" name) 0))
          
          (define table-arrangement-scores
            (for/list ([partial-table-arrangement (in-permutations names)])
