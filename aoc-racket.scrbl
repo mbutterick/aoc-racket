@@ -26,5 +26,4 @@
 @include-section[(submod "day13.rkt" doc)]
 @include-section[(submod "day14.rkt" doc)]
 @include-section[(submod "day15.rkt" doc)]
-
-@index-section[]
+@include-section[(submod "day16.rkt" doc)]
