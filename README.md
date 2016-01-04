@@ -2,7 +2,7 @@ Racket solutions &amp; explanations for the [Advent of Code](http://adventofcode
 
 Install from the command line:
 
-    raco pkg install git://github.com/mbutterick/aoc-racket/
+    raco pkg install aoc-racket
 
 Explanations will be installed automatically as part of the Scribble documentation.
 
