@@ -17,6 +17,8 @@ Documenting the solutions helped me nail down some discoveries.
 
 Thank you to Eric Wastl. If you like Advent of Code, please @link["http://adventofcode.com/about"]{pay him for it}.
 
+You can install this package (if you haven't already) with @tt{raco pkg install aoc-racket}.
+
 @local-table-of-contents[]
 
 @include-section[(submod "day1.rkt" doc)]
