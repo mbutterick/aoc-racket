@@ -6,4 +6,4 @@ Install from the command line:
 
 Explanations will be installed automatically as part of the Scribble documentation.
 
-[Or read it without installing.](http://pkg-build.racket-lang.org/doc/aoc-racket/)
+[Or just read the code and explanations online, right now.](http://pkg-build.racket-lang.org/doc/aoc-racket/)
