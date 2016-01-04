@@ -11,6 +11,7 @@
 
 @local-table-of-contents[]
 
+@include-section["about.scrbl"]
 @include-section[(submod "day1.rkt" doc)]
 @include-section[(submod "day2.rkt" doc)]
 @include-section[(submod "day3.rkt" doc)]
