@@ -1,4 +1,4 @@
-Racket solutions &amp; explanations for the [Advent of Code](http://adventofcode.com) puzzles.
+Racket solutions &amp; explanations for the [Advent of Code](http://adventofcode.com) puzzles. Written in Racket's literate-programming dialect, `scribble/lp2`.
 
 Install from the command line:
 
