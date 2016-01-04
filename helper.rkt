@@ -1,5 +1,6 @@
 #lang at-exp racket/base
-(require scribble/manual)
+(require scribble/manual scribble/html-properties
+         scribble/core)
 (provide (all-defined-out))
 (require (for-syntax racket/base racket/syntax) racket/runtime-path)
 (provide (for-syntax #%datum))
@@ -17,4 +18,5 @@
        #'(begin
            (require racket/runtime-path)
            (define-runtime-path rp-name where)
-           @(link (path->string rp-name) text-args ...)))]))
+           (element (style #f (list (link-resource where)))
+           text-args ...)))]))
