@@ -81,7 +81,7 @@ One gotcha when using syntax transformers is that identifiers introduced by a tr
 
 We also need to implement our 16-bit math operations. As we saw above, our syntax transformers are generating code that looks like, for instance, @racket[(RSHIFT (evaluate-arg bn) (evaluate-arg 2))]. This code won't work unless we've defined an @racket[RSHIFT] function too.
 
-These next definitions use @racket[define-syntax-rule] as a shortcut, which is another syntax transformer.
+These next definitions use @racket[define-syntax-rule] as a shortcut, which is another syntax transformer. (Thanks to @link["https://jeapostrophe.github.io"]{Jay McCarthy} for the 16-bit operations.)
 
 
 @chunk[<day7-ops>
