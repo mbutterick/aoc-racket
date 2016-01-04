@@ -61,7 +61,7 @@ We might be tempted to break down the attribute pairs into hash tables. But we d
 
 
 
-@section{Which Sue matches the attribute input, with the retroencabulator rules?}
+@section{Which Sue matches the attribute input, with the ``retroencabulator'' rules?}
 
 Same question as before, with new rules for matching the master attributes:
 
