@@ -84,7 +84,7 @@ So I cheated. I adapted a @link["https://github.com/ChrisPenner/Advent-Of-Code-P
 
 
 
-@section{Testing Day 18}
+@section{Testing Day 19}
 
 @chunk[<day19-test>
        (module+ test

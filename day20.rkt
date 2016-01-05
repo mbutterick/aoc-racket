@@ -61,7 +61,7 @@ Going with the math-jock vibe, what this condition means is that the highest-num
 
 
 
-@section{Testing Day 18}
+@section{Testing Day 20}
 
 @chunk[<day20-test>
        (module+ test
