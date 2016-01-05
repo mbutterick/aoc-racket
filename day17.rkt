@@ -16,7 +16,7 @@
 
 @section{How many combinations of containers fit exactly 150 liters?}
 
-This is a lot like the second part of @secref{Day_15}, where we had to find cookie recipes that totaled 500 calories. This time, rather than recipes, we need to generate combinations of the containers that add up to exactly 150 liters (though we don't have to use all the containers, and multiple containers of the same size are deemed to be create unique arrangements).
+This is a lot like the second part of @secref{Day_15}, where we had to find cookie recipes that totaled 500 calories. This time, rather than recipes, we need to generate combinations of the containers that add up to exactly 150 liters (though we don't have to use all the containers, and multiple containers of the same size are deemed to create unique arrangements).
 
 We do this by creating the @italic{power set} of the containers — that is, a list of all possible subsets — and counting how many meet our criterion. As with the recipe problem, our @racket[powerset] function is a simple recursive operation.
 
