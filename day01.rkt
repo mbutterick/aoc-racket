@@ -3,17 +3,17 @@
 
 @aoc-title[1]
 
-@defmodule[aoc-racket/day1]
+@defmodule[aoc-racket/day01]
 
-@link["http://adventofcode.com/day/1"]{The puzzle}. Our @link-rp["day1-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
+@link["http://adventofcode.com/day/01"]{The puzzle}. Our @link-rp["day01-input.txt"]{input} is a string of parentheses that controls an elevator. A left parenthesis @litchar{(} means go up one floor, and a right parenthesis @litchar{)} means go down.
 
-@chunk[<day1>
-       <day1-setup>
-       <day1-q1>
-       <day1-q1-alt>
-       <day1-q2>
-       <day1-q2-alt>
-       <day1-test>]
+@chunk[<day01>
+       <day01-setup>
+       <day01-q1>
+       <day01-q1-alt>
+       <day01-q2>
+       <day01-q2-alt>
+       <day01-test>]
 
 
 @section{Where does the elevator land?}
@@ -22,7 +22,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 @racket[regexp-match*] will return a list of all occurrences of one string within another. The length of this list is the number of occurrences. Therefore, we can use it to count the ups and downs.
 
-@chunk[<day1-setup>
+@chunk[<day01-setup>
        (require racket rackunit)
        (provide (all-defined-out))
        (define up-char #\()
@@ -36,7 +36,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 
 
-@chunk[<day1-q1>
+@chunk[<day01-q1>
        (define (q1 str)
          (get-destination str))]
 
@@ -44,7 +44,7 @@ The building has an indefinite number of floors in both directions. So the ultim
 
 Rather than counting matches with @racket[regexp-match*], we could also convert the string of parentheses directly into a list of numbers.
 
-@chunk[<day1-q1-alt>
+@chunk[<day01-q1-alt>
        (define (elevator-string->ints str)
          (for/list ([c (in-string str)])
                    (if (equal? c up-char)
@@ -63,7 +63,7 @@ We could characterize this as a problem of tracking @italic{cumulative values} o
 @margin-note{Nothing wrong with @racket[foldl] and @racket[foldr], but @racket[for/fold] is more flexible, and makes more readable code.}
 
 
-@chunk[<day1-q2>
+@chunk[<day01-q2>
        (define (in-basement? movements)
          (negative? (apply + movements)))  
        
@@ -82,7 +82,7 @@ When you need to stop a loop the first time a condition occurs, you can also con
 
 The two are similar. The choice comes down to readability and efficiency — meaning, if each iteration of the loop is expensive, you'll probably want to cache intermediate values, which means you might as well use @racket[for/fold].
 
-@chunk[<day1-q2-alt>       
+@chunk[<day01-q2-alt>       
        (define (q2-for/first str)
          (define basement-position
            (let ([ints (elevator-string->ints str)]) 
@@ -101,9 +101,9 @@ The two are similar. The choice comes down to readability and efficiency — me
 
 @section{Testing Day 1}
 
-@chunk[<day1-test>
+@chunk[<day01-test>
        (module+ test
-         (define input-str (file->string "day1-input.txt"))
+         (define input-str (file->string "day01-input.txt"))
          (check-equal? (q1 input-str) 74)
          (check-equal? (q1-alt input-str) 74)
          (check-equal? (q2 input-str) 1795)

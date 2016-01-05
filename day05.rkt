@@ -3,15 +3,15 @@
 
 @aoc-title[5]
 
-@defmodule[aoc-racket/day5]
+@defmodule[aoc-racket/day05]
 
-@link["http://adventofcode.com/day/5"]{The puzzle}. Our @link-rp["day5-input.txt"]{input} is a list of random-looking but not really random text strings.
+@link["http://adventofcode.com/day/5"]{The puzzle}. Our @link-rp["day05-input.txt"]{input} is a list of random-looking but not really random text strings.
 
-@chunk[<day5>
-       <day5-setup>
-       <day5-q1>
-       <day5-q2>
-       <day5-test>]
+@chunk[<day05>
+       <day05-setup>
+       <day05-q1>
+       <day05-q2>
+       <day05-test>]
 
 @section{How many strings are ``nice''?}
 
@@ -26,12 +26,12 @@ A string is ``nice'' if it meets certain criteria:
 This is a job for @racket[regexp-match]. There's nothing tricky here (except for remembering that certain matching functions require the @racket[pregexp] pattern prefix rather than @racket[regexp]).
 
 
-@chunk[<day5-setup>
+@chunk[<day05-setup>
        (require racket rackunit)
        (provide (all-defined-out))
        ]
 
-@chunk[<day5-q1>
+@chunk[<day05-q1>
        (define (nice? str)
          (define (three-vowels? str)
            (>= (length (regexp-match* #rx"[aeiou]" str)) 3))
@@ -59,7 +59,7 @@ This time a string is ``nice`` if it:
 
 Again, a test of your regexp-writing skills.
 
-@chunk[<day5-q2>
+@chunk[<day05-q2>
        (define (nicer? str)
          (define (nonoverlapping-pair? str)
            (regexp-match #px"(..).*\\1" str))
@@ -73,8 +73,8 @@ Again, a test of your regexp-writing skills.
 
 @section{Testing Day 5}
 
-@chunk[<day5-test>
+@chunk[<day05-test>
        (module+ test
-         (define input-str (file->lines "day5-input.txt"))
+         (define input-str (file->lines "day05-input.txt"))
          (check-equal? (q1 input-str) 238)
          (check-equal? (q2 input-str) 69))]

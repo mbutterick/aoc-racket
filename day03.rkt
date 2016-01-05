@@ -3,19 +3,19 @@
 
 @aoc-title[3]
 
-@defmodule[aoc-racket/day3]
+@defmodule[aoc-racket/day03]
 
-@link["http://adventofcode.com/day/3"]{The puzzle}. Our @link-rp["day3-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
+@link["http://adventofcode.com/day/3"]{The puzzle}. Our @link-rp["day03-input.txt"]{input} is a string made of the characters @litchar{^v<>} that represent north, south, west, and east. Taken together, the string represents a path through an indefinitely large grid.
 
 In essence, this a two-dimensional version of the elevator problem in @secref{Day_1}.
 
 
-@chunk[<day3>
-       <day3-setup>
-       <day3-q1>
-       <day3-q1-complex>
-       <day3-q2>
-       <day3-test>]
+@chunk[<day03>
+       <day03-setup>
+       <day03-q1>
+       <day03-q1-complex>
+       <day03-q2>
+       <day03-test>]
 
 @section{How many grid cells are visited?}
 
@@ -25,12 +25,12 @@ For dual-valued data, whether to use @seclink["pairs" #:doc '(lib "scribblings/g
 
 Once the whole cell path is computed, the answer is found by removing duplicate cells and counting how many remain.
 
-@chunk[<day3-setup>
+@chunk[<day03-setup>
        (require racket rackunit)
        (provide (all-defined-out))
        ]
 
-@chunk[<day3-q1>
+@chunk[<day03-q1>
        (define (string->cells str)
          (define start '(0 0))
          (match-define (list east north west south) '((1 0) (0 1) (-1 0) (0 -1)))
@@ -55,7 +55,7 @@ Rather than use Cartesian coordinates, we could rely on Racket's built-in suppor
 
 Again, the problem has nothing to do with complex numbers inherently. Like pairs and lists, they're just another option for encoding dual-valued data.
 
-@chunk[       <day3-q1-complex>
+@chunk[       <day03-q1-complex>
        (define (string->complex-cells str)
          (define start 0)
          (define east 1)
@@ -81,7 +81,7 @@ By ``split'', the puzzle envisions two people starting at the origin, with one f
 
 The solution works the same as before — the only new task is to split the input into two strings, and then send them through our existing @racket[string->cells] function.
 
-@chunk[<day3-q2>
+@chunk[<day03-q2>
        (define (split-odds-and-evens str)
          (define-values (odd-chars even-chars)
            (for/fold ([odds-so-far empty][evens-so-far empty])
@@ -100,9 +100,9 @@ The solution works the same as before — the only new task is to split the inpu
 
 @section{Testing Day 3}
 
-@chunk[<day3-test>
+@chunk[<day03-test>
        (module+ test
-         (define input-str (file->string "day3-input.txt"))
+         (define input-str (file->string "day03-input.txt"))
          (check-equal? (q1 input-str) 2565)
          (check-equal? (q1-complex input-str) 2565)
          (check-equal? (q2 input-str) 2639))]

@@ -3,14 +3,14 @@
 
 @aoc-title[2]
 
-@defmodule[aoc-racket/day2]
+@defmodule[aoc-racket/day02]
 
-@link["http://adventofcode.com/day/2"]{The puzzle}. Our @link-rp["day2-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
+@link["http://adventofcode.com/day/2"]{The puzzle}. Our @link-rp["day02-input.txt"]{input} is a list of strings that represent dimensions of rectangular boxes.
 
-@chunk[<day2>
-       <day2-setup>
-       <day2-q1>
-       <day2-test>]
+@chunk[<day02>
+       <day02-setup>
+       <day02-q1>
+       <day02-test>]
 
 
 @section{How much paper is needed to wrap the boxes?}
@@ -22,14 +22,14 @@ First we need to parse our input file into a list of box dimensions. We'll model
 Then we have a traditional setup for the devastating one-two punch of @racket[map] and @racket[apply]. We'll write a function to compute surface area from box dimensions. Then we'll @racket[map] that function across the list of boxes, and finally @racket[apply] the @racket[+] operator to our list of results to get the answer.
 
 
-@chunk[<day2-setup>
+@chunk[<day02-setup>
        (require racket rackunit)
        (provide (all-defined-out))
        (define (string->boxes str)
          (for/list ([ln (in-list (string-split str "\n"))])
                    (map string->number (string-split ln "x"))))]
 
-@chunk[<day2-q1>
+@chunk[<day02-q1>
        (define (box->paper box)
          (match-define (list x y z) box)
          (define sides (list (* x y) (* y z) (* x z)))
@@ -45,7 +45,7 @@ According to the problem, the ribbon needed is the perimeter of the smallest sid
 
 We take the same approach, with a new @racket[box->ribbon] function.
 
-@chunk[<day2-q1>
+@chunk[<day02-q1>
        (define (box->ribbon box)
          (match-define (list x y z) box)
          (define (perimeter dim1 dim2) (* 2 (+ dim1 dim2)))
@@ -61,8 +61,8 @@ We take the same approach, with a new @racket[box->ribbon] function.
 @section{Testing Day 2}
 
 
-@chunk[<day2-test>
+@chunk[<day02-test>
        (module+ test
-         (define input-str (file->string "day2-input.txt"))
+         (define input-str (file->string "day02-input.txt"))
          (check-equal? (q1 input-str) 1586300)
          (check-equal? (q2 input-str) 3737498))]

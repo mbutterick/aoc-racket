@@ -3,16 +3,16 @@
 
 @aoc-title[6]
 
-@defmodule[aoc-racket/day6]
+@defmodule[aoc-racket/day06]
 
-@link["http://adventofcode.com/day/6"]{The puzzle}. Our @link-rp["day6-input.txt"]{input} is a list of instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
+@link["http://adventofcode.com/day/6"]{The puzzle}. Our @link-rp["day06-input.txt"]{input} is a list of instructions for turning on (or off) the bulbs in a @racket[(* 1000 1000)] grid of lights.
 
-@chunk[<day6>
-       <day6-setup>
-       <day6-q1>
-       <day6-q2>
-       <day6-refactored>
-       <day6-test>]
+@chunk[<day06>
+       <day06-setup>
+       <day06-q1>
+       <day06-q2>
+       <day06-refactored>
+       <day06-test>]
 
 @section{How many lights are lit after following the instructions?}
 
@@ -22,7 +22,7 @@ When you need random access to a fixed-size set of items, you should think @secr
 
 Each instruction consists of two pieces. First, an operation: either @italic{turn on}, @italic{turn off}, or @italic{toggle} (meaning, invert the current state of the bulb). Second, a definition of a rectangular segment of the grid that the operation will be applied to (e.g., @italic{333,60 through 748,159}). Therefore, a natural way to model each instruction is as a Racket function followed by four numerical arguments.
 
-@chunk[<day6-q1>
+@chunk[<day06-q1>
        
        (define (str->instruction str)
          (match-define (list* _ action coordinates)
@@ -47,7 +47,7 @@ Each instruction consists of two pieces. First, an operation: either @italic{tu
 
 We'll define our functions for setting and counting the lights separately, since we'll be able to resuse them for the second part.
 
-@chunk[<day6-setup>
+@chunk[<day06-setup>
        (require racket rackunit)
        (provide (all-defined-out))
        
@@ -78,7 +78,7 @@ The second part redefines the meaning of the three instructions, and introduces 
 This part is the same as the last, except we change the definitions of our bulb functions to match the new rules.
 
 
-@chunk[<day6-q2>
+@chunk[<day06-q2>
        (define (str->instruction-2 str)
          (match-define (list* _ action coordinates)
            (regexp-match #px"^(.*?)(\\d+),(\\d+) through (\\d+),(\\d+)$" str))
@@ -102,8 +102,8 @@ This part is the same as the last, except we change the definitions of our bulb 
 
 Since the only part that changes between the solutions is the bulb functions, we could refactor the solutions to avoid repetition.
 
-@chunk[<day6-refactored>
-       (define (day-6-solve strs bulb-func-converter)
+@chunk[<day06-refactored>
+       (define (day06-solve strs bulb-func-converter)
          (define lights (make-vector (* 1000 1000) 0))
          (for ([instruction (in-list (map (make-str-converter bulb-func-converter) strs))])
               (set-lights lights instruction))
@@ -131,12 +131,12 @@ Since the only part that changes between the solutions is the bulb functions, we
 
 @section{Testing Day 6}
 
-@chunk[<day6-test>
+@chunk[<day06-test>
        (module+ test
-         (define input-strs (file->lines "day6-input.txt"))
+         (define input-strs (file->lines "day06-input.txt"))
          (check-equal? (q1 input-strs) 400410)
          (check-equal? (q2 input-strs) 15343601)
-         (check-equal? (day-6-solve input-strs q1-bulb-func-converter) 400410)
-         (check-equal? (day-6-solve input-strs q2-bulb-func-converter) 15343601))]
+         (check-equal? (day06-solve input-strs q1-bulb-func-converter) 400410)
+         (check-equal? (day06-solve input-strs q2-bulb-func-converter) 15343601))]
 
 

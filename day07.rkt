@@ -3,16 +3,16 @@
 
 @aoc-title[7]
 
-@defmodule[aoc-racket/day7]
+@defmodule[aoc-racket/day07]
 
-@link["http://adventofcode.com/day/7"]{The puzzle}. Our @link-rp["day7-input.txt"]{input} describes an electrical circuit, with each line of the file describing the signal provided to a particular wire.
+@link["http://adventofcode.com/day/7"]{The puzzle}. Our @link-rp["day07-input.txt"]{input} describes an electrical circuit, with each line of the file describing the signal provided to a particular wire.
 
-@chunk[<day7>
-       <day7-setup>
-       <day7-ops>
-       <day7-q1>
-       <day7-q2>
-       <day7-test>]
+@chunk[<day07>
+       <day07-setup>
+       <day07-ops>
+       <day07-q1>
+       <day07-q2>
+       <day07-test>]
 
 @section{What's the signal on wire @tt{a}?}
 
@@ -44,7 +44,7 @@ becomes:
 
 One gotcha when using syntax transformers is that identifiers introduced by a transformer can silently override others (in the same way that identifiers defined inside a @racket[let] will override those with the same name outside the @racket[let]). For instance, one of the wires in our input is named @tt{if}. When our syntax transformer defines the @tt{if} function, it will override the usual meaning of @racket[if]. There are plenty of elegant ways to prevent these name collisions. (The most important of which is called @italic{syntax hygiene}, and permeates the design of Racket's syntax-transformation system.) But because this is a puzzle, we'll take the cheap way out: we won't use @racket[if] elsewhere in our code, and instead use @racket[cond].
 
-@chunk[<day7-setup>
+@chunk[<day07-setup>
        (require racket rackunit
                 (for-syntax racket/file racket/string))
        (provide (all-defined-out))
@@ -52,7 +52,7 @@ One gotcha when using syntax transformers is that identifiers introduced by a tr
        (define-syntax (convert-input-to-wire-functions stx)
          (syntax-case stx ()
            [(_)
-            (let* ([input-strings (file->lines "day7-input.txt")]
+            (let* ([input-strings (file->lines "day07-input.txt")]
                    [wire-strings (map (λ(str) (format "(wire ~a)" str)) input-strings)]
                    [wire-datums (map (compose1 read open-input-string) wire-strings)])
               (datum->syntax stx `(begin ,@wire-datums)))]))
@@ -84,7 +84,7 @@ We also need to implement our 16-bit math operations. As we saw above, our synta
 These next definitions use @racket[define-syntax-rule] as a shortcut, which is another syntax transformer. (Thanks to @link["https://jeapostrophe.github.io"]{Jay McCarthy} for the 16-bit operations.)
 
 
-@chunk[<day7-ops>
+@chunk[<day07-ops>
        (define (16bitize x)
          (define 16bit-max (expt 2 16))
          (define r (modulo x 16bit-max))
@@ -103,7 +103,7 @@ These next definitions use @racket[define-syntax-rule] as a shortcut, which is a
 
 After that, we just evaluate wire function @racket[a] to get our answer.
 
-@chunk[<day7-q1>
+@chunk[<day07-q1>
        (define (q1) (a))]
 
 
@@ -116,7 +116,7 @@ Ordinarily, as a safety measure, Racket won't let you redefine functions. But we
 
 
 
-@chunk[<day7-q2>
+@chunk[<day07-q2>
        (compile-enforce-module-constants #f)
        
        (define (q2)
@@ -129,7 +129,7 @@ Ordinarily, as a safety measure, Racket won't let you redefine functions. But we
 
 @section{Testing Day 7}
 
-@chunk[<day7-test>
+@chunk[<day07-test>
        (module+ test
          (check-equal? (q1) 46065)
          (check-equal? (q2) 14134))]

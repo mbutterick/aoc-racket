@@ -3,15 +3,15 @@
 
 @aoc-title[9]
 
-@defmodule[aoc-racket/day9]
+@defmodule[aoc-racket/day09]
 
-@link["http://adventofcode.com/day/9"]{The puzzle}. Our @link-rp["day9-input.txt"]{input} consists of a list of distances between fictional cities, e.g., @italic{AlphaCentauri to Straylight = 133}.
+@link["http://adventofcode.com/day/9"]{The puzzle}. Our @link-rp["day09-input.txt"]{input} consists of a list of distances between fictional cities, e.g., @italic{AlphaCentauri to Straylight = 133}.
 
-@chunk[<day9>
-       <day9-setup>
-       <day9-q1>
-       <day9-q2>
-       <day9-test>]
+@chunk[<day09>
+       <day09-setup>
+       <day09-q1>
+       <day09-q2>
+       <day09-test>]
 
 @section{What's the shortest route that visits all the cities?}
 
@@ -23,7 +23,7 @@ In the second part, we'll loop through every possible path between the cities wi
 
 @margin-note{The reason the traveling-saleman problem is generally difficult is that the number of permutations of @racket[_n] cities is @racket[(factorial (sub1 _n))], which gets very large, very quickly.}
 
-@chunk[<day9-setup>
+@chunk[<day09-setup>
        (require racket rackunit)
        (provide (all-defined-out))
        
@@ -50,7 +50,7 @@ In the second part, we'll loop through every possible path between the cities wi
                             (apply distance pair))))
        ]
 
-@chunk[<day9-q1>
+@chunk[<day09-q1>
        
        
        (define (q1 strs)
@@ -63,7 +63,7 @@ In the second part, we'll loop through every possible path between the cities wi
 
 Exactly the same, except we look for the @racket[max] value among the distances rather than the @racket[min].
 
-@chunk[<day9-q2>
+@chunk[<day09-q2>
        
        (define (q2 strs)
          (apply max (calculate-route-distances)))       ]
@@ -71,9 +71,9 @@ Exactly the same, except we look for the @racket[max] value among the distances 
 
 @section{Testing Day 9}
 
-@chunk[<day9-test>
+@chunk[<day09-test>
        (module+ test
-         (define input-strs (file->lines "day9-input.txt"))
+         (define input-strs (file->lines "day09-input.txt"))
          (check-equal? (q1 input-strs) 251)
          (check-equal? (q2 input-strs) 898))]
 
