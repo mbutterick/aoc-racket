@@ -16,7 +16,7 @@
 
 @section{What's the first house that gets the target number of presents?}
 
-The puzzle imagines infinite elves delivering presents to an infinite sequence of houses. (Already @link["http://practicaltypography.com/the-infinite-pixel-screen.html"]{I like} this puzzle.) The first elf delivers a present to every house equal to 10 times his number (= 10); the second elf, 20 gifts to every second house; the @italic{n}th elf, 10@italic{n} gifts to every @italic{n}th house.
+We're asked to imagine infinite elves delivering presents to an infinite sequence of houses. (Already @link["http://practicaltypography.com/the-infinite-pixel-screen.html"]{I like} this puzzle.) The first elf delivers a present to every house equal to 10 times his number (= 10); the second elf, 20 gifts to every second house; the @italic{n}th elf, 10@italic{n} gifts to every @italic{n}th house.
 
 Math jocks will notice that the elf behavior roughly describes a @link["https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"]{Sieve of Eratosthenes}. Each house is visited by elf @italic{n} only if @italic{n} is a divisor of the house number. (Houses that are primes are therefore only visited by the first elf.) Might there be a Racket function that finds the divisors of a number? Why, yes — it's called @racket[divisors]. We can use it to find the numbers of the elves that visit a house, and loop through house numbers till we reach the target. (The 10-gift multiplier is arbitrary.)
 
