@@ -5,7 +5,7 @@
 
 @defmodule[aoc-racket/day23]
 
-@link["http://adventofcode.com/day/21"]{The puzzle}. Our @link-rp["day23-input.txt"]{input} is a list of instructions representing a program for a two-register virtual machine.
+@link["http://adventofcode.com/day/23"]{The puzzle}. Our @link-rp["day23-input.txt"]{input} is a list of instructions representing a program for a two-register virtual machine.
 
 
 @chunk[<day23>
