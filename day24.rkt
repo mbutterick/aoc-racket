@@ -52,7 +52,7 @@ After that, we just need to write a function that will test whether a given grou
        (define (remove-group group packages)
          (filter (λ(p) (not (member p group))) packages))
        
-       (define (find-two-group-solution group packages)
+       (define (has-solution? group packages)
          (define target-weight (weight group))
          (define remaining-packages (remove-group group packages))
          (for/first ([len (in-range (length remaining-packages))]
@@ -65,7 +65,6 @@ After that, we just need to write a function that will test whether a given grou
 
 
 @chunk[<day24-q1>
-       (require sugar/debug)
        
        (define (find-three-group-solution all-packages target-weight)
          (for*/first ([len (in-range (length all-packages))]
@@ -73,7 +72,7 @@ After that, we just need to write a function that will test whether a given grou
                                (sort
                                 (groups all-packages len target-weight)
                                 #:key quantum-entanglement <))]
-                      #:when (find-two-group-solution group all-packages))
+                      #:when (has-solution? group all-packages))
                      (quantum-entanglement group)))
        
        (define (q1 input-str)
