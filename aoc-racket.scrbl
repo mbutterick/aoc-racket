@@ -1,7 +1,7 @@
 #lang scribble/manual
 @(require (for-label racket rackunit sugar/list))
 
-@title{Advent of Code solutions & explanations}
+@title{Advent of Code: solutions & explanations}
 
 @author[(author+email "Matthew Butterick" "mb@mbtype.com")]
 
