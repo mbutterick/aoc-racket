@@ -45,3 +45,4 @@ You can install this package (if you haven't already) with
 @include-section[(submod "day22.rkt" doc)]
 @include-section[(submod "day23.rkt" doc)]
 @include-section[(submod "day24.rkt" doc)]
+@include-section[(submod "day25.rkt" doc)]
