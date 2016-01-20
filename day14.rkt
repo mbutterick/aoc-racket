@@ -13,11 +13,11 @@
        <day14-q2>
        <day14-test>]
 
-@section{After 2503 seconds, what is the maximum distance any reindeer has flown?}
+@isection{After 2503 seconds, what is the maximum distance any reindeer has flown?}
 
 For each reindeer, we have a description that specifies a) flight speed, b) flight time, and c) rest time. Thus, if we have the total flight time as input — and we do — we can use it to calculate flight distance. In other words, just as we made functions out of wire descriptions on @secref{Day_7}, now we'll make functions out of reindeer descriptions.
 
-As in @secref{Day_7}, we'll use @racket[define-syntax] to set up the reindeer functions. Each reindeer function will take a time in seconds and then use @racket[calc-distance] to convert it into meters. After that, all we need to do is @racket[map] the time over the reindeer and @racket[apply max] to get the answer.
+As in @secref{Day_7}, we'll use @iracket[define-syntax] to set up the reindeer functions. Each reindeer function will take a time in seconds and then use @racket[calc-distance] to convert it into meters. After that, all we need to do is @iracket[map] the time over the reindeer and @iracket[max] to get the answer.
 
 
 
@@ -63,11 +63,11 @@ As in @secref{Day_7}, we'll use @racket[define-syntax] to set up the reindeer fu
 
 
 
-@section{Under the new rule, how many points does the winning reindeer have?}
+@isection{Under the new rule, how many points does the winning reindeer have?}
 
 The new rule is that after each second of travel, the reindeer in the lead gets one point. Thus, the winner after 2503 seconds is not the reindeer that has traveled farthest, but that has gathered the most points — in other words, has been in the lead for the longest time.
 
-This question is similar to the last. But instead of simulating one race, we have to simulate 2503 races, each one ending a second later than the last. After each second, we calculate the winning reindeer, and add it to our list of winners. After 2503 seconds, we find out how many times the winningest reindeer appears on the list. To do this, we'll use the helper function @racket[frequency-hash] from @racketmodname[sugar/list]. (You could also do it with @racket[for/fold], but managing nine reindeer in parallel is unwieldy. Just ask Santa.)
+This question is similar to the last. But instead of simulating one race, we have to simulate 2503 races, each one ending a second later than the last. After each second, we calculate the winning reindeer, and add it to our list of winners. After 2503 seconds, we find out how many times the winningest reindeer appears on the list. To do this, we'll use the helper function @iracket[frequency-hash] from @racketmodname[sugar/list]. (You could also do it with @iracket[for/fold], but managing nine reindeer in parallel is unwieldy. Just ask Santa.)
 
 @chunk[<day14-q2>
        

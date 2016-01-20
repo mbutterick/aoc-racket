@@ -1,5 +1,5 @@
 #lang scribble/manual
-@(require (for-label racket rackunit sugar/list))
+@(require (for-label racket rackunit sugar/list) aoc-racket/helper)
 
 @title{Advent of Code: solutions & explanations}
 
@@ -46,3 +46,6 @@ You can install this package (if you haven't already) with
 @include-section[(submod "day23.rkt" doc)]
 @include-section[(submod "day24.rkt" doc)]
 @include-section[(submod "day25.rkt" doc)]
+
+
+@index-section[]

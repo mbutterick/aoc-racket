@@ -13,7 +13,7 @@
        <day15-q2>
        <day15-test>]
 
-@section{What's the best cookie we can make with 100 tsps of ingredients?}
+@isection{What's the best cookie we can make with 100 tsps of ingredients?}
 
 This is similar the @secref{Day_14} puzzle. Rather than maximizing reindeer distance after 2503 seconds, we're maximizing the score of a cookie after 100 teaspoons of ingredients. But while our ``recipe'' for a reindeer race included a full measure of each reindeer, our cookie recipes can have any combination of ingredients, as long as they total 100 teaspoons. Thus, similar to combinatoric problems like @secref{Day_9} and @secref{Day_13}, we have to generate all possible cookie recipes that total 100 teaspoons, and then find the best-scoring recipe.
 
@@ -67,9 +67,9 @@ Having surveyed the territory, making ingredient functions from the text descrip
 
 
 
-@section{What's the best cookie we can make with 100 tsps that's exactly 500 calories?}
+@isection{What's the best cookie we can make with 100 tsps that's exactly 500 calories?}
 
-Same as the first question, but we'll add a @racket[#:when] clause to our recipe loop to only consider recipes equal to 500 calories, and a @racket[recipe->calorie] helper function. (Recall that calories appear last in the characteristics, which is why we use @racket[last] to retrieve them.) Obviously, these two answers could be combined with simple refactoring.
+Same as the first question, but we'll add a @racket[#:when] clause to our recipe loop to only consider recipes equal to 500 calories, and a @racket[recipe->calorie] helper function. (Recall that calories appear last in the characteristics, which is why we use @iracket[last] to retrieve them.) Obviously, these two answers could be combined with simple refactoring.
 
 
 @chunk[<day15-q2>
@@ -97,9 +97,6 @@ Same as the first question, but we'll add a @racket[#:when] clause to our recipe
 
 
 
-@chunk[<day15-refactored>
-
-       ]
 
 @section{Testing Day 15}
 

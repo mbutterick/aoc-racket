@@ -14,11 +14,11 @@
        <day04-q2>
        <day04-test>]
 
-@section{What is the lowest-numbered MD5 hash starting with five zeroes?}
+@isection{What is the lowest-numbered MD5 hash starting with five zeroes?}
 
 We're asked to create an MD5 hash from an input key that consists of our eight-character input joined to a decimal number. The puzzle asks us to find the lowest decimal number that, when joined to our input, produces an MD5 hash that starts with five zeroes.
 
-Whether or not you already know what an MD5 hash is, you can search the Racket docs and will soon find the @racketmodname[openssl/md5] module and the @racket[md5] function. Then, this puzzle is easy: starting at @racket[0], make new input keys with each integer, and stop when we find one that results in the MD5 hash we want. (The approach is similar to the second part of @secref{Day_1}.) 
+Whether or not you already know what an MD5 hash is, you can search the Racket docs and will soon find the @racketmodname[openssl/md5] module and the @iracket[md5] function. Then, this puzzle is easy: starting at @racket[0], make new input keys with each integer, and stop when we find one that results in the MD5 hash we want. (The approach is similar to the second part of @secref{Day_1}.) 
 
 
 @chunk[<day04-setup>

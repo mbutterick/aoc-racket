@@ -61,7 +61,7 @@ We might be tempted to break down the attribute pairs into hash tables. But we d
 
 
 
-@section{Which Sue matches the attribute input, with the ``retroencabulator'' rules?}
+@isection{Which Sue matches the attribute input, with the ``retroencabulator'' rules?}
 
 Same question as before, with new rules for matching the master attributes:
 
@@ -74,9 +74,9 @@ Same question as before, with new rules for matching the master attributes:
 
 Now that we're asked to compare attribute values in a deeper way, our avoidance of a hash table in question 1 looks like a false economy.
 
-So let's compound our laziness with more laziness. Rather than upgrade to a hash table now, let's convert our strings to @italic{datums} (as saw in @secref{Day_7}). Because if we put a string like @racket{children: 3} inside parentheses like so @racket{(children: 3)} and then convert it to a datum (with @racket[read]) we'll end up with a list with a key and a value, e.g. @racket['(children: 3)]. In other words, just what we needed. (I know the plural of @italic{datum} is @italic{data}, but @italic{datums} better connotes ``more than one datum, in the Racket sense.'')
+So let's compound our laziness with more laziness. Rather than upgrade to a hash table now, let's convert our strings to @italic{datums} (as saw in @secref{Day_7}). Because if we put a string like @racket{children: 3} inside parentheses like so @racket{(children: 3)} and then convert it to a datum (with @iracket[read]) we'll end up with a list with a key and a value, e.g. @racket['(children: 3)]. In other words, just what we needed. (I know the plural of @italic{datum} is @italic{data}, but @italic{datums} better connotes ``more than one datum, in the Racket sense.'')
 
-Plus, it's always fun to find a use for @racket[case] and the frequently overlooked @racket[assoc].
+Plus, it's always fun to find a use for @iracket[case] and the frequently overlooked @iracket[assoc].
 
 @chunk[<day16-q2>
        

@@ -15,7 +15,7 @@
        <day21-q2>
        <day21-test>]
 
-@section{What's the least we can spend and win?}
+@isection{What's the least we can spend and win?}
 
 I hate RPGs. So at first, I prejudicially refused to do this puzzle. But after a second look, I could see how to do it. So I relented.
 
@@ -51,7 +51,7 @@ We have to buy a weapon. We can buy armor, or not. And we can buy zero, one, or 
 
 Similar to puzzles we've already seen, this is another combinatoric question. If we follow that pattern, we need to generate all possible equipment sets, find out which ones win, and then pick the cheapest. But there's an easy optimization available here. The cheapness of a set of equipment is independent of whether it wins. So we'll sort our equipment sets by cost, and try them starting from the cheapest. The first one that wins will be our answer (saving us the trouble of trying them all). The total cost, damage, and armor of the equipment set is just the sum of the individual values.
 
-After that, we'll set up a @racket[we-win?] function that will simulate the battle of a certain equipment set vs. the boss. It's a @racket[for/fold] loop that will alternate attacks until either the player or boss has negative hit points, returning @racket[#t] if we win, or @racket[#f] if the boss does.
+After that, we'll set up a @racket[we-win?] function that will simulate the battle of a certain equipment set vs. the boss. It's a @iracket[for/fold] loop that will alternate attacks until either the player or boss has negative hit points, returning @racket[#t] if we win, or @racket[#f] if the boss does.
 
 
 @chunk[<day21-setup>

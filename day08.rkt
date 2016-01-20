@@ -13,11 +13,11 @@
        <day08-q2>
        <day08-test>]
 
-@section{What's the difference between the literal length of the strings, and their length in memory?}
+@isection{What's the difference between the literal length of the strings, and their length in memory?}
 
 The puzzle relies the fact that within strings, certain single characters — like the backslash @litchar{\} and double-quote mark @litchar{"} — are described with more than one character. Thus, the question asks us to compare the two lengths.
 
-The literal length of the string is trivial — use @racket[string-length]. The memory length requires interpreting a string as a Racket value, which (as seen in @secref{Day_7}) simply means using @racket[read].
+The literal length of the string is trivial — use @iracket[string-length]. The memory length requires interpreting a string as a Racket value, which (as seen in @secref{Day_7}) simply means using @iracket[read].
 
 @chunk[<day08-setup>
        (require racket rackunit)
@@ -32,11 +32,11 @@ The literal length of the string is trivial — use @racket[string-length]. The
 
 
 
-@section{What's the difference between the re-encoded length of the literal string, and the original length?}
+@isection{What's the difference between the re-encoded length of the literal string, and the original length?}
 
 This question simply comes down to — do you know how to use the string-formatting functions in your programming language?
 
-In Racket, a string can be re-encoded with @racket[~v]. Not a very puzzling puzzle overall.
+In Racket, a string can be re-encoded with @iracket[~v]. Not a very puzzling puzzle overall.
 
 
 @chunk[<day08-q2>

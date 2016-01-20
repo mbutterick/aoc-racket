@@ -14,7 +14,7 @@
        <day18-q2>
        <day18-test>]
 
-@section{How many lights are on after 100 iterations of the light-switching rules?}
+@isection{How many lights are on after 100 iterations of the light-switching rules?}
 
 There are two rules for incrementing the state of the lighting grid:
 
@@ -31,7 +31,7 @@ The heavy lifting is in the @racket[iterate-grid] function, which steps through 
 
 As we think about that function, we might notice that life will be easier if we don't have to make special accommodations for bulbs at the edges of the grid, which ordinarily don't have eight adjacent bulbs. So what we'll do is add a margin of bulbs around the perimeter, and leave them in the off position. That way, all the bulbs in our original grid will have an eight-bulb neighborhood. So instead of modeling our grid with a 100 × 100 = 10,000 unit vector, we'll use a 102 × 102 = 10,404 unit vector.
 
-After that, it's just a matter of loading our input data into a grid, running @racket[iterate-grid] 100 times — a great job for @racket[for/fold] — and counting the activated bulbs in the resulting grid.
+After that, it's just a matter of loading our input data into a grid, running @racket[iterate-grid] 100 times — a great job for @iracket[for/fold] — and counting the activated bulbs in the resulting grid.
 
 @chunk[<day18-setup>
        (require racket rackunit)

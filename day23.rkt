@@ -14,7 +14,7 @@
        <day23-q2>
        <day23-test>]
 
-@section{What's the value in register @tt{b} after the program runs?}
+@isection{What's the value in register @tt{b} after the program runs?}
 
 The virtual machine has two registers, @tt{a} and @tt{b}, that both start at 0. It also has six instructions:
 
@@ -32,7 +32,7 @@ Although the virtual machine has the equivalent of functions & variables, the ju
 
 Because we have to repeatedly update the values of the register, it'll be more convenient to use a hash table. Overall, the solution follows the general pattern of @secref{Day_7}.
 
-Notice also that we're encasing the lines of the VM program in @racket[thunk*]. This creates a function wrapper around each instruction so that its evaluation is delayed until we explicitly ask for it. The @racket[inst] transformer turns the lines of the program into equivalent operations on our register hash table. All these functions return a number that indicates the offset of the next instruction (if it's not a jump instruction, then this value is just 1).
+Notice also that we're encasing the lines of the VM program in @iracket[thunk*]. This creates a function wrapper around each instruction so that its evaluation is delayed until we explicitly ask for it. The @racket[inst] transformer turns the lines of the program into equivalent operations on our register hash table. All these functions return a number that indicates the offset of the next instruction (if it's not a jump instruction, then this value is just 1).
 
 @chunk[<day23-setup>
        (require racket rackunit

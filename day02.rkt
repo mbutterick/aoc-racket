@@ -13,13 +13,13 @@
        <day02-test>]
 
 
-@section{How much paper is needed to wrap the boxes?}
+@isection{How much paper is needed to wrap the boxes?}
 
 According to the problem, the paper needed to wrap a present is the surface area of the box (= the sum of the areas of the sides) plus the area of the smallest side. 
 
 First we need to parse our input file into a list of box dimensions. We'll model each box as a list of three dimensions. (The question doesn't need us to keep height / width / depth straight, so we won't worry about it.)
 
-Then we have a traditional setup for the devastating one-two punch of @racket[map] and @racket[apply]. We'll write a function to compute surface area from box dimensions. Then we'll @racket[map] that function across the list of boxes, and finally @racket[apply] the @racket[+] operator to our list of results to get the answer.
+Then we have a traditional setup for the devastating one-two punch of @iracket[map] and @iracket[apply]. We'll write a function to compute surface area from box dimensions. Then we'll @racket[map] that function across the list of boxes, and finally @racket[apply] the @racket[+] operator to our list of results to get the answer.
 
 
 @chunk[<day02-setup>

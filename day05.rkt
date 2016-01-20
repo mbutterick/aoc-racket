@@ -13,7 +13,7 @@
        <day05-q2>
        <day05-test>]
 
-@section{How many strings are ``nice''?}
+@isection{How many strings are ``nice''?}
 
 A string is ``nice'' if it meets certain criteria:
 
@@ -23,7 +23,7 @@ A string is ``nice'' if it meets certain criteria:
  @item{Does not contain @litchar{ab}, @litchar{cd}, @litchar{pq}, or @litchar{xy}.}
  ]
 
-This is a job for @racket[regexp-match]. There's nothing tricky here (except for remembering that certain matching functions require the @racket[pregexp] pattern prefix rather than @racket[regexp]).
+This is a job for @iracket[regexp-match]. There's nothing tricky here (except for remembering that certain matching functions require the @iracket[pregexp] pattern prefix rather than @racket[regexp]).
 
 
 @chunk[<day05-setup>

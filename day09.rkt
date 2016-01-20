@@ -13,13 +13,13 @@
        <day09-q2>
        <day09-test>]
 
-@section{What's the shortest route that visits all the cities?}
+@isection{What's the shortest route that visits all the cities?}
 
 This puzzle is a version of the famous @link["https://simple.wikipedia.org/wiki/Travelling_salesman_problem"]{traveling-salesman problem}. The problem is famous because there's no reasonable algorithm to solve it for arbitrarily large sets of cities. This version, however, has only eight cities. So it is possible (and easiest) to simply try all the options and see which is shortest.
 
 The solution has two parts. First, we'll parse our input data and put the distances into a mutable hash table. One small wrinkle — the distance between city A and city B is the same whether our path takes us from A to B or B to A. So the keys for our hash will be of the form @racket[(list city-a city-b)], with the cities always in alphabetical order.
 
-In the second part, we'll loop through every possible path between the cities with @racket[in-permutations]. We'll split each path into pairs of cities, look up each distance between pairs, and sum them. This will give us a list of distances, and we can find the smallest with @racket[apply min].
+In the second part, we'll loop through every possible path between the cities with @iracket[in-permutations]. We'll split each path into pairs of cities, look up each distance between pairs, and sum them. This will give us a list of distances, and we can find the smallest with @iracket[min].
 
 @margin-note{The reason the traveling-saleman problem is generally difficult is that the number of permutations of @racket[_n] cities is @racket[(factorial (sub1 _n))], which gets very large, very quickly.}
 
@@ -59,9 +59,9 @@ In the second part, we'll loop through every possible path between the cities wi
 
 
 
-@section{What's the longest route?}
+@isection{What's the longest route?}
 
-Exactly the same, except we look for the @racket[max] value among the distances rather than the @racket[min].
+Exactly the same, except we look for the @iracket[max] value among the distances rather than the @racket[min].
 
 @chunk[<day09-q2>
        

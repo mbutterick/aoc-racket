@@ -14,11 +14,11 @@
        <day07-q2>
        <day07-test>]
 
-@section{What's the signal on wire @tt{a}?}
+@isection{What's the signal on wire @tt{a}?}
 
 The first question we should ask is — how do we model a wire? We're told that it's a thing with inputs that can be evaluated to get a value. So it sounds a lot like a function. Thus, what we'll do is convert our wire descriptions into functions, and then run the function called @racket[a].
 
-In other languages, creating functions from text strings would be a difficult trick. But this facility is built into Racket with @racket[define-syntax]. Essentially our program will run in two phases: in the syntax-transformation phase, we'll read in the list of wire descriptions and expand them into code that represents functions. In the second phase, the program — including our new functions, created via syntax transformation — will compile & run as usual.
+In other languages, creating functions from text strings would be a difficult trick. But this facility is built into Racket with @iracket[define-syntax]. Essentially our program will run in two phases: in the syntax-transformation phase, we'll read in the list of wire descriptions and expand them into code that represents functions. In the second phase, the program — including our new functions, created via syntax transformation — will compile & run as usual.
 
 The @racket[convert-input-to-wire-functions] transformer takes the input strings and first converts each into a @italic{datum} — that is, a fragment of Racket code. So an input string like this:
 
@@ -42,7 +42,7 @@ becomes:
 
 (@racket[wire-value-cache] is just a performance enhancement, so that wire values don't have to be computed multiple times.)
 
-One gotcha when using syntax transformers is that identifiers introduced by a transformer can silently override others (in the same way that identifiers defined inside a @racket[let] will override those with the same name outside the @racket[let]). For instance, one of the wires in our input is named @tt{if}. When our syntax transformer defines the @tt{if} function, it will override the usual meaning of @racket[if]. There are plenty of elegant ways to prevent these name collisions. (The most important of which is called @italic{syntax hygiene}, and permeates the design of Racket's syntax-transformation system.) But because this is a puzzle, we'll take the cheap way out: we won't use @racket[if] elsewhere in our code, and instead use @racket[cond].
+One gotcha when using syntax transformers is that identifiers introduced by a transformer can silently override others (in the same way that identifiers defined inside a @iracket[let] will override those with the same name outside the @racket[let]). For instance, one of the wires in our input is named @tt{if}. When our syntax transformer defines the @tt{if} function, it will override the usual meaning of @iracket[if]. There are plenty of elegant ways to prevent these name collisions. (The most important of which is called @italic{syntax hygiene}, and permeates the design of Racket's syntax-transformation system.) But because this is a puzzle, we'll take the cheap way out: we won't use @racket[if] elsewhere in our code, and instead use @iracket[cond].
 
 @chunk[<day07-setup>
        (require racket rackunit
@@ -108,11 +108,11 @@ After that, we just evaluate wire function @racket[a] to get our answer.
 
 
 
-@section{What's the signal on wire @tt{a} if wire @tt{b} is overridden with @tt{a}'s original value?}
+@isection{What's the signal on wire @tt{a} if wire @tt{b} is overridden with @tt{a}'s original value?}
 
 Having done the heavy lifting, this is easy. We'll redefine wire function @racket[b] to produce the new value, and then check the value of @racket[a] again.
 
-Ordinarily, as a safety measure, Racket won't let you redefine functions. But we can circumvent this limitation by setting @racket[compile-enforce-module-constants] to @racket[#f]. We'll also need to reset our cache, since this change will affect the other wires too.
+Ordinarily, as a safety measure, Racket won't let you redefine functions. But we can circumvent this limitation by setting @iracket[compile-enforce-module-constants] to @racket[#f]. We'll also need to reset our cache, since this change will affect the other wires too.
 
 
 

@@ -14,11 +14,11 @@
        <day20-q2>
        <day20-test>]
 
-@section{What's the first house that gets the target number of presents?}
+@isection{What's the first house that gets the target number of presents?}
 
 We're asked to imagine infinite elves delivering presents to an infinite sequence of houses. (Already @link["http://practicaltypography.com/the-infinite-pixel-screen.html"]{I like} this puzzle.) The first elf delivers a present to every house equal to 10 times his number (= 10); the second elf, 20 gifts to every second house; the @italic{n}th elf, 10@italic{n} gifts to every @italic{n}th house.
 
-Math jocks will notice that the elf behavior roughly describes a @link["https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"]{Sieve of Eratosthenes}. Each house is visited by elf @italic{n} only if @italic{n} is a divisor of the house number. (Houses that are primes are therefore only visited by the first elf.) Might there be a Racket function that finds the divisors of a number? Why, yes — it's called @racket[divisors]. We can use it to find the numbers of the elves that visit a house, and loop through house numbers till we reach the target. (The 10-gift multiplier is arbitrary.)
+Math jocks will notice that the elf behavior roughly describes a @link["https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"]{Sieve of Eratosthenes}. Each house is visited by elf @italic{n} only if @italic{n} is a divisor of the house number. (Houses that are primes are therefore only visited by the first elf.) Might there be a Racket function that finds the divisors of a number? Why, yes — it's called @iracket[divisors]. We can use it to find the numbers of the elves that visit a house, and loop through house numbers till we reach the target. (The 10-gift multiplier is arbitrary.)
 
 @chunk[<day20-setup>
        (require racket rackunit (only-in math divisors))
@@ -39,9 +39,9 @@ Math jocks will notice that the elf behavior roughly describes a @link["https://
 
 
 
-@section{What's the first house that gets the target number of presents, if each elf delivers 11 gifts to 50 houses?}
+@isection{What's the first house that gets the target number of presents, if each elf delivers 11 gifts to 50 houses?}
 
-Going with the math-jock vibe, what this condition means is that the highest-numbered house the @italic{n}th elf will visit is 50@italic{n}. So the answer for this question is like the first, but we'll @racket[filter] the list of elves using this condition.
+Going with the math-jock vibe, what this condition means is that the highest-numbered house the @italic{n}th elf will visit is 50@italic{n}. So the answer for this question is like the first, but we'll @iracket[filter] the list of elves using this condition.
 
 @chunk[<day20-q2>
        

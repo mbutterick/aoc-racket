@@ -13,13 +13,13 @@
        <day13-q2>
        <day13-test>]
 
-@section{What's the optimal happiness score for a seating arrangement of eight?}
+@isection{What's the optimal happiness score for a seating arrangement of eight?}
 
 This is a lot like @secref{Day_9}, where we had to compute the optimal path between cities. In that puzzle, the distance between city A and city B was a single number. In this case, the ``happiness score'' between person A and person B is the sum of two numbers — A's happiness being next to B, and B's happiness being next to A. (Unlike distances, happiness scores can be negative.)
 
 Also, whereas a path between cities had a start and end, a seating arrangement is circular. So if we model a seating arrangement as a list of people, we have to compute the happiness between each duo of people, but also between the last and first, to capture the circularity of the arrangement.
 
-Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the input data and put the happiness scores into a hash table — the keys will be of the form @racket[(list name1 name2)] and the values will be the happiness scores for that duo, in that order. Then we'll loop through all possible seating arrangements with @racket[in-permutations] and see what the best score is.
+Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the input data and put the happiness scores into a hash table — the keys will be of the form @racket[(list name1 name2)] and the values will be the happiness scores for that duo, in that order. Then we'll loop through all possible seating arrangements with @iracket[in-permutations] and see what the best score is.
 
 
 
@@ -50,9 +50,9 @@ Those wrinkles noted, we'll proceed as we did in @secref{Day_9}. We'll parse the
        ]
 
 
-@subsection{Optimizing @racket[in-permutations]}
+@isubsection{Optimizing @tt{in-permutations}}
 
-I'm in a math-jock mood, so let's make a performance optimization. It's unnecessary for this problem, but when we use @racket[in-permutations] — which grows at factorial speed — we should ask how we might prune the options.
+I'm in a math-jock mood, so let's make a performance optimization. It's unnecessary for this problem, but when we use @iracket[in-permutations] — which grows at factorial speed — we should ask how we might prune the options.
 
 Notice that because our seating arrangement is circular, our permutations will include a lot of ``rotationally equivalent'' arrangements — e.g., @racket['(A B C ...)] is the same as @racket['(B C ... A)], @racket['(C ... A B)], etc. If we have @racket[_n] elements, each distinct arrangement will have @racket[_n] rotationally equivalent arrangements. We can save time by only checking one of each set.
 

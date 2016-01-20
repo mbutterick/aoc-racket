@@ -13,11 +13,11 @@
        <day10-q2>
        <day10-test>]
 
-@section{What's the length of the sequence after 40 iterations?}
+@isection{What's the length of the sequence after 40 iterations?}
 
 The puzzle asks us to compute the @italic{look and say} sequence invented by mathematician John Conway. Each iteration of the sequence is the description of the last step if you said it in numbers. So @racket[1] becomes ``one 1'', written @racket[11]; @racket[11] becomes ``two ones'', or @racket[21], then @racket[1211], @racket[111221], and so on.
 
-As in @secref{Day_1}, this puzzle relies on cumulative state, so we'll loop using @racket[for/fold]. To generate the new string for each pass of the loop, we'll use @racket[regexp-match*] to find every contiguous run of digits. Each digit run is converted into a list with the number of digits and the digit itself. Then all these lists are concatenated into a new string, and the loop repeats.
+As in @secref{Day_1}, this puzzle relies on cumulative state, so we'll loop using @iracket[for/fold]. To generate the new string for each pass of the loop, we'll use @iracket[regexp-match*] to find every contiguous run of digits. Each digit run is converted into a list with the number of digits and the digit itself. Then all these lists are concatenated into a new string, and the loop repeats.
 
 The second part of the puzzle is just going to change the number of iterations. So we'll make one function that can be used for both parts.
 

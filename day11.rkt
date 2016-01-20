@@ -13,7 +13,7 @@
        <day11-q2>
        <day11-test>]
 
-@section{What's the next password that meets the criteria?}
+@isection{What's the next password that meets the criteria?}
 
 Though the password is alphabetic, we can increment it as we would a numerical password, by changing the rightmost letter to the next letter (for instance @litchar{x} to @litchar{y}, @litchar{y} to @litchar{z}). When we reach @litchar{z}, we roll over to @litchar{a}, and ``carry over'' the surplus by incrementing the letter to the left.
 
@@ -27,7 +27,7 @@ Furthermore, like @secref{Day_5}, the puzzle provides certain criteria that must
  @item{The password must contain two different, non-overlapping pairs of letters.}
  ]
 
-As in @secref{Day_5}, we'll use @racket[regexp-match] to implement tests for these conditions. We'll also use @racket[regexp-replace*] to build the function that increments a password alphabetically. Then it's a simple matter of looking at passwords until we find one that works.
+As in @secref{Day_5}, we'll use @iracket[regexp-match] to implement tests for these conditions. We'll also use @iracket[regexp-replace*] to build the function that increments a password alphabetically. Then it's a simple matter of looking at passwords until we find one that works.
 
 The @racket[increment-password] function works by using the observation that if the password ends in any number of @litchar{z}s, you have to roll them over to @litchar{a} and increment the letter to the left. Otherwise, you can just increment the last letter — which is actually the same rule, but with zero @litchar{z}s. This logic can all be captured in one regular expression — @racket[#rx"^(.*?)(.)(z*)$"].
 

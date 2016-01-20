@@ -17,11 +17,11 @@ In essence, this a two-dimensional version of the elevator problem in @secref{Da
        <day03-q2>
        <day03-test>]
 
-@section{How many grid cells are visited?}
+@isection{How many grid cells are visited?}
 
 In the elevator problem, we modeled the parentheses that represented up and down as @racket[1] and @racket[-1]. We'll proceed the same way here, but we'll assign Cartesian coordinates to each possible move — @racket['(0 1)] for north, @racket['(-1 0)] for west, and so on.
 
-For dual-valued data, whether to use @seclink["pairs" #:doc '(lib "scribblings/guide/guide.scrbl")]{pairs or lists} is largely a stylistic choice. Ask: what will you do with the data next? That will often suggest the most natural representation. In this case, the way we create each cell in the path is by adding the x and y coordinates of the current cell to the next move. So it ends up being convenient to model these cells as lists rather than pairs, so we can add them with a simple @racket[(map + current-cell next-move)]. (Recall that when you use @racket[map] with multiple lists, it pulls one element from each list in parallel.)
+For dual-valued data, whether to use @seclink["pairs" #:doc '(lib "scribblings/guide/guide.scrbl")]{pairs or lists} is largely a stylistic choice. Ask: what will you do with the data next? That will often suggest the most natural representation. In this case, the way we create each cell in the path is by adding the x and y coordinates of the current cell to the next move. So it ends up being convenient to model these cells as lists rather than pairs, so we can add them with a simple @racket[(map + current-cell next-move)]. (Recall that when you use @iracket[map] with multiple lists, it pulls one element from each list in parallel.)
 
 Once the whole cell path is computed, the answer is found by removing duplicate cells and counting how many remain.
 

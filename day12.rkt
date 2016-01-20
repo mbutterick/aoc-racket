@@ -13,13 +13,13 @@
        <day12-q2>
        <day12-test>]
 
-@section{What's the sum of all the numbers in the document?}
+@isection{What's the sum of all the numbers in the document?}
 
 I've never liked JavaScript, and spending more time with Racket has only deepened my antipathy. So I apologize if this solution is terse.
 
 We need to parse the JSON file, extract the numbers, and add them.
 
-To parse the file we'll use the @racket[read-json] function from Racket's @racketmodname[json] library. This function converts the JSON into a JS-expression (see @racket[jsexpr?]), which is a recursively nested data structure. If we had a simple recursively nested list, we could just @racket[flatten] it and filter for the numbers. We'll do something similar here — recursively flatten the JS-expression and pull out the numbers.
+To parse the file we'll use the @iracket[read-json] function from Racket's @racketmodname[json] library. This function converts the JSON into a JS-expression (see @iracket[jsexpr?]), which is a recursively nested data structure. If we had a simple recursively nested list, we could just @iracket[flatten] it and filter for the numbers. We'll do something similar here — recursively flatten the JS-expression and pull out the numbers.
 
 If you're new to Racket, notice the @italic{recursive descent} pattern used in @racket[flatten-jsexpr] — it's a very common way of handling recursively structured data.
 

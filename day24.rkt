@@ -14,7 +14,7 @@
        <day24-q2>
        <day24-test>]
 
-@section{What's the score of the optimal group of packages, when divided into three groups?}
+@isection{What's the score of the optimal group of packages, when divided into three groups?}
 
 We need to arrange our packages into three groups of equal weight. There are multiple ways to do this, of course. According to the puzzle, the optimal arrangement is the one that results in a group with the fewest number of packages. If multiple arrangements yield an equally small group, then the winner is the one with the lowest ``quantum entanglement'' score, which is defined as the product of the weights.
 
@@ -22,7 +22,7 @@ This puzzle brings together elements we've seen before. Each group in a valid ar
 
 In principle, we could reuse the @racket[powerset] function we made for @secref{Day_17} to generate all possible groups, and then @racket[filter] for the groups that are the correct weight. But in truth, we got lucky on @secref{Day_17}. There were only 20 elements, so our power set contained @racket[(expt 2 20)] (about a million) options, which only takes a few seconds to search. This time, we have 28 elements, thus 256 times as many options, which would require 10–15 minutes of searching. 
 
-To be more efficient, we'll use @racket[for*/first] to alternate between generating lists of possible groups, and then testing them. We'll @racket[sort] these lists by ``quantum entanglement'' so we know we're testing groups from best to worst (similar to what we did in @secref{Day_21} with equipment cost).
+To be more efficient, we'll use @iracket[for*/first] to alternate between generating lists of possible groups, and then testing them. We'll @iracket[sort] these lists by ``quantum entanglement'' so we know we're testing groups from best to worst (similar to what we did in @secref{Day_21} with equipment cost).
 
 After that, we just need to write a function that will test whether a given group is part of a valid solution. The first group that has a solution is our winner. Our @racket[has-solution?] function works by removing the test group from the set of all packages, and seeing if there is another group within that has the same weight. (We don't have to check the third group — if the first two groups are the same weight, then the third one is too.) 
 
