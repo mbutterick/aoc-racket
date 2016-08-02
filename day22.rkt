@@ -3,6 +3,8 @@
 
 @aoc-title[22]
 
+@italic{This solution contributed by guest star @link["https://github.com/bennn"]{Benjamin Greenman}, because I had no patience for this puzzle. — MB}
+
 @link["http://adventofcode.com/day/22"]{The puzzle}. Once again, our @link-rp["day22-input.txt"]{input} tells us the boss's stats.
 
 @chunk[<day22>
