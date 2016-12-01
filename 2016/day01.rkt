@@ -15,19 +15,21 @@
 
 (define (solve . turns)
   (define loc
-       (let loop ([loc 0]
-                  [dir 1]
-                  [turns turns])
-         (if (empty? turns)
-             loc
-             (let* ([turn (car turns)]
-                    [rotation (car turn)]
-                    [dist (cdr turn)]
-                    [new-dir (* dir rotation)])
-               (loop (+ loc (* new-dir dist)) new-dir (cdr turns))))))
-     (+ (abs (imag-part loc)) (abs (real-part loc))))
+    (let loop ([loc 0]
+               [dir 1]
+               [turns turns])
+      (if (empty? turns)
+          loc
+          (let* ([turn (car turns)]
+                 [rotation (car turn)]
+                 [dist (cdr turn)]
+                 [new-dir (* dir rotation)])
+            (loop (+ loc (* new-dir dist)) new-dir (cdr turns))))))
+  (+ (abs (imag-part loc)) (abs (real-part loc))))
 
-(define-macro-cases turn
-  [(turn "L" DIST) #'(cons +i (string->number DIST))]
-  [(turn "R" DIST) #'(cons -i (string->number DIST))])
+(define-macro (turn DIR DIST)
+  (with-pattern ([NEW-DIR (syntax-case #'DIR ()
+                            ["L" #'+i]
+                            ["R" #'-i])])
+    #'(cons NEW-DIR (string->number DIST))))
 (provide turn)
