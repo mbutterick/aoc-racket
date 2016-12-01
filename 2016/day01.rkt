@@ -22,7 +22,14 @@
   (+ (abs (imag-part loc)) (abs (real-part loc))))
 
 (define (locs-between loca locb)
-  (range loca (add1 locb)))
+  (define real-steps (abs (- (real-part loca) (real-part locb))))
+  (define imag-steps (abs (- (imag-part loca) (imag-part locb))))
+  (define diff (- locb loca))
+  (let loop ([locs (list loca)])
+    (if (equal? (car locs) locb)
+        (reverse locs)
+        (cons (+ (real-part loca)
+                 (* +i (imag-part loca))) locs))))
 
 (module+ test
   (require rackunit)
