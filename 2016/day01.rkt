@@ -1,16 +1,16 @@
 #lang br/quicklang
-(module+ reader
-  (provide read-syntax)
-  (define (read-syntax path port)
-    (define turn-strings (string-split (port->string port) ","))
-    (define turn-pattern #px"^([LR])(\\d+)$")
-    (define turn-datums
-      (for*/list ([tstr (in-list turn-strings)])
-                 (define match-result (regexp-match turn-pattern (string-trim tstr)))
-                 `(turn ,@(cdr (or match-result empty)))))
-    (strip-bindings
-     #`(module day01-mod "day01.rkt"
-         #,@turn-datums))))
+
+(define (read-syntax path port)
+  (define turn-strings (string-split (port->string port) ","))
+  (define turn-pattern #px"^([LR])(\\d+)$")
+  (define turn-datums
+    (for*/list ([tstr (in-list turn-strings)])
+               (define match-result (regexp-match turn-pattern (string-trim tstr)))
+               `(turn ,@(cdr (or match-result empty)))))
+  (strip-bindings
+   #`(module day01-mod "day01.rkt"
+       #,@turn-datums)))
+(module+ reader (provide read-syntax))
 
 (define-macro (mb . TURNS)
   #'(#%module-begin
@@ -48,8 +48,8 @@
 (define-macro-cases turn
   [(_ DIR DIST)
    (with-pattern ([ENCODED-DIR (syntax-case #'DIR ()
-                             ["L" #'rotate-left]
-                             ["R" #'rotate-right])])
+                                 ["L" #'rotate-left]
+                                 ["R" #'rotate-right])])
      #'($turn ENCODED-DIR (string->number DIST)))]
   [else #'(void)])
 (provide turn)

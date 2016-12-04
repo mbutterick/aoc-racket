@@ -1,9 +1,7 @@
 #lang br/quicklang
 (require sugar/list)
 
-(module+ reader
-  (provide read-syntax)
-  (define (read-syntax path port)
+(define (read-syntax path port)
     (define triads (slice-at (map string-split (string-split (port->string port) "\n")) 3))
     (define new-triples
       (slice-at (flatten (for/list ([triad (in-list triads)])
@@ -11,7 +9,8 @@
     (strip-bindings
      #`(module mod "day03b.rkt"
          #,@(for*/list ([triple (in-list new-triples)])
-                       `(triangle ,@triple))))))
+                       `(triangle ,@triple)))))
+(module+ reader (provide read-syntax))
 
 (define-macro (mb . TRIANGLES)
   #'(#%module-begin
@@ -19,9 +18,7 @@
 (provide (rename-out [mb #%module-begin]))
 
 (define-macro (triangle A B C)
-  #'(list (string->number A)
-          (string->number B)
-          (string->number C)))
+  #'(map string->number (list A B C)))
 (provide triangle)
 
 (define (valid-triangle? triangle)

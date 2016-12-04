@@ -1,14 +1,14 @@
 #lang br/quicklang
-(module+ reader
-  (provide read-syntax)
-  (define (read-syntax path port)
-    (define moveset-strs (string-split (port->string port)))
-    (define moveset-datums
-      (for*/list ([msstr (in-list moveset-strs)])
-                 `(moveset ,@(regexp-match* #rx"." msstr))))
-    (strip-bindings
-     #`(module day01-mod "day02.rkt"
-         #,@moveset-datums))))
+
+(define (read-syntax path port)
+  (define moveset-strs (string-split (port->string port)))
+  (define moveset-datums
+    (for*/list ([msstr (in-list moveset-strs)])
+               `(moveset ,@(regexp-match* #rx"." msstr))))
+  (strip-bindings
+   #`(module day01-mod "day02.rkt"
+       #,@moveset-datums)))
+(module+ reader (provide read-syntax))
 
 (define-macro moveset #'list)
 (provide moveset)

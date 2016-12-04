@@ -1,12 +1,12 @@
 #lang br/quicklang
-(module+ reader
-  (provide read-syntax)
-  (define (read-syntax path port)
-    (strip-bindings
-     #`(module mod "day04.rkt"
-         #,@(for*/list ([room-str (in-lines port)]
-                        #:when (not (equal? "" room-str)))
-              `(room ,@(cdr (regexp-match #px"^(.*)-(\\d+)\\[(\\w+)\\]$" room-str))))))))
+
+(define (read-syntax path port)
+  (strip-bindings
+   #`(module mod "day04.rkt"
+       #,@(for*/list ([room-str (in-lines port)]
+                      #:when (not (equal? "" room-str)))
+                     `(room ,@(cdr (regexp-match #px"^(.*)-(\\d+)\\[(\\w+)\\]$" room-str)))))))
+(module+ reader (provide read-syntax))
 
 #|
 Each room consists of an encrypted name (lowercase letters separated by dashes)
@@ -23,13 +23,13 @@ followed by a dash, a sector ID, and a checksum in square brackets.
      (display "part a: ")
      (displayln (for/sum ([room (in-list rooms)]
                           #:when (real-room? room))
-                  ($room-sector room)))
+                         ($room-sector room)))
      (display "part b: ")
      (displayln
       (for/first ([room (in-list rooms)]
                   #:when (equal? (shift-string ($room-name room) ($room-sector room))
                                  "northpole object storage"))
-        ($room-sector room)))))
+                 ($room-sector room)))))
 (provide (rename-out [mb #%module-begin]))
 
 #|
@@ -48,8 +48,8 @@ with ties broken by alphabetization.
 (define (shift-string str shift)
   (list->string
    (for/list ([c (in-string str)])
-     (cond
-       [(char=? c #\-) #\space]
-       [else
-        (define a-val (char->integer #\a))
-        (integer->char (+ (modulo (+ (char->integer c) (- a-val) shift) 26) a-val))]))))
+             (cond
+               [(char=? c #\-) #\space]
+               [else
+                (define a-val (char->integer #\a))
+                (integer->char (+ (modulo (+ (char->integer c) (- a-val) shift) 26) a-val))]))))

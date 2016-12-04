@@ -13,9 +13,7 @@
 (provide (rename-out [mb #%module-begin]))
 
 (define-macro (triangle A B C)
-  #'(list (string->number A)
-          (string->number B)
-          (string->number C)))
+  #'(map string->number (list A B C)))
 (provide triangle)
 
 (define (valid-triangle? triangle)
