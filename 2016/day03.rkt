@@ -1,11 +1,11 @@
 #lang br/quicklang
-(module+ reader
-  (provide read-syntax)
-  (define (read-syntax path port)
-    (strip-bindings
-     #`(module day01-mod "day03.rkt"
-         #,@(for*/list ([triangle-str (in-list (string-split (port->string port) "\n"))])
-                       `(triangle ,@(string-split triangle-str)))))))
+
+(define (read-syntax path port)
+  (strip-bindings
+   #`(module mod "day03.rkt"
+       #,@(for*/list ([triangle-str (in-list (string-split (port->string port) "\n"))])
+                     `(triangle ,@(string-split triangle-str))))))
+(module+ reader (provide read-syntax))
 
 (define-macro (mb . TRIANGLES)
   #'(#%module-begin
