@@ -17,23 +17,23 @@
 (define (solve dim num)
   (define open? (make-open-pred num))
   (define g (undirected-graph '((0 0))))
-  (for* ([x (in-range dim)]
-         [y (in-range dim)]
-         #:when (open? (list y x)))
-    (when (open? (list (add1 y) x))
-      (add-edge! g (list y x) (list (add1 y) x)))
-    (when (open? (list y (add1 x)))
-      (add-edge! g (list y x) (list y (add1 x)))))
-  (define path (fewest-vertices-path g '(1 1) '(31 39)))
+  (for* ([y (in-range dim)]
+         [x (in-range dim)]
+         #:when (open? (cons x y)))
+    (when (open? (cons (add1 x) y))
+      (add-edge! g (cons x y) (cons (add1 x) y)))
+    (when (open? (cons x (add1 y)))
+      (add-edge! g (cons x y) (cons x (add1 y)))))
+  (define path (fewest-vertices-path g '(1 . 1) '(31 . 39)))
   (displayln (and path (sub1 (length path)))))
 
 (define (solve2 num)
   (define open? (make-open-pred num))
   (define (nonnegative? pt) (and (not (negative? (car pt)))
-                                 (not (negative? (cadr pt)))
+                                 (not (negative? (cdr pt)))
                                  pt))
   (let loop ([all-visited-pts empty]
-             [last-visited-pts '((1 1))]
+             [last-visited-pts '((1 . 1))]
              [step 0])
     (cond
       [(= step 50)
@@ -42,11 +42,11 @@
        (loop (append last-visited-pts all-visited-pts)
              (append*
               (for/list ([lvp (in-list last-visited-pts)])
-                (match-define (list x y) lvp)
-                (for/list ([pt (in-list (list (list (add1 x) y)
-                                              (list x (add1 y))
-                                              (list (sub1 x) y)
-                                              (list x (sub1 y))))]
+                (match-define (cons x y) lvp)
+                (for/list ([pt (in-list (list (cons (add1 x) y)
+                                              (cons x (add1 y))
+                                              (cons (sub1 x) y)
+                                              (cons x (sub1 y))))]
                            #:when (and (nonnegative? pt)
                                        (open? pt)
                                        (not (member pt all-visited-pts))))
@@ -55,7 +55,7 @@
 
 (define (make-open-pred num)
   (λ(pt)
-    (match-define (list x y) pt)
+    (match-define (cons x y) pt)
     (define sum
       (+ (* x x) (* 3 x) (* 2 x y) y (* y y) num))
     (even?
