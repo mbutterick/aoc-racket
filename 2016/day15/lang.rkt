@@ -1,5 +1,4 @@
 #lang br/quicklang ;; http://adventofcode.com/2016/day/15
-(require openssl/md5)
 (provide read-syntax
          (rename-out [mb #%module-begin]))
 
@@ -14,11 +13,11 @@
      (solve . DISCS)))
 
 (define-macro (solve . DISCS)
-  (with-pattern ([(DISC# ...) (generate-temporaries #'DISCS)]
+  (with-pattern ([(DISC-ID ...) (generate-temporaries #'DISCS)]
                  [(DISC-SLOTS ...) #'DISCS])
-    #'(for/first ([DISC# (in-cycle DISC-SLOTS)] ...
+    #'(for/first ([DISC-ID (in-cycle DISC-SLOTS)] ...
                   [i (in-naturals)]
-                  #:when (= 0 DISC# ...))
+                  #:when (= 0 DISC-ID ...))
         i)))
 
 (require sugar/list)
