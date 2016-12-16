@@ -16,12 +16,12 @@
 (define-macro (solve . DISCS)
   (with-pattern ([(DISC# ...) (generate-temporaries #'DISCS)]
                  [(DISC-SLOTS ...) #'DISCS])
-  #'(for/or ([DISC# (in-cycle DISC-SLOTS)] ...
-             [i (in-naturals)]
-             #:when (= DISC# ...))
-      i)))
+    #'(for/first ([DISC# (in-cycle DISC-SLOTS)] ...
+                  [i (in-naturals)]
+                  #:when (= 0 DISC# ...))
+        i)))
 
 (require sugar/list)
 (define-macro (disc TIME-OFFSET SIZE _ START)
-  #'(shift (range SIZE) (modulo (- (+ START TIME-OFFSET)) SIZE) #f #t))
+  #'(shift-left-cycle (range SIZE) (+ START TIME-OFFSET)))
 (provide disc)
