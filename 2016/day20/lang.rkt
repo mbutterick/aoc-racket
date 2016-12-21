@@ -1,4 +1,4 @@
-#lang br/quicklang ;; http://adventofcode.com/2016/day/18
+#lang br/quicklang ;; http://adventofcode.com/2016/day/20
 (provide read-syntax
          cons
          (rename-out [mb #%module-begin]))
