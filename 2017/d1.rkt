@@ -17,7 +17,7 @@
   (define digits (for/list ([c (in-string (number->string num))])
                  (string->number (string c))))
   (define offset (if (eq? offset-sig '★) -1 (/ (length digits) 2)))
-  (for/sum ([first (in-list digits)]
-            [second (in-list (shift-cycle digits offset))]
-            #:when (= first second))
-    first))
+  (for/sum ([digit (in-list digits)]
+            [other-digit (in-list (shift-cycle digits offset))]
+            #:when (= digit other-digit))
+    digit))
