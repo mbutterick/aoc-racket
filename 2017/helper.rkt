@@ -1,0 +1,11 @@
+#lang br
+(require syntax/strip-context sugar/list)
+(provide (all-defined-out) (all-from-out syntax/strip-context sugar/list))
+
+(define (port->datums port)
+  (for/list ([datum (in-port read port)])
+    datum))
+
+(define (number->digits num)
+  (for/list ([c (in-string (number->string num))])
+    (string->number (string c))))
