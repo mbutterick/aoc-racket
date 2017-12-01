@@ -16,6 +16,7 @@ Icon
 .Trashes
 
 # generated documentation
+doc/*
 *.js
 *.css
 *.html
