@@ -1,22 +1,19 @@
 #lang br/quicklang
-(require sugar/list)
+(require "helper.rkt")
 
-(module+ reader
-  (require syntax/strip-context)
-  (provide read-syntax)
-  (define (read-syntax path port)
-    (strip-context #`(module day1 aoc-racket/2017/d1
-                       #,@(for/list ([datum (in-port read port)])
-                            datum)))))
+(module+ reader (provide read-syntax))
+(define (read-syntax path port)
+  (strip-context (with-pattern ([DATUMS (port->datums port)])
+                   #'(module d1 aoc-racket/2017/d1
+                       . DATUMS))))
 
-(provide (rename-out [mb #%module-begin]))
-(define-macro (mb SELECTOR CAPTCHA-STR ...)
-  #'(#%module-begin (captcha-sum 'SELECTOR CAPTCHA-STR) ...))
+(provide (rename-out [#%mb #%module-begin]))
+(define-macro (#%mb STARS NUMBER ...)
+  #'(#%module-begin (captcha-sum 'STARS NUMBER) ...))
 
-(define (captcha-sum offset-sig num)
-  (define digits (for/list ([c (in-string (number->string num))])
-                 (string->number (string c))))
-  (define offset (if (eq? offset-sig '★) -1 (/ (length digits) 2)))
+(define (captcha-sum stars num)
+  (define digits (number->digits num))
+  (define offset (if (eq? stars '★) -1 (quotient (length digits) 2)))
   (for/sum ([digit (in-list digits)]
             [other-digit (in-list (shift-cycle digits offset))]
             #:when (= digit other-digit))
