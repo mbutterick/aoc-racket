@@ -1,11 +1,9 @@
 #lang br/quicklang
-(require "helper.rkt")
+(require "../helper.rkt")
 
-(module+ reader (provide read-syntax))
+(provide read-syntax)
 (define (read-syntax path port)
-  (strip-context (with-pattern ([DATUMS (port->datums port)])
-                   #'(module d1 aoc-racket/2017/d1
-                       . DATUMS))))
+  (strip-context #`(module mod "main.rkt" #,@(port->datums port))))
 
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb STARS NUMBER ...)

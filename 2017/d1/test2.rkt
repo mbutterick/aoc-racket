@@ -1,4 +1,4 @@
-#lang reader "day1.rkt" second
+#lang reader "main.rkt" ★★
 
 1212
 1221 
