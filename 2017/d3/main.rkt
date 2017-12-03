@@ -5,7 +5,7 @@
 (define (read-syntax path port)
   (strip-context #`(module mod "main.rkt"
                      #,@(for/list ([datums (in-port read port)])
-                          datums))))
+                                  datums))))
 
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb STARS NUMBER ...)
@@ -18,7 +18,7 @@
 (define (ring int)
   (for/first ([i (in-naturals)]
               #:when (<= int (ring-last i)))
-    i))
+             i))
 
 (define (nth-coordinate n)
   (cond
@@ -37,13 +37,14 @@
 (define vals (make-hash))
 (define (neighbor-sum n)
   (define c (nth-coordinate n))
-  (define neighbor-offsets '(1 1+i +i -1+i -1 -1-1i -i 1-i))
   (hash-ref! vals c (λ () (if (= c 0)
                               1
-                              (for/sum ([n (in-list neighbor-offsets)])
-                                (hash-ref vals (+ c n) 0))))))
+                              (for*/sum ([h (in-list '(-1 0 1))]
+                                         [v (in-list '(-1 0 1))])
+                                        (define neighbor (+ h (* +i v)))
+                                        (hash-ref vals (+ c neighbor) 0))))))
 
 (define (larger-sum x)
   (for*/first ([n (in-naturals 1)]
                #:when (> (neighbor-sum n) x))
-    (neighbor-sum n)))
+              (neighbor-sum n)))
