@@ -1,13 +1,4 @@
-#lang br/quicklang
-(require "../helper.rkt")
-
-(provide read-syntax)
-(define (read-syntax path port)
-  (strip-context #`(module mod "main.rkt"
-                     #,@(for/list ([line (in-lines port)])
-                          (with-input-from-string line (λ ()
-                                                         (for/list ([datums (in-port)])
-                                                           datums)))))))
+#lang reader "../aoc-lang.rkt"
 
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb (STARS) (NUMBER ...) ...)

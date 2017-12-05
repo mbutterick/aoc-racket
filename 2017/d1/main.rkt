@@ -1,12 +1,7 @@
-#lang br/quicklang
-(require "../helper.rkt")
-
-(provide read-syntax)
-(define (read-syntax path port)
-  (strip-context #`(module mod "main.rkt" #,@(port->datums port))))
+#lang reader "../aoc-lang.rkt"
 
 (provide (rename-out [#%mb #%module-begin]))
-(define-macro (#%mb STARS NUMBER ...)
+(define-macro (#%mb (STARS) (NUMBER) ...)
   #'(#%module-begin (captcha-sum 'STARS NUMBER) ...))
 
 (define (captcha-sum stars num)
