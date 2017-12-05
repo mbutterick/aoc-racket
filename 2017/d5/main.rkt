@@ -1,17 +1,11 @@
-#lang sugar/debug br/quicklang
-(require "../helper.rkt")
-
-(provide read-syntax)
-(define (read-syntax path port)
-  (strip-context #`(module mod "main.rkt"
-                     #,@(for/list ([datum (in-port read port)])
-                          datum))))
+#lang reader "../aoc-lang.rkt"
 
 (provide (rename-out [#%mb #%module-begin]))
-(define-macro (#%mb STARS JMP ...)
-  #'(#%module-begin (escape 'STARS (list->vector '(JMP ...)))))
+(define-macro (#%mb (STARS) (JMP) ...)
+  #`(#%module-begin
+     (escape (list->vector '(JMP ...)) 'STARS)))
 
-(define (escape stars vec)
+(define (escape vec stars)
   (let/ec exit
     (for/fold ([pos 0])
               ([i (in-naturals)])

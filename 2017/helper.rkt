@@ -11,3 +11,7 @@
 (define (number->digits num)
   (for/list ([c (in-string (number->string num))])
     (string->number (string c))))
+
+(define (dirname path)
+  (define-values (dir name _) (split-path path))
+  dir)

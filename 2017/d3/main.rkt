@@ -1,14 +1,7 @@
-#lang sugar/debug br/quicklang
-(require "../helper.rkt" sugar/cache)
-
-(provide read-syntax)
-(define (read-syntax path port)
-  (strip-context #`(module mod "main.rkt"
-                     #,@(for/list ([datums (in-port read port)])
-                                  datums))))
+#lang reader "../aoc-lang.rkt"
 
 (provide (rename-out [#%mb #%module-begin]))
-(define-macro (#%mb STARS NUMBER ...)
+(define-macro (#%mb (STARS) (NUMBER) ...)
   #'(#%module-begin ((if (eq? 'STARS '★) dist larger-sum) NUMBER) ...))
 
 (define (ring-side r) (* 2 r))
