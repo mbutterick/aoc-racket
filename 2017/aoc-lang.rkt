@@ -20,13 +20,17 @@
                    (syntax/loc (car datums) (module puzzle-lang THIS-FILE
                                               . DATUMS)))))
 
+(define (blank? line) (regexp-match #px"^\\s*$" line))
+
 (define-macro (my-mb . ARGS)
   (with-pattern ([MOD-PATH (syntax-source caller-stx)])
     #'(#%module-begin
        (provide read-syntax)
        (define (read-syntax path port)
          (strip-context #`(module mod MOD-PATH
-                            #,@(for/list ([line (in-lines port)])
+                            #,@(for/list ([line (in-lines port)]
+                                          #:unless (blank? line))
                                  (for/list ([datums (in-port read (open-input-string (string-replace line "," "")))])
+                                           
                                    datums)))))
        . ARGS)))
