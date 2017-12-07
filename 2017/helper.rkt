@@ -1,6 +1,6 @@
 #lang br
-(require syntax/strip-context sugar/list)
-(provide (all-defined-out) (all-from-out syntax/strip-context sugar/list))
+(require syntax/strip-context sugar)
+(provide (all-defined-out) (all-from-out syntax/strip-context sugar))
 
 (define ★ '★) (define ★★ '★★)
 
@@ -15,3 +15,8 @@
 (define (dirname path)
   (define-values (dir name _) (split-path path))
   dir)
+
+(define (=* . xs)
+  (or (< (length xs) 2) (apply = xs)))
+
+(define (app x . args) (apply x args))

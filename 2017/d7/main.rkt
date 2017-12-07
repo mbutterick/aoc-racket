@@ -1,41 +1,41 @@
 #lang reader "../aoc-lang.rkt"
-(require sugar/cache)
 (provide (rename-out [#%mb #%module-begin]))
+
 (define current-stars (make-parameter #f))
+(define current-target-len (make-parameter #f))
+
 (define-macro (#%mb (STARS) (NAME . TOKS) ...)
   #`(#%module-begin
      (current-stars 'STARS)
-     (define names (list 'NAME ...))
-     (handle (length names) NAME . TOKS) ...))
+     (current-target-len (length '(NAME ...)))
+     (handle NAME . TOKS) ...))
 
-(define (weights-equal? subsyms)
-  (or (null? subsyms)
-      (andmap (λ (ss) (= ((car subsyms) 'wt) (ss 'wt))) (cdr subsyms))))
+(define (weights= . xs) (apply =* (map wt xs)))
 
-(define (unique-member ss subsyms)
-  (= 1 (length (filter (λ (subsym) (= (ss 'wt) (subsym 'wt))) subsyms))))
+(define (unique-weight x xs)
+  (= 1 (length (filter values (map (curry weights= x) xs)))))
 
-(define (exceptional-subsym subsyms)
-  (for/first ([ss (in-list subsyms)] #:when (unique-member ss subsyms)) ss))
+(define (unbalanced-subsym subsyms)
+  (findf (curryr unique-weight subsyms) subsyms))
 
-(define (typical-subsym subsyms)
-  (for/first ([ss (in-list subsyms)] #:unless (unique-member ss subsyms)) ss))
+(define (balanced-subsym subsyms)
+  (findf (negate (curryr unique-weight subsyms)) subsyms))
+
+(struct prog (sym wt) #:transparent)
+
+(define/caching (wt sym)
+  (apply + (map prog-wt (flatten (sym)))))
 
 (define-macro-cases handle
-  [(M TARGET-LEN SYM (NUM) -> SUBSYM ...)
-   #'(begin (define (SYM [x #f])
-              (match x
-                ['wt (+ NUM (SUBSYM 'wt) ...)]
-                [(? number?)
-                 (define target-weight x)
-                 (define subsyms (list SUBSYM ...))
-                 (if (weights-equal? subsyms)
-                     (displayln (format "~a is bad: needs to be ~a" 'SYM (- NUM (- (SYM 'wt) target-weight))))
-                     (let ([next-target-weight ((typical-subsym subsyms) 'wt)])
-                       ((exceptional-subsym subsyms) next-target-weight)))]
-                [else (cons 'SYM (append (SUBSYM) ...))]))
-            (module+ main (when (= TARGET-LEN (length (SYM)))
-                            (case (current-stars)
-                              [(★) 'SYM]
-                              [else (SYM 0)]))))]
-  [(M TARGET-LEN SYM (NUM)) #'(M TARGET-LEN SYM (NUM) ->)])
+  [(M SYM (NUM) -> . SUBSYMS)
+   #'(begin (define/caching (SYM [target-weight #f])
+              (define subsyms (list . SUBSYMS))
+              (if target-weight
+                  (if (apply weights= subsyms)
+                      (displayln (format "~a is bad: needs to be ~a" 'SYM (- NUM (- (wt SYM) target-weight))))
+                      ((unbalanced-subsym subsyms) (wt (balanced-subsym subsyms))))
+                  (cons (prog 'SYM NUM) (map app subsyms))))
+            (module+ main
+              (when (= (current-target-len) (length (flatten (SYM))))
+                (if (eq? (current-stars) '★) 'SYM (SYM 'find-bad-weight)))))]
+  [(M SYM (NUM)) #'(M SYM (NUM) ->)])
