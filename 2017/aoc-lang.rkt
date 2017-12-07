@@ -27,6 +27,6 @@
        (define (read-syntax path port)
          (strip-context #`(module mod MOD-PATH
                             #,@(for/list ([line (in-lines port)])
-                                 (for/list ([datums (in-port read (open-input-string line))])
+                                 (for/list ([datums (in-port read (open-input-string (string-replace line "," "")))])
                                    datums)))))
        . ARGS)))
