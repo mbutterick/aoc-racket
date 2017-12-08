@@ -11,8 +11,10 @@
 (define (max-arg vals) (argmax cdr (hash->list vals)))
 (define max-seen 0)
 (define (set-val! key updater)
-  (hash-update! vals key updater 0)
-  (set! max-seen (max max-seen (cdr (max-arg vals)))))
+  (hash-update! vals key (λ (val)
+                           (define new-val (updater val))
+                           (set! max-seen (max max-seen new-val))
+                           new-val) 0))
 
 (provide >= <= < > ==)
 (define-macro-cases cmp
