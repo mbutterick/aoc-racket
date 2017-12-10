@@ -1,5 +1,5 @@
 #lang br/quicklang
-(require "../helper.rkt")
+(require "../helper.rkt" racket/sequence)
 (provide read-syntax (rename-out [#%mb #%module-begin]))
 
 (define (read-syntax path port)
@@ -26,9 +26,8 @@
 (define (two-star str)
   (define ascii-chars (map char->integer (string->list str)))
   (reverse-segments (append ascii-chars '(17 31 73 47 23)) #:count 64)
-  (define dense-hash (for/list ([i (in-range 16)])
-                       (apply bitwise-xor (for/list ([v (in-vector vec (* i 16) (* (add1 i) 16))])
-                                            v))))
+  (define dense-hash (for/list ([vals (in-slice 16 (vector->list vec))])
+                       (apply bitwise-xor vals)))
   (string-append* (for/list ([num (in-list dense-hash)])
                     (~r num #:base 16 #:min-width 2 #:pad-string "0"))))
 
