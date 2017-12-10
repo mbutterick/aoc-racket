@@ -6,39 +6,38 @@
   (define lines (port->lines port))
   (strip-context #`(module mod "main.rkt"
                      #,@(for/list ([datum (in-port read (open-input-string (car lines)))])
-                          datum)
+                                  datum)
                      #,@(cdr lines))))
 
-(define vec #f)
-(define (set-knot-range! int) (set! vec (list->vector (range int))))
-
-(define-macro (#%mb STARS RANGE STR)
+(define-macro (#%mb STARS RANGE-IN STR)
   #`(#%module-begin
-     (set-knot-range! RANGE)
-     ((if (eq? 'STARS '★) one-star two-star) STR)))
+     ((if (eq? 'STARS '★) one-star two-star) RANGE-IN STR)))
 
-(define (one-star str)
-  (define lens (for/list ([len (in-port read (open-input-string (string-replace str "," " ")))])
-                 len))
-  (reverse-segments lens)
-  (* (vector-ref vec 0) (vector-ref vec 1)))
+(define (one-star range-in str)
+  (define lens (with-input-from-string (string-replace str "," " ")
+                                       (λ () (for/list ([len (in-port)])
+                                                       len))))
+  (define nums (reverse-segments range-in lens))
+  (* (first nums) (second nums)))
 
-(define (two-star str)
+(define (two-star range-in str)
   (define ascii-chars (map char->integer (string->list str)))
-  (reverse-segments (append ascii-chars '(17 31 73 47 23)) #:count 64)
-  (define dense-hash (for/list ([vals (in-slice 16 (vector->list vec))])
-                       (apply bitwise-xor vals)))
+  (define nums (reverse-segments range-in (append ascii-chars '(17 31 73 47 23)) #:reps 64))
+  (define dense-hash (for/list ([vals (in-slice 16 nums)])
+                               (apply bitwise-xor vals)))
   (string-append* (for/list ([num (in-list dense-hash)])
-                    (~r num #:base 16 #:min-width 2 #:pad-string "0"))))
+                            (~r num #:base 16 #:min-width 2 #:pad-string "0"))))
 
-(define (reverse-segments lens #:count [count 1])
+(define (reverse-segments range-in lens #:reps [reps 1])
+  (define vec (list->vector (range range-in)))
   (for*/fold ([current-position 0]
               [skip-size 0])
-             ([i (in-range count)]
+             ([rep (in-range reps)]
               [len (in-list lens)])
     (define posns (for/list ([i (in-range len)])
-                    (modulo (+ current-position i) (vector-length vec))))
+                            (modulo (+ current-position i) range-in)))
     (for ([val (in-list (map (curry vector-ref vec) posns))]
           [posn (in-list (reverse posns))])
-      (vector-set! vec posn val))
-    (values (+ current-position len skip-size) (add1 skip-size))))
+         (vector-set! vec posn val))
+    (values (+ current-position len skip-size) (add1 skip-size)))
+  (vector->list vec))
