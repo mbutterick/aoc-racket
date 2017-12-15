@@ -4,17 +4,18 @@
 
 (define-macro (#%mb (STARS) (NUM <-> . NUMS) ...)
   #'(#%module-begin
-     (define g (unweighted-graph/undirected null))
-     (for-each (curry add-edge! g NUM) (list . NUMS)) ...     
-     (if (eq? 'STARS '★)
-         (programs-in-group g 0)
-         (number-of-groups g (list NUM ...)))))
+     (time
+      (define g (unweighted-graph/undirected null))
+      (for-each (curry add-edge! g NUM) (list . NUMS)) ...     
+      (if (eq? 'STARS '★)
+          (programs-in-group g 0)
+          (number-of-groups g (list NUM ...))))))
 
 (define (programs-in-group g x) (length (group-of g x)))
 
 (define (group-of g x)
   (define-values (connects _) (dijkstra g x))
-  (for/list ([(k v) (in-hash connects)]
+  (for/list ([(k v) (in-mutable-hash connects)]
              #:when (integer? v))
     k))
 

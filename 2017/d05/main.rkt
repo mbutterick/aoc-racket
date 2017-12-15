@@ -3,7 +3,7 @@
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb (STARS) (JMP) ...)
   #`(#%module-begin
-     (escape (list->vector '(JMP ...)) 'STARS)))
+     (time (escape (list->vector '(JMP ...)) 'STARS))))
 
 (define (escape vec stars)
   (let/ec exit
@@ -12,8 +12,8 @@
       (unless (<= 0 pos (sub1 (vector-length vec)))
         (exit i))
       (define jmp (vector-ref vec pos))
-      (vector-set! vec pos (if (and (eq? stars '★★) (>= jmp 3))
-                               (sub1 jmp)
-                               (add1 jmp)))
+      (vector-set! vec pos ((if (and (eq? stars '★★) (>= jmp 3))
+                                sub1
+                                add1) jmp))
       (+ pos jmp))))
 

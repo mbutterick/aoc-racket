@@ -3,8 +3,9 @@
 
 (define-macro (#%mb (STARS) (TOK ...) ...)
   #`(#%module-begin
-     (inst TOK ...) ...
-     (if (eq? 'STARS '★) (max-arg vals) max-seen)))
+     (time
+      (inst TOK ...) ...
+      (if (eq? 'STARS '★) (max-arg vals) max-seen))))
 
 (define vals (make-hasheq))
 (define (get-val key) (hash-ref! vals key 0))

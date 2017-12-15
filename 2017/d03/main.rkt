@@ -2,7 +2,7 @@
 
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb (STARS) (NUMBER) ...)
-  #'(#%module-begin ((if (eq? 'STARS '★) dist larger-sum) NUMBER) ...))
+  #'(#%module-begin (time ((if (eq? 'STARS '★) dist larger-sum) NUMBER) ...)))
 
 (define (ring-side r) (* 2 r))
 (define (ring-last r) (expt (add1 (ring-side r)) 2))

@@ -2,7 +2,7 @@
 
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb (STARS) (NUMBER ...) ...)
-  #'(#%module-begin (checksum 'STARS '((NUMBER ...) ...))))
+  #'(#%module-begin (time (checksum 'STARS '((NUMBER ...) ...)))))
 
 (define (checksum stars intss)
   (define (max-min-diff ints) (- (apply max ints) (apply min ints)))

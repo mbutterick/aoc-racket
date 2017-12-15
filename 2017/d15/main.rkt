@@ -3,26 +3,26 @@
 
 (define-macro (#%mb (STARS) (Generator X starts with NUM) ...)
   #`(#%module-begin
-     (apply STARS '(NUM ...))))
+     (time (STARS 'NUM ...))))
 
 (define (lower-16-bits x) (bitwise-bit-field x 0 16))
 
-(define (generator-base a b rounds [modulo-a 1] [modulo-b 1])
-  (for/fold ([a-last a]
-             [b-last b]
+(define (generator-fold start factor mod)
+  (for/fold ([val start])
+            ([i (in-naturals)]
+             #:break (and (positive? i) (zero? (modulo val mod))))
+    (remainder (* factor val) 2147483647)))
+
+(define (generator-base a-start b-start rounds [modulo-a 1] [modulo-b 1])
+  (for/fold ([a-start a-start]
+             [b-start b-start]
              [sum 0]
              #:result sum)
             ([i (in-range rounds)])
-    (define a (for/fold ([a a-last])
-                        ([i (in-naturals)]
-                         #:break (and (positive? i) (zero? (modulo a modulo-a))))
-                (remainder (* 16807 a) 2147483647)))
-    (define b (for/fold ([b b-last])
-                        ([i (in-naturals)]
-                         #:break (and (positive? i) (zero? (modulo b modulo-b))))
-                (remainder (* 48271 b) 2147483647)))
+    (define a (generator-fold a-start 16807 modulo-a))
+    (define b (generator-fold b-start 48271 modulo-b))
     (values a b (+ sum (if (= (lower-16-bits a) (lower-16-bits b)) 1 0)))))
 
-(define (★ a-start b-start) (generator-base a-start b-start 40000000))
+(define (★ a-start b-start) (generator-base a-start b-start (* 40 1000000)))
 
-(define (★★ a-start b-start) (generator-base a-start b-start 5000000 4 8))
+(define (★★ a-start b-start) (generator-base a-start b-start (* 5 1000000) 4 8))

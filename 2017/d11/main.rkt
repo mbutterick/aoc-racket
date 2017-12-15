@@ -3,7 +3,7 @@
 
 (define-macro (#%mb (STARS) (HEX ...) ...)
   #'(#%module-begin
-     ((if (eq? 'STARS '★) one-star two-star) (list HEX ...)) ...))
+     (time ((if (eq? 'STARS '★) one-star two-star) (list HEX ...)) ...)))
 
 (define origin '(0 0 0))
 (define ne '(1 0 -1)) (define sw '(-1 0 1))

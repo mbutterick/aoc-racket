@@ -8,10 +8,10 @@
 
 (define-macro (#%mb STARS-LINE SEXP-LINE ...)
   #`(#%module-begin
-     (if (eq? (process-line STARS-LINE) '★)
-         (score (process-line SEXP-LINE))
-         (process-line SEXP-LINE #t))
-     ...))
+     (time (if (eq? (process-line STARS-LINE) '★)
+               (score (process-line SEXP-LINE))
+               (process-line SEXP-LINE #t))
+           ...)))
 
 (define (process-line line [garbage #f])
   (define gchars 0)

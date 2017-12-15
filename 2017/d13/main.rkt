@@ -6,7 +6,7 @@
   (with-pattern ([(DEPTH ...)
                   (for/list ([id (in-syntax #'(DEPTH: ...))])
                     (string->number (string-trim (symbol->string (syntax->datum id)) ":")))])
-    #'(#%module-begin (STARS '(DEPTH ...) '(RANGE ...)))))
+    #'(#%module-begin (time (STARS '(DEPTH ...) '(RANGE ...))))))
 
 (define (caught? depth range [delay 0])
   (zero? (modulo (+ depth delay) (* 2 (sub1 range)))))

@@ -3,7 +3,7 @@
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb (STARS) (BANK ...))
   #`(#%module-begin
-     (count-redists (list->vector '(BANK ...)) 'STARS)))
+     (time (count-redists (list->vector '(BANK ...)) 'STARS))))
 
 (define (redist starting-vec)
   (define vec (vector-copy starting-vec))

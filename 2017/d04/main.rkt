@@ -3,9 +3,9 @@
 (provide (rename-out [#%mb #%module-begin]))
 (define-macro (#%mb (STARS) (WORD ...) ...)
   #'(#%module-begin
-     (for/sum ([ws (in-list '((WORD ...) ...))]
-               #:when (no-duplicates? ws #:anagrams? (eq? 'STARS '★★)))
-       1)))
+     (time (for/sum ([ws (in-list '((WORD ...) ...))]
+                     #:when (no-duplicates? ws #:anagrams? (eq? 'STARS '★★)))
+             1))))
 
 (define (sort-chars word)
   (sort (string->list (symbol->string word)) char<?))

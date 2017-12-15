@@ -11,7 +11,7 @@
 
 (define-macro (#%mb STARS RANGE-IN STR)
   #`(#%module-begin
-     ((if (eq? 'STARS '★) one-star two-star) RANGE-IN STR)))
+     (time ((if (eq? 'STARS '★) one-star two-star) RANGE-IN STR))))
 
 (define (one-star range-in str)
   (define lens (with-input-from-string (string-replace str "," " ")
@@ -36,7 +36,7 @@
               [len (in-list lens)])
     (define posns (for/list ([i (in-range len)])
                             (modulo (+ current-position i) range-in)))
-    (for ([val (in-list (map (curry vector-ref vec) posns))]
+    (for ([val (in-list (map (λ (posn) (vector-ref vec posn)) posns))]
           [posn (in-list (reverse posns))])
          (vector-set! vec posn val))
     (values (+ current-position len skip-size) (add1 skip-size)))
