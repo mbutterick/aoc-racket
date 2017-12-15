@@ -1,15 +1,34 @@
 #lang reader "../aoc-lang.rkt"
-(require racket/sequence)
+(require racket/sequence sugar/list)
 (provide (rename-out [#%mb #%module-begin]))
 
 (define-macro (#%mb (STARS) (STR) ...)
   #`(#%module-begin
-     ((if (eq? 'STARS '★) one-star (λ (x) #f)) (format "~a" 'STR)) ...))
+     ((if (eq? 'STARS '★) one-star two-star) (format "~a" 'STR)) ...))
 
 (define (one-star str)
   (for*/sum ([i (in-range 128)]
              [digit (in-list (kh->ints (knot-hash (format "~a-~a" str i))))])
     digit))
+
+(define (two-star str)
+  (define vec (for*/vector ([i (in-range 128)]
+                            [int (in-list (kh->ints (knot-hash (format "~a-~a" str i))))])
+                (if (= int 1) "#" ".")))
+  (define (at-left-edge? idx) (= (modulo idx 128) 0))
+  (define (at-right-edge? idx) (= (modulo idx 128) 127))
+  (for/fold ([region 0])
+            ([(val idx) (in-indexed vec)]
+             #:unless (number? val))
+    (let loop ([idx idx])
+      (cond
+        [(and (< -1 idx (vector-length vec)) (equal? (vector-ref vec idx) "#"))
+         (vector-set! vec idx region)
+         (unless (at-left-edge? idx) (loop (sub1 idx)))
+         (unless (at-right-edge? idx) (loop (add1 idx)))
+         (map loop (list (+ idx 128) (- idx 128)))
+         (add1 region)]
+        [else region]))))
 
 (define (kh->ints kh)
   (for*/list ([c (in-string kh)]
