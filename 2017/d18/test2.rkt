@@ -1,0 +1,8 @@
+#lang reader "main2.rkt" ★★ ; 3
+snd 1
+snd 2
+snd p
+rcv a
+rcv b
+rcv c
+rcv d
