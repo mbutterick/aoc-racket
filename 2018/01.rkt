@@ -6,10 +6,10 @@
 (define frequencies
   (map string->number (port->lines fp)))
 
-(define (*)
+(define (★)
   (apply + frequencies))
 
-(define (**)
+(define (★★)
   (for/fold ([last-sum 0]
              [sums (set)]
              #:result last-sum)
@@ -19,5 +19,5 @@
 
 (module+ main
   (require rackunit)
-  (check-equal? (time (*)) 454)
-  (check-equal? (time (**)) 566))
+  (check-equal? (time (★)) 454)
+  (check-equal? (time (★★)) 566))
