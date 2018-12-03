@@ -17,7 +17,7 @@
              #:break (set-member? sums last-sum))
     (values (+ freq last-sum) (set-add sums last-sum))))
 
-(module+ main
+(module+ test
   (require rackunit)
   (check-equal? (time (★)) 454)
   (check-equal? (time (★★)) 566))

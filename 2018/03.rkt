@@ -34,7 +34,7 @@
                        (= (length cidxs) 1)))
     cidx))
 
-(module+ main
+(module+ test
   (require rackunit)
   (check-equal? (time (★)) 110827)
   (check-equal? (time (★★)) 116))

@@ -31,7 +31,7 @@
                 #:when (differ-by-one? id id2))
      (common-chars id id2))))
 
-(module+ main
+(module+ test
   (require rackunit)
   (check-equal? (time (★)) 6696)
   (check-equal? (time (★★)) "bvnfawcnyoeyudzrpgslimtkj"))
