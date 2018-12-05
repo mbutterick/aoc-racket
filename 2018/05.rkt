@@ -5,16 +5,30 @@
 
 (define fpbs (port->bytes fp))
 
-(define (react fpbs)
-  (let/ec exit
-    (for/fold ([bs fpbs])
-              ([i (in-naturals)])
-      (or
-       (for/first ([(left lidx) (in-indexed bs)]
-                   [right (in-bytes (subbytes bs 1))]
-                   #:when (= 32 (abs (- left right))))
-         (bytes-append (subbytes bs 0 lidx) (subbytes bs (+ lidx 2))))
-       (exit (bytes-length bs))))))
+(define-macro (for/mutable-list (SEQ ...) . BODY)
+  #'(let loop ([mprs null][xs (reverse (for/list (SEQ ...) . BODY))])
+      (if (empty? xs)
+          mprs
+          (loop (mcons (car xs) mprs) (cdr xs)))))
+
+(define (reactive-pair? mprs)
+  (= 32 (abs (- (mcar (mcdr mprs)) (mcar (mcdr (mcdr mprs)))))))
+
+(define (react [fpbs fpbs])
+  (define mprs0 (mcons #f (for/mutable-list ([b (in-bytes fpbs)])
+                                            b)))
+  (let loop ([mprs mprs0][found? #false])
+    (cond
+      [(or (empty? mprs)
+           (empty? (mcdr mprs))
+           (empty? (mcdr (mcdr mprs))))
+       (if found? (loop mprs0 #false) mprs0)]
+      [(reactive-pair? mprs)
+       (set-mcdr! mprs (mcdr (mcdr (mcdr mprs))))
+       (loop (mcdr mprs) #true)]
+      [else (loop (mcdr mprs) found?)]))
+  (for/sum ([val (in-mlist (mcdr mprs0))])
+           1))
 
 (define (★)
   (react fpbs))
@@ -23,19 +37,13 @@
   (map char->integer (remove-duplicates (map char-upcase (map integer->char (bytes->list fpbs))) char=?)))
 
 (define (remove-unit fbps unit)
-  (apply bytes
-         (for/list ([b (in-bytes fbps)]
-                    #:unless (or (= b unit)
-                                 (= b (+ unit 32))))
-           b)))
+  (regexp-replace* (regexp (format "[~a~a]" (integer->char unit) (integer->char (+ unit 32)))) fbps ""))
 
-;; very slow.
 (define (★★)
-  (argmin cdr
-          (for/list ([(unit idx) (in-indexed possible-units)])
-            (cons unit (react (remove-unit fpbs unit))))))
+  (apply min (for/list ([unit (in-list possible-units)])
+                       (react (remove-unit fpbs unit)))))
 
 (module+ test
-    (require rackunit)
-    (check-equal? (time (★)) 10564)
-    (check-equal? (time (★★)) 6336))
+  (require rackunit)
+  (check-equal? (time (★)) 10564)
+  (check-equal? (time (★★)) 6336))
