@@ -2,9 +2,11 @@
 
 #;(define (★)
   )
+#;(★)
 
 #;(define (★★)
   )
+#;(★★)
 
 #;(module+ test
   (require rackunit)
