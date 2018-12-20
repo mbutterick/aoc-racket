@@ -1,38 +1,59 @@
 #lang debug br
 (require racket/file)
 
-(define (nth-mpr mprs n)
-  (for/fold ([mprs mprs])
-            ([i (in-range n)])
-    (mcdr mprs)))
+#|
+This puzzle seemed annoying at first but turned out to be educational.
+An epic difference between the naive solution (= make a list and iterate from the start)
+and using a double-linked list, which minimizes traversal.
+|#
 
-(define (★)
-  (match-define (list player-count max-marbles)
-    (map string->number (regexp-match* #px"\\d+" (file->string "09.txt"))))
+(struct dll (val prev next) #:mutable)
+
+(define (move-by dll n)
+  (define iterator
+    (match n
+      [(? positive?) dll-next]
+      [(? negative?) dll-prev]
+      [_ values]))
+  (for/fold ([dll dll])
+            ([i (in-range (abs n))])
+    (iterator dll)))
+
+(define (remove-marble! marble)
+  (set-dll-next! (dll-prev marble) (dll-next marble))
+  (set-dll-prev! (dll-next marble) (dll-prev marble)))
+
+(define (find-winner player-count max-marbles)
   (define scores (make-hasheqv))
-  (define circle (mcons #f (mcons 0 null)))
-  (let loop ([marble 1] [marbles-in-circle 1] [pos 0])
+  (define first-marble (dll 0 #f #f))
+  (set-dll-prev! first-marble first-marble)
+  (set-dll-next! first-marble first-marble)
+  (for/fold ([current-marble first-marble]
+             #:result (cdr (argmax cdr (hash->list scores))))
+            ([marble (in-range 1 max-marbles)])
     (cond
-      [(> marble max-marbles) (cdr (argmax cdr (hash->list scores)))]
-     [(zero? (modulo marble 23))
-       (define deletion-pos (modulo (+ (- pos 7) marbles-in-circle) marbles-in-circle))
-       (define last-left-mpr (nth-mpr circle deletion-pos))
-       (define removed-marble (mcar (mcdr last-left-mpr)))
-       (set-mcdr! last-left-mpr (mcdr (mcdr last-left-mpr)))
+      [(zero? (modulo marble 23))
+       (define marble-to-remove (move-by current-marble -7))
+       (remove-marble! marble-to-remove)
        (define player (modulo marble player-count))
-       (hash-update! scores player (λ (sc) (+ removed-marble marble sc)) 0)
-       (loop (add1 marble) (sub1 marbles-in-circle) deletion-pos)]
+       (hash-update! scores player (λ (sc) (+ (dll-val marble-to-remove) marble sc)) 0)
+       (dll-next marble-to-remove)]
       [else
-       (define next-pos (add1 (modulo (add1 pos) marbles-in-circle)))
-       (define last-left-mpr (nth-mpr circle next-pos))
-       (set-mcdr! last-left-mpr (mcons marble (mcdr last-left-mpr)))
-       (loop (add1 marble) (add1 marbles-in-circle) next-pos)])))
+       (define left-marble (move-by current-marble 1))
+       (define right-marble (dll-next left-marble))
+       (define new-marble (dll marble left-marble right-marble))
+       (set-dll-next! left-marble new-marble)
+       (set-dll-prev! right-marble new-marble)
+       new-marble])))
 
-#;(define (★★)
-    )
-#;(★★)
+(match-define (list player-count max-marbles)
+  (map string->number (regexp-match* #px"\\d+" (file->string "09.txt"))))
+
+(define (★) (find-winner player-count max-marbles))
+
+(define (★★) (find-winner player-count (* 100 max-marbles)))
 
 (module+ test
-    (require rackunit)
-    (check-equal? (time (★)) 437654)
-    #;(check-equal? (time (★★)) 566))
+  (require rackunit)
+  (check-equal? (time (★)) 437654)
+  (check-equal? (time (★★)) 3689913905))
