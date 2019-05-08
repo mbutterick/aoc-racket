@@ -83,7 +83,7 @@ Plus, it's always fun to find a use for @iracket[case] and the frequently overlo
        (define (q2 input-str)
          (define (attrs->datums attrs)
            (map (compose1 read open-input-string
-                          (λ(attr) (format "(~a)" attr))) attrs))
+                          (λ (attr) (format "(~a)" attr))) attrs))
          (define sues (for/list ([sue-attrs (parse-sues input-str)])
                                 (attrs->datums sue-attrs)))
          (define master-datums (attrs->datums master-attrs)) 

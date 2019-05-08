@@ -28,7 +28,7 @@ We do this by creating the @italic{power set} of the containers — that is, a 
          (if (empty? xs)
              (list empty)
              (append-map
-              (λ(s) (list (cons (car xs) s) s))
+              (λ (s) (list (cons (car xs) s) s))
               (powerset (cdr xs)))))             
        ]
 
@@ -36,7 +36,7 @@ We do this by creating the @italic{power set} of the containers — that is, a 
        (define (q1 input-str)
          (define containers
            (map string->number (string-split input-str)))
-         (length (filter (λ(s) (= 150 (apply + s)))
+         (length (filter (λ (s) (= 150 (apply + s)))
                          (powerset containers))))]
 
 
@@ -50,10 +50,10 @@ Same as above, except we find the minimum length among the winners, and then cou
        (define (q2 input-str)
          (define containers
            (map string->number (string-split input-str)))
-         (let* ([winners (filter (λ(s) (= 150 (apply + s)))
+         (let* ([winners (filter (λ (s) (= 150 (apply + s)))
                                  (powerset containers))]
                 [shortest (apply min (map length winners))])
-           (length (filter (λ(w) (= shortest (length w))) winners))))
+           (length (filter (λ (w) (= shortest (length w))) winners))))
                                                                      
        ]
 

@@ -50,7 +50,7 @@
          (add1 count)))))
 
 (define (make-open-pred num)
-  (λ(pt)
+  (λ (pt)
     (define col (real-part pt))
     (define row (imag-part pt))
     (define sum

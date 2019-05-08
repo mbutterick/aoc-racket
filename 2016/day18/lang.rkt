@@ -10,7 +10,7 @@
 (define-macro (mb STR)
   #'(#%module-begin
      (define (traps cs)
-       (length (filter (λ(c) (char=? #\. c)) cs)))
+       (length (filter (λ (c) (char=? #\. c)) cs)))
      (let loop ([cs (string->list STR)]
                 [count (traps (string->list STR))]
                 [i 0])

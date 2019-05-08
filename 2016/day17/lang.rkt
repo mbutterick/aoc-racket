@@ -72,5 +72,5 @@
                 [else
                  (define stepped-paths (append-map take-step paths))
                  (define-values (new-vault-paths other-paths)
-                   (partition (λ(sp) (= vault (follow-path sp))) stepped-paths))
+                   (partition (λ (sp) (= vault (follow-path sp))) stepped-paths))
                  (loop other-paths (if (pair? new-vault-paths) new-vault-paths vault-paths) (add1 i))]))))))

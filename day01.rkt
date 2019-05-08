@@ -29,7 +29,7 @@ The building has an indefinite number of floors in both directions. So the ultim
        (define down-char #\))
        
        (define (make-matcher c)
-         (λ(str) (length (regexp-match* (regexp (format "\\~a" c)) str))))
+         (λ (str) (length (regexp-match* (regexp (format "\\~a" c)) str))))
        (define get-ups (make-matcher up-char))
        (define get-downs (make-matcher down-char))
        (define (get-destination str) (- (get-ups str) (get-downs str)))]

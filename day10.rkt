@@ -31,7 +31,7 @@ The second part of the puzzle is just going to change the number of iterations. 
             (define digit-runs (regexp-match* #px"(\\d)\\1*" start))
             (string-append*
              (map ~a
-                  (append-map (λ(digit-run)
+                  (append-map (λ (digit-run)
                                 (list (string-length digit-run)
                                       (substring digit-run 0 1)))
                               digit-runs)))))

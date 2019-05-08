@@ -30,7 +30,7 @@ As in @secref{Day_7}, we'll use @iracket[define-syntax] to set up the reindeer f
            [(_)
             (let* ([input-strings (file->lines "day14-input.txt")]
                    [reindeer-strings
-                    (map (λ(str) (format "(reindeer ~a)" (string-downcase str))) input-strings)]
+                    (map (λ (str) (format "(reindeer ~a)" (string-downcase str))) input-strings)]
                    [reindeer-datums
                     (map (compose1 read open-input-string) reindeer-strings)])
               (datum->syntax stx `(begin ,@reindeer-datums)))]))
@@ -57,7 +57,7 @@ As in @secref{Day_7}, we'll use @iracket[define-syntax] to set up the reindeer f
 @chunk[<day14-q1>
        (define (q1)
          (define seconds-to-travel 2503)
-         (apply max (map (λ(deer-func) (deer-func seconds-to-travel))
+         (apply max (map (λ (deer-func) (deer-func seconds-to-travel))
                          (list dasher dancer prancer vixen comet
                                cupid donner blitzen rudolph))))]
 
@@ -80,9 +80,9 @@ This question is similar to the last. But instead of simulating one race, we hav
             (flatten
              (for/list ([sec (in-range 1 (add1 2503))])
                        (define deer-results
-                         (map (λ(deer-func) (deer-func sec)) deer-funcs))
+                         (map (λ (deer-func) (deer-func sec)) deer-funcs))
                        (define max-result (apply max deer-results))
-                       (map (λ(deer-result deer-func)
+                       (map (λ (deer-result deer-func)
                               (if (= deer-result max-result)
                                   deer-func
                                   empty))

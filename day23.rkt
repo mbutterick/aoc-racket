@@ -43,7 +43,7 @@ Notice also that we're encasing the lines of the VM program in @iracket[thunk*].
          (syntax-case stx ()
            [(_)
             (let* ([input-strings (file->lines "day23-input.txt")]
-                   [inst-strings (map (λ(str) (format "(thunk* (inst ~a))" (string-replace str "," ""))) input-strings)]
+                   [inst-strings (map (λ (str) (format "(thunk* (inst ~a))" (string-replace str "," ""))) input-strings)]
                    [inst-datums (map (compose1 read open-input-string) inst-strings)])
               (datum->syntax stx `(define instructions (list ,@inst-datums))))]))
        
@@ -55,9 +55,9 @@ Notice also that we're encasing the lines of the VM program in @iracket[thunk*].
            (hash-update! registers reg thunk)
            default-offset))
        
-       (define-reg-updater tpl (λ(val) (* 3 val)))
-       (define-reg-updater inc (λ(val) (add1 val)))
-       (define-reg-updater hlf (λ(val) (/ val 2)))
+       (define-reg-updater tpl (λ (val) (* 3 val)))
+       (define-reg-updater inc (λ (val) (add1 val)))
+       (define-reg-updater hlf (λ (val) (/ val 2)))
        
        (define (jmpf reg num pred)
          (if (pred (hash-ref registers reg)) num 1))

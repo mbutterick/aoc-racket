@@ -30,19 +30,19 @@
               (add1 count)))))
 
 (define-macro (cpy X Y)
-  #'(λ(regs)
+  #'(λ (regs)
       (define val (if (number? 'X) 'X (hash-ref regs 'X)))
       (hash-set! regs 'Y val)))
 
-(define-macro (inc X) #'(λ(regs) (hash-update! regs 'X add1)))
+(define-macro (inc X) #'(λ (regs) (hash-update! regs 'X add1)))
 
-(define-macro (dec X) #'(λ(regs) (hash-update! regs 'X sub1)))
+(define-macro (dec X) #'(λ (regs) (hash-update! regs 'X sub1)))
 
 (define-macro (jnz X Y)
-  #'(λ(regs)
+  #'(λ (regs)
       (when (not (zero? (if (number? 'X) 'X (hash-ref regs 'X))))
         Y)))
 
 (define-macro (out X)
-  #'(λ(regs)
+  #'(λ (regs)
       (print (hash-ref regs 'X))))

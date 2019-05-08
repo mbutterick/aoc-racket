@@ -48,7 +48,7 @@ Each molecule transformation defines a string replacement. We'll parse our input
          (define-values (molecule transformations) (parse-input-str input-str))
          (length
           (remove-duplicates
-           (append-map (λ(target replacement)
+           (append-map (λ (target replacement)
                          (transform-molecule* molecule target replacement))
                        (map first transformations) (map second transformations)))))]
 

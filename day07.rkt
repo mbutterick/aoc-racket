@@ -53,7 +53,7 @@ One gotcha when using syntax transformers is that identifiers introduced by a tr
          (syntax-case stx ()
            [(_)
             (let* ([input-strings (file->lines "day07-input.txt")]
-                   [wire-strings (map (λ(str) (format "(wire ~a)" str)) input-strings)]
+                   [wire-strings (map (λ (str) (format "(wire ~a)" str)) input-strings)]
                    [wire-datums (map (compose1 read open-input-string) wire-strings)])
               (datum->syntax stx `(begin ,@wire-datums)))]))
        
@@ -97,7 +97,7 @@ These next definitions use @racket[define-syntax-rule] as a shortcut, which is a
        (define-16bit AND bitwise-and)
        (define-16bit OR bitwise-ior)
        (define-16bit LSHIFT arithmetic-shift)
-       (define-16bit RSHIFT (λ(x y) (arithmetic-shift x (- y))))
+       (define-16bit RSHIFT (λ (x y) (arithmetic-shift x (- y))))
        (define-16bit NOT bitwise-not)]
 
 

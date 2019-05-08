@@ -8,7 +8,7 @@
      #`(module mod "lang.rkt"
          #,(car lines)
          #,@(for/list ([args (in-list (map string-split (cdr lines)))])
-              `(inst ,@(map (λ(arg) (or (string->number arg) arg)) args)))))))
+              `(inst ,@(map (λ (arg) (or (string->number arg) arg)) args)))))))
 
 (define-macro (mb CODE . INSTS)
   #'(#%module-begin
@@ -35,16 +35,16 @@
 (provide inst)
 
 (define (swap-position xidx yidx)
-  (λ(v)
+  (λ (v)
     (define tmp (vector-ref v xidx))
     (vector-set*! v xidx (vector-ref v yidx) yidx tmp)
     v))
 
 (define (swap-letter x y)
-  (λ(v) ((swap-position (vector-member x v) (vector-member y v)) v)))
+  (λ (v) ((swap-position (vector-member x v) (vector-member y v)) v)))
 
 (define (reverse-letters xidx yidx)
-  (λ(v)
+  (λ (v)
     (define letter-idxs (range xidx (add1 yidx)))
     (define letters
       (for/list ([idx (in-list letter-idxs)])
@@ -56,20 +56,20 @@
 
 (require sugar/list)
 (define (rotate dir num)
-  (λ(v)
+  (λ (v)
     (list->vector
      ((if (equal? "left" dir)
           shift-left-cycle
           shift-cycle) (vector->list v) num))))
 
 (define (rotate-letter x)
-  (λ(v)
+  (λ (v)
     (define xidx (vector-member x v))
     (define rotval (+ 1 xidx (if (>= xidx 4) 1 0)))
     ((rotate "right" rotval) v)))
 
 (define (move xidx yidx)
-  (λ(v)
+  (λ (v)
     (define xs (vector->list v))
     (define-values (head tail) (split-at xs xidx))
     (define x (car tail))

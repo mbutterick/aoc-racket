@@ -13,7 +13,7 @@
      (define g (for/fold ([g (grid 50 6)])
                ([inst (in-list (list INST ...))])
        (inst g)))
-     (for-each displayln (map (λ(gr) (map (λ(gri) (if (= gri 1) "X" " ")) gr)) g))
+     (for-each displayln (map (λ (gr) (map (λ (gri) (if (= gri 1) "X" " ")) gr)) g))
      (apply + (flatten g))))
 
 (require (for-syntax racket/string))

@@ -18,7 +18,7 @@
     
 (define-macro (node NAME _ USED AVAIL _)
   #'($node
-     (apply (λ(r i) (+ (string->number r)
+     (apply (λ (r i) (+ (string->number r)
                        (* (string->number i) +i))) (regexp-match* #px"\\d+" NAME))
      (string->number (string-trim USED "T"))
      (string->number (string-trim AVAIL "T"))))

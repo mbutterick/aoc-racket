@@ -32,7 +32,7 @@ Each instruction consists of two pieces. First, an operation: either @italic{tu
            (case action
              [("turn on") (thunk* 1)]
              [("turn off") (thunk* 0)]
-             [else (λ(bulb) (if (= bulb 1) 0 1))]))
+             [else (λ (bulb) (if (= bulb 1) 0 1))]))
          
          (list* (action->bulb-func (string-trim action))
                 (map string->number coordinates)))
@@ -85,9 +85,9 @@ This part is the same as the last, except we change the definitions of our bulb 
          
          (define (action->bulb-func action)
            (case action
-             [("turn on") (λ(bulb) (add1 bulb))]
-             [("turn off") (λ(bulb) (max 0 (sub1 bulb)))]
-             [else (λ(bulb) (+ bulb 2))]))
+             [("turn on") (λ (bulb) (add1 bulb))]
+             [("turn off") (λ (bulb) (max 0 (sub1 bulb)))]
+             [else (λ (bulb) (+ bulb 2))]))
          
          (list* (action->bulb-func (string-trim action))
                 (map string->number coordinates)))
@@ -117,16 +117,16 @@ Since the only part that changes between the solutions is the bulb functions, we
                   (map string->number coordinates))))
        
        (define q1-bulb-func-converter
-         (λ(action) (case action
+         (λ (action) (case action
                       [("turn on") (thunk* 1)]
                       [("turn off") (thunk* 0)]
-                      [else (λ(bulb) (if (= bulb 1) 0 1))])))
+                      [else (λ (bulb) (if (= bulb 1) 0 1))])))
        
        (define q2-bulb-func-converter
-         (λ(action) (case action
-                      [("turn on") (λ(bulb) (add1 bulb))]
-                      [("turn off") (λ(bulb) (max 0 (sub1 bulb)))]
-                      [else (λ(bulb) (+ bulb 2))])))
+         (λ (action) (case action
+                      [("turn on") (λ (bulb) (add1 bulb))]
+                      [("turn off") (λ (bulb) (max 0 (sub1 bulb)))]
+                      [else (λ (bulb) (+ bulb 2))])))
        ]
 
 @section{Testing Day 6}

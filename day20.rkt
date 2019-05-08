@@ -51,7 +51,7 @@ Going with the math-jock vibe, what this condition means is that the highest-num
          (for/first ([house-number (in-naturals)]
                      #:when (let* ([elves (divisors house-number)]
                                    [elves (filter
-                                           (λ(e) (<= house-number (* 50 e))) elves)]
+                                           (λ (e) (<= house-number (* 50 e))) elves)]
                                    [elf-gifts
                                     (apply + (map (curry * gifts-per-elf) elves))]) 
                               (>= elf-gifts target-gifts)))

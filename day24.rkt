@@ -39,7 +39,7 @@ After that, we just need to write a function that will test whether a given grou
             (append*
              (for/list ([x (in-list packages)])
                        (define later-packages (cdr (member x packages)))
-                       (append-map (λ(ss) (define new-group (cons x ss))
+                       (append-map (λ (ss) (define new-group (cons x ss))
                                      (if (= goal-weight (weight new-group))
                                          (list new-group)
                                          empty))
@@ -50,7 +50,7 @@ After that, we just need to write a function that will test whether a given grou
        (define (quantum-entanglement group) (apply * group))
 
        (define (remove-group group packages)
-         (filter (λ(p) (not (member p group))) packages))
+         (filter (λ (p) (not (member p group))) packages))
        
        (define (has-solution? group packages)
          (define target-weight (weight group))
