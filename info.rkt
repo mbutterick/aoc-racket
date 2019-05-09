@@ -8,7 +8,10 @@
                "rackunit-lib"
                "math-lib"
                "beautiful-racket-lib"
-               "gregor"))
+               "gregor"
+               "debug"
+               "draw-lib"
+               "gui-lib"))
 (define test-omit-paths (list #rx"rkt$"))
 (define build-deps '("rackunit-lib"
                      "racket-doc"
