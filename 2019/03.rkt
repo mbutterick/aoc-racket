@@ -1,5 +1,5 @@
 #lang br
-(require racket/file rackunit racket/set)
+(require racket/file rackunit racket/set racket/dict)
 
 (define (line->wire ln)
   ;; convert string to a wire
@@ -10,21 +10,17 @@
 
 (define (wire->locs wire)
   ;; list of every grid location visited by a wire
-  (for/fold ([locs (list 0)]
-             #:result (reverse locs))
-            ([move (in-list wire)])
-    (append
-     (match move
-       [(cons dir dist)
-        (define origin (car locs))
-        (for/fold ([locs null])
-                  ([i (in-range dist)])
-          (define next-loc (+ origin (* (match dir
-                                          ['L -1]
-                                          ['R 1]
-                                          ['U +i]
-                                          ['D -i]) (add1 i))))
-          (cons next-loc locs))]) locs))) 
+  ;; use complex numbers to model x, y locations
+  (for*/fold ([locs (list 0)]
+              #:result (reverse locs))
+             ([(dir dist) (in-dict wire)]
+              [complex-unit (in-value (match dir
+                                       ['L -1]
+                                       ['R 1]
+                                       ['U +i]
+                                       ['D -i]))]
+              [i (in-range dist)])
+    (cons (+ (car locs) complex-unit) locs))) 
 
 (define test-w1 (line->wire "R8,U5,L5,D3"))
 (check-equal?
