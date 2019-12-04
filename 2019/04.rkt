@@ -4,45 +4,40 @@
 (match-define (list low high)
   (map string->number (string-split (file->string "04.rktd") "-")))
 
-(define (double-digit? num)
-  (define numstr (number->string num))
-  (match (for/list ([c0 (in-string numstr)]
-                    [c1 (in-string numstr 1)]
-                    #:when (char=? c0 c1))
-           (string->number (string c0)))
+(define (find-doubles digits)
+  (match (for/list ([d0 (in-list digits)]
+                    [d1 (in-list (cdr digits))]
+                    #:when (= d0 d1))
+                   d0)
     [(? null?) #false]
-    [nums nums]))
+    [dds (remove-duplicates dds)]))
 
 (define (num->digits num)
   (for/list ([c (in-string (number->string num))])
-    (string->number (string c))))
+            (string->number (string c))))
 
-(define (monotonic? num)
-  (apply <= (num->digits num)))
+(define (increasing? digits) (apply <= digits))
 
 ;; 1
 (check-eq?
- (for/sum ([num (in-range low (add1 high))]
-           #:when (and (double-digit? num) (monotonic? num)))
-   1)
+ (for/sum ([digits (in-list (map num->digits (range low (add1 high))))])
+          (match digits
+            [(and (? find-doubles) (? increasing?)) 1]
+            [_ 0]))
  1079)
 
-(define (triple-digit? num digit)
-  (define numstr (number->string num))
-  (define digitc (car (string->list (number->string digit))))
-  (for/or ([c0 (in-string numstr)]
-           [c1 (in-string numstr 1)]
-           [c2 (in-string numstr 2)])
-    (char=? c0 c1 c2 digitc)))
+(define (triple-digit? ds d)
+  (and (pair? ds)
+       (or (list-prefix? (list d d d) ds)
+           (triple-digit? (cdr ds) d))))
 
-;;2
+;; 2
 (check-eq?
- (for/sum ([num (in-range low (add1 high))]
-           #:when (and (for/or ([digits (in-value (double-digit? num))]
-                                #:when digits
-                                [digit (in-list digits)])
-                         (not (triple-digit? num digit)))
-                       (monotonic? num)))
-   1)
+ (for/sum ([digits (in-list (map num->digits (range low (add1 high))))])
+          (match digits
+            [(and (app find-doubles (? list? doubled-digits)) (? increasing?))
+             #:when (for/or ([dd (in-list doubled-digits)])
+                            (not (triple-digit? digits dd))) 1]
+            [_ 0]))
  699)
 
