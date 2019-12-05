@@ -2,7 +2,7 @@
 (require racket/file rackunit)
 
 (define (string->regs str)
-  (list->vector (map string->number (string-split (string-replace str "," " ")))))
+  (list->vector (map string->number (string-split str #px",\\s*"))))
 
 (define ((binarize proc) x y) (if (proc x y) 1 0))
 
