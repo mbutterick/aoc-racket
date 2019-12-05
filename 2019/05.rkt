@@ -12,12 +12,13 @@
   (define (reg-set! ptr val) (vector-set! regs (reg-ref ptr) val))
   (let/ec terminate
     (let loop ([ptr 0])
-      (match-define (list opcode mode1 mode2 mode3)
+      (match-define (list opcode mode-1 mode-2 mode-3)
         (match (for/list ([c (in-string (~r (reg-ref ptr) #:min-width 5 #:pad-string "0"))])
                          (string->number (string c)))
           [(list d4 d3 d2 d1 d0) (cons (+ (* 10 d1) d0)
-                                       (for/list ([mode (list d2 d3 d4)])
-                                                 (if (zero? mode) reg-ref values)))]))
+                                       (for/list ([mode-val (list d2 d3 d4)]
+                                                  [offset '(1 2 3)])
+                                                 (λ (ptr) ((if (zero? mode-val) reg-ref values) (reg-ref (+ ptr offset))))))]))
       (define next-ptr
         (match opcode
           [(or 1 2 7 8) ; 4-arity: add & multiply & compare
@@ -25,19 +26,18 @@
                                   [1 +]
                                   [2 *]
                                   [7 (binarize <)]
-                                  [8 (binarize =)]) (mode1 (reg-ref (+ ptr 1)))
-                                                    (mode2 (reg-ref (+ ptr 2)))))
+                                  [8 (binarize =)]) (mode-1 ptr) (mode-2 ptr)))
            (+ ptr 4)]
           [(or 3 4) ; 2-arity: input & output
            (match opcode
              [3 (reg-set! (+ ptr 1) starting-input)]
-             [4 (println (reg-ref (mode1 (+ ptr 1))))])
+             [4 (println (mode-1 ptr))])
            (+ ptr 2)]
           [(or 5 6) ; 3-arity: jump
            (if ((match opcode
                   [5 not]
-                  [6 values]) (zero? (mode1 (reg-ref (+ ptr 1)))))
-               (mode2 (reg-ref (+ ptr 2)))
+                  [6 values]) (zero? (mode-1 ptr)))
+               (mode-2 ptr)
                (+ ptr 3))]
           [99 (terminate)]
           [_ (error 'unknown-opcode)]))
