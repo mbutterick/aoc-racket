@@ -1,24 +1,25 @@
 #lang br
-(require racket/file rackunit)
+(require racket/file rackunit racket/generator)
 
-(define (string->regs str)
-  (list->vector (map string->number (string-split str #px",\\s*"))))
+(define (string->ints str) (map string->number (string-split str #px",\\s*")))
+(define (string->regs str) (list->vector (string->ints str)))
 
 (define ((binarize proc) x y) (if (proc x y) 1 0))
 
-(define (run str starting-input)
+(define (run str . inputs)
   (define regs (string->regs str))
   (define (reg-ref ptr) (vector-ref regs ptr))
   (define (reg-set! ptr val) (vector-set! regs (reg-ref ptr) val))
+  (define ip (open-input-string (string-join (map ~a inputs) " ")))
   (let/ec terminate
     (let loop ([ptr 0])
       (match-define (list opcode mode-1 mode-2 mode-3)
         (match (for/list ([c (in-string (~r (reg-ref ptr) #:min-width 5 #:pad-string "0"))])
-                         (string->number (string c)))
+                 (string->number (string c)))
           [(list d4 d3 d2 d1 d0) (cons (+ (* 10 d1) d0)
                                        (for/list ([mode-val (list d2 d3 d4)]
                                                   [offset '(1 2 3)])
-                                                 (λ (ptr) ((if (zero? mode-val) reg-ref values) (reg-ref (+ ptr offset))))))]))
+                                         (λ (ptr) ((if (zero? mode-val) reg-ref values) (reg-ref (+ ptr offset))))))]))
       (define next-ptr
         (match opcode
           [(or 1 2 7 8) ; 4-arity: add & multiply & compare
@@ -30,7 +31,8 @@
            (+ ptr 4)]
           [(or 3 4) ; 2-arity: input & output
            (match opcode
-             [3 (reg-set! (+ ptr 1) starting-input)]
+             [3 (parameterize ([current-input-port ip])
+                  (reg-set! (+ ptr 1) (read)))]
              [4 (println (mode-1 ptr))])
            (+ ptr 2)]
           [(or 5 6) ; 3-arity: jump
@@ -46,23 +48,19 @@
 (define-syntax-rule (last-output func)
   (last (map string->number (string-split (with-output-to-string (λ () func))))))
 
-(check-eq? (last-output (run "3,0,4,0,99" 42)) 42)
+(define (thruster-signal program phases)
+  (for/fold ([input 0])
+            ([phase (in-list (if (string? phases) (string->ints phases) phases))])
+    (last-output (run program phase input))))
+
+(check-eq? (thruster-signal "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0" "4,3,2,1,0") 43210)
+(check-eq? (thruster-signal "3,23,3,24,1002,24,10,24,1002,23,-1,23,
+101,5,23,23,1,24,23,23,4,23,99,0,0" "0,1,2,3,4") 54321)
+(check-eq? (thruster-signal "3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,
+1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0" "1,0,4,3,2") 65210)
+
 ;; 1
-(check-eq? (last-output (run (file->string "05.rktd") 1)) 15386262)
-
-(check-eq? (last-output (run "3,9,8,9,10,9,4,9,99,-1,8" 8)) 1)
-(check-eq? (last-output (run "3,9,7,9,10,9,4,9,99,-1,8" 8)) 0)
-(check-eq? (last-output (run "3,3,1108,-1,8,3,4,3,99" 8)) 1)
-(check-eq? (last-output (run "3,3,1107,-1,8,3,4,3,99" 8)) 0)
-(check-eq? (last-output (run "3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9" 0)) 0)
-(check-eq? (last-output (run "3,3,1105,-1,9,1101,0,0,12,4,12,99,1" 0)) 0)
-
-(let ([str "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
-       1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
-       999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99"])
-  (check-eq? (last-output (run str 0)) 999)
-  (check-eq? (last-output (run str 8)) 1000)
-  (check-eq? (last-output (run str 10)) 1001))
-
-;; 2
-(check-eq? (last-output (run (file->string "05.rktd") 5)) 10376124)
+(check-eq?
+ (apply max (for/list ([phases (in-permutations '(0 1 2 3 4))])
+              (thruster-signal (file->string "07.rktd") phases)))
+ 87138)
