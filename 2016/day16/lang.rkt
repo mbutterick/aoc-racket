@@ -10,14 +10,14 @@
 
 (define-macro (mb SIZE INIT)
   #'(#%module-begin
-     (display (list->string (checksum (fill-disk (string->list INIT) (string->number SIZE)))))))
+     (time (display (list->string (checksum (fill-disk (string->list INIT) (string->number SIZE))))))))
 
 (define (dragonize cs)
   (append cs '(#\0)
           (for/list ([c (in-list (reverse cs))])
-            (if (eqv? c #\1)
-                #\0
-                #\1))))
+                    (if (eqv? c #\1)
+                        #\0
+                        #\1))))
 
 (define (fill-disk init size)
   (let loop ([cs init])
@@ -25,14 +25,15 @@
         (take cs size)
         (loop (dragonize cs)))))
 
-(require sugar/list)
 (define (checksum cs)
-  (let loop ([cs cs])
-    (if (odd? (length cs))
-        cs
-        (loop
-         (for/list ([match (in-list (slice-at cs 2))])
-           (if (member match '((#\0 #\0) (#\1 #\1)))
-               #\1
-               #\0))))))
+  (define cvec (list->vector cs))
+  (let loop ([cvec cvec])
+    (match (vector-length cvec)
+      [(? odd?) (vector->list cvec)]
+      [len
+       (define newvec (make-vector (/ len 2) #\0))
+       (for ([idx (in-range 0 (vector-length cvec) 2)]
+             #:when (char=? (vector-ref cvec idx) (vector-ref cvec (add1 idx))))
+            (vector-set! newvec (/ idx 2) #\1))
+       (loop newvec)])))
   
