@@ -10,6 +10,8 @@
 
 ## My solutions
 
-I try to write solutions that are succinct but not cryptic. 
+* I try to write solutions that are succinct but not cryptic. 
 
-I don’t optimize for speed.
+* I don’t optimize for speed.
+
+* I like doing the Advent of Code problems because it forces me to use parts of Racket that I don’t ordinarily use. So I treat it as a chance to expand my awareness of the Racketverse.
