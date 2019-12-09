@@ -20,6 +20,8 @@
 
 * Also the fancier `for` iterators, like `for/first` and `for/or`.
 
+* `let/ec` is a way of jumping out of a deeply nested computation, akin to how `return` works in other languages. 
+
 
 
 ## My solutions
