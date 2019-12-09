@@ -9,9 +9,9 @@
 (define (make-runner program [calling-thd (current-thread)])
   (thread (λ ()
             (define regs (string->regs program))
-            (define (maybe-enlarge-regs len)
-              (unless (< len (vector-length regs))
-                (define newvec (make-vector (add1 len) 0))
+            (define (maybe-enlarge-regs ptr)
+              (unless (< ptr (vector-length regs))
+                (define newvec (make-vector (add1 ptr) 0))
                 (vector-copy! newvec 0 regs)
                 (set! regs newvec))
               regs)
@@ -21,19 +21,19 @@
             (let/ec terminate
               (let loop ([ptr 0])
                 (define inst (for/list ([c (in-string (~r (reg-ref ptr) #:min-width 5 #:pad-string "0"))])
-                               (string->number (string c))))
+                                       (string->number (string c))))
                 (match-define (list opcode mode-1 mode-2 mode-3)
                   (match inst
                     [(list d4 d3 d2 d1 d0)
                      (cons (+ (* 10 d1) d0)
                            (for/list ([mode-val (list d2 d3 d4)]
                                       [offset '(1 2 3)])
-                             (λ (ptr)
-                               (define ptr-adjusted (+ ptr offset))
-                               (match mode-val
-                                 [0 (reg-ref ptr-adjusted)] ; position
-                                 [1 ptr-adjusted] ; immediate
-                                 [2 (+ relative-base (reg-ref ptr-adjusted))]))))])) ; relative
+                                     (λ (ptr)
+                                       (define ptr-adjusted (+ ptr offset))
+                                       (match mode-val
+                                         [0 (reg-ref ptr-adjusted)] ; position
+                                         [1 ptr-adjusted] ; immediate
+                                         [2 (+ relative-base (reg-ref ptr-adjusted))]))))])) ; relative
                 (define next-ptr
                   (match opcode
                     [(or 1 2 7 8) ; 4-arity: add & multiply & compare
@@ -64,10 +64,8 @@
   (define thd (match program-or-thread
                 [(? thread? thd) thd]
                 [program (make-runner program)]))
-  (let loop ([acc null])
-    (match (thread-receive)
-      ['done (reverse acc)]
-      [msg (loop (cons msg acc))])))
+  (for/list ([val (in-producer thread-receive 'done)])
+            val))
 
 
 (check-equal?
