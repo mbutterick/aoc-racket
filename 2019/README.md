@@ -6,6 +6,12 @@
 
 * In particular, [these list functions](https://docs.racket-lang.org/reference/pairs.html?q=racket%2Flist#%28part._.Additional_.List_.Functions_and_.Synonyms%29) are very useful.
 
+* `eq?` is the fastest equality check, but it only works for symbols and fixnums (therefore, use more symbols and fixnums so you can use `eq?`!)
+
+* `match` is fantastic.
+
+* Association lists (= lists of pairs) can be used with the dictionary forms (like `dict-ref` and `in-dict`)
+
 * The `graph` library can be useful for graph-based problems.
 
 ## My solutions
