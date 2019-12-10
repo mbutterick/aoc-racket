@@ -85,14 +85,11 @@
 (check-= (radians +16i) (* 1.5 pi) 0.1)
 
 ;; 2
-(define (complex->solution c) (+ (* 100 (real-part c)) (imag-part c)))
+(define roids-by-dist (sort (remove best-roid roids) < #:key magnitude))
+(define radian-groups (group-by radians roids-by-dist))
+(define radian-groups-by-angle
+  (sort radian-groups < #:key (compose1 radians car)))
 (check-eq?
- (complex->solution
-  (car
-   (list-ref
-    (sort
-      (group-by radians (sort (remove best-roid roids) < #:key magnitude))
-     <
-     #:key (λ (i) (radians (car i))))
-    199)))
+ (match (list-ref radian-groups-by-angle (sub1 200))
+   [(cons c _) (+ (* 100 (real-part c)) (imag-part c))])
  502)
