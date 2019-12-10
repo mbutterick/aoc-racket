@@ -1,5 +1,5 @@
 #lang br
-(require racket/file rackunit)
+(require racket/file rackunit racket/math )
 
 (define (string->asteroids str)
   (for*/list ([(row ridx) (in-indexed (string-split str))]
@@ -71,6 +71,28 @@
 
 ;; 1
 (define roids (string->asteroids (file->string "10.rktd")))
+(define best-roid (find-best roids))
+(check-eq? ((count-visible roids) best-roid) 214)
+
+(define (radians roid)
+  (match (+ pi (angle (* -i (- roid best-roid))))
+    [(== (* pi 2)) 0]
+    [res res]))
+
+(check-= (radians 8) 0 0.1)
+(check-= (radians 16+16i) (/ pi 2) 0.1)
+(check-= (radians 8+24i) pi 0.1)
+(check-= (radians +16i) (* 1.5 pi) 0.1)
+
+;; 2
+(define (complex->solution c) (+ (* 100 (real-part c)) (imag-part c)))
 (check-eq?
- ((count-visible roids) (find-best roids))
- 214)
+ (complex->solution
+  (car
+   (list-ref
+    (sort
+      (group-by radians (sort (remove best-roid roids) < #:key magnitude))
+     <
+     #:key (λ (i) (radians (car i))))
+    199)))
+ 502)
