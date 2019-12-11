@@ -5,7 +5,7 @@
   (for*/list ([(row ridx) (in-indexed (string-split str))]
               [(col cidx) (in-indexed row)]
               #:when (char=? #\# col))
-    (+ cidx (* +i ridx))))
+    (make-rectangular cidx ridx)))
 
 (define ((count-visible roids) roid-origin)
   (length (remove-duplicates (for/list ([roid (in-list roids)]
