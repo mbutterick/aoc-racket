@@ -14,4 +14,4 @@ Explanations will be installed automatically as part of the Scribble documentati
 2016 & onward editions
 -
 
-Solutions in the respective subdirectories.
+Solutions in the respective annual subdirectories.
