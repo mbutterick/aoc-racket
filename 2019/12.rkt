@@ -8,7 +8,7 @@
 
 (define (str->moons str)
   (for/list ([trip (in-slice 3 (parse-input str))])
-    ($moon trip (list 0 0 0))))
+            ($moon trip (list 0 0 0))))
 
 (define (update-pair-velocity! m0 m1)
   (define-values (new-m0-vel new-m1-vel)
@@ -34,20 +34,20 @@
     (unless (= 1 (length moons))
       (match-define (cons m0 ms) moons)
       (for ([m (in-list ms)])
-        (update-pair-velocity! m0 m))
+           (update-pair-velocity! m0 m))
       (loop ms))))
 
 (define (step! moons [count 1])
   (for ([i (in-range count)])
-    (update-gravity! moons)
-    (for-each update-position! moons))
+       (update-gravity! moons)
+       (for-each update-position! moons))
   moons)
 
 (define (total-energy moons)
   (for/sum ([moon (in-list moons)])
-    (apply * (for/list ([field-proc (list $moon-pos $moon-vel)])
-               (for/sum ([val (in-list (field-proc moon))])
-                 (abs val))))))
+           (apply * (for/list ([field-proc (list $moon-pos $moon-vel)])
+                              (for/sum ([val (in-list (field-proc moon))])
+                                       (abs val))))))
 
 (check-eq?
  (total-energy (step! (str->moons "<x=-1, y=0, z=2>
@@ -69,36 +69,35 @@
  9876)
 
 ;; 2
-(define (shift-origin! moons pos)
-  (for ([moon (in-list moons)])
-    (set-$moon-pos! moon (map - ($moon-pos moon) pos))))
-        
 (define (period str)
-  (for*/list ([which-moon (list first second third fourth)]
-              [which-dim (list first second third)])
-    (define moons (str->moons str))
-    (shift-origin! moons ($moon-pos (which-moon moons)))
-    (let loop ([count 1])
-      (step! moons)
-      (if (and (= 0 (which-dim ($moon-pos (which-moon moons))))
-               (= 0 (which-dim ($moon-vel (which-moon moons)))))
-          count
-          (loop (add1 count))))))
+  (apply lcm
+         (for*/list ([dim (list first second third)])
+                    (define moons (str->moons str))
+                    (define (get-dims) (for*/list ([moon (in-list moons)]
+                                                   [field (in-list (list $moon-pos $moon-vel))])
+                                                  (dim (field moon))))
+                    (define dims0 (get-dims))
+                    (let loop ([count 0])
+                      (step! moons)
+                      (if (andmap = dims0 (get-dims))
+                          (add1 count)
+                          (loop (add1 count)))))))
 
 (check-eq?
- (apply lcm (period "<x=-1, y=0, z=2>
+ (period "<x=-1, y=0, z=2>
 <x=2, y=-10, z=-7>
 <x=4, y=-8, z=8>
-<x=3, y=5, z=-1>"))
+<x=3, y=5, z=-1>")
  2772)
 
 (check-eq?
- (apply lcm
-   (period "<x=-8, y=-10, z=0>
+ (period "<x=-8, y=-10, z=0>
 <x=5, y=5, z=10>
 <x=2, y=-7, z=3>
-<x=9, y=-8, z=-3>"))
-   4686774924)
+<x=9, y=-8, z=-3>")
+ 4686774924)
+
+(check-eq? (period (file->string "12.rktd")) 307043147758488)
 
 
 
