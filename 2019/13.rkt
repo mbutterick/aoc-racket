@@ -74,3 +74,9 @@
 (check-eq?
  (count (curry = 2) (hash-values pixels))
  304)
+
+(define str (regexp-replace #px"\\d" (file->string "13.rktd") "2"))
+
+(define t (make-runner str))
+(get-sprites t)
+(thread-send t 1)
