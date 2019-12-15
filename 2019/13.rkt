@@ -44,7 +44,7 @@
                      (+ ptr 4)]
                     [(or 3 4 9) ; 2-arity: input & output
                      (match opcode
-                       [3 (reg-set! (resolve ptr 1) 0)]
+                       [3 (thread-send calling-thd 'wants-joystick) (reg-set! (resolve ptr 1) (thread-receive))]
                        [4 (thread-send calling-thd (reg-ref (resolve ptr 1)))]
                        [9 (set! relative-base (+ relative-base (reg-ref (resolve ptr 1))))])
                      (+ ptr 2)]
@@ -58,6 +58,7 @@
                     [_ (error "unknown opcode" opcode)]))
                 (loop next-ptr))))))
 
+
 (define (get-sprites x)
   (define thd (match x
                 [(? thread?) x]
@@ -65,18 +66,40 @@
   (for/list ([out (in-producer thread-receive 'done)])
     out))
 
-;; 1
 (require racket/sequence)
-(define pixels
-  (for/hash ([xyz (in-slice 3 (get-sprites (file->string "13.rktd")))])
+(define (sprites->pixels sprs)
+  (for/hash ([xyz (in-slice 3 sprs)])
     (values (list (first xyz) (second xyz)) (third xyz))))
 
+;; 1
 (check-eq?
- (count (curry = 2) (hash-values pixels))
+ (count (curry = 2) (hash-values (sprites->pixels (get-sprites (file->string "13.rktd")))))
  304)
 
-(define str (regexp-replace #px"\\d" (file->string "13.rktd") "2"))
+(require racket/hash)
+(define str (regexp-replace #px"^\\d" (file->string "13.rktd") "2"))
+(define (breakout)
+  (define ball-sprite 4)
+  (define paddle-sprite 3)
+  (define score-magic-code '(-1 0))
+  (define t (make-runner str))
+  (define screen-pixels (make-hash))
+  (define (find-loc which) (for/first ([(k v) (in-hash screen-pixels)]
+                                       #:when (= which v))
+                             k))
+  (let loop ([acc null])
+    (match (thread-receive)
+      ['wants-joystick
+       (hash-union! screen-pixels (sprites->pixels (reverse acc)) #:combine (λ (v0 v1) v1))
+       (match-define (list bx _) (find-loc ball-sprite))
+       (match-define (list px _) (find-loc paddle-sprite))
+       (thread-send t (cond
+                        [(< px bx) 1]
+                        [(> px bx) -1]
+                        [else 0]))
+       (loop null)]
+      ['done (hash-ref (sprites->pixels (reverse acc)) score-magic-code)]
+      [val (loop (cons val acc))])))
 
-(define t (make-runner str))
-(get-sprites t)
-(thread-send t 1)
+;; 2
+(check-eq? (breakout) 14747)
