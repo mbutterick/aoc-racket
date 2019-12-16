@@ -1,3 +1,4 @@
+#lang reader (submod "14.rkt" reader)
 1 FVBHS, 29 HWPND => 4 CPXDX
 5 TNWDG, 69 VZMS, 1 GXSD, 48 NCLZ, 3 RSRZ, 15 HWPND, 25 SGPK, 2 SVCQ => 1 FUEL
 1 PQRLB, 1 TWPMQ => 4 QBXC
