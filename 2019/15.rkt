@@ -6,14 +6,17 @@
     (apply append (map (curry make-list (add1 i)) '(0 1 0 -1)))))
 
 (define (fft str [phase-count 1])
-  (for/fold ([ints (for/list ([c (in-string str)])
-                     (string->number (string c)))]
-             #:result (take ints 8))
-            ([pidx (in-range phase-count)])
-    (for/list ([patints (in-list (make-patintss ints))])
-      (modulo (abs (for/sum ([int (in-list (cons 0 ints))] ; cons 0 to burn off first patint
-                             [patint (in-cycle patints)])
-                     (* int patint))) 10))))
+  (define ints (for/list ([c (in-string str)])
+                 (string->number (string c))))
+  (define patintss (make-patintss ints))
+  (time
+   (for/fold ([ints ints]
+              #:result (take ints 8))
+             ([pidx (in-range phase-count)])
+     (for/list ([patints (in-list patintss)])
+       (modulo (abs (for/sum ([int (in-list (cons 0 ints))] ; cons 0 to burn off first patint
+                              [patint (in-cycle patints)])
+                      (* int patint))) 10)))))
 
 
 (check-equal? (fft "80871224585914546619083218645595" 100) '(2 4 1 7 6 1 7 6))
