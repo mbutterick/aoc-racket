@@ -24,4 +24,4 @@
 (check-equal? (fft "69317163492948606335995924319873" 100) '(5 2 4 3 2 1 3 3))
 
 ;; 1
-(check-equal? (fft (file->string "15.rktd") 100) '(8 5 7 2 6 5 0 2))
+(check-equal? (fft (file->string "16.rktd") 100) '(8 5 7 2 6 5 0 2))
