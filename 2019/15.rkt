@@ -74,11 +74,11 @@
     [-1 3]
     [1 4]))
 
-(require graph)
-(define g (unweighted-graph/undirected null))
-
 (define (turn-left dir) (* dir +i))
 (define (turn-right dir) (/ dir +i))
+
+(require graph)
+(define g (unweighted-graph/undirected null))
 
 (define (explore loc [dir +i])
   (define left-dir (turn-left dir))
@@ -89,5 +89,6 @@
        ['empty (explore (+ loc left-dir) left-dir)]
        ['oxygen (+ loc left-dir)])]))
 
-(define oxygen-loc (explore 0))
-(fewest-vertices-path g 0 oxygen-loc)
+;; 1
+(check-eq? (sub1 (length (fewest-vertices-path g 0 (explore 0)))) 272)
+
