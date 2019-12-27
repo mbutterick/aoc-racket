@@ -84,11 +84,15 @@
   (define left-dir (turn-left dir))
   (match (step (dir->cmd left-dir))
     ['wall (explore loc (turn-right dir))]
-    [res (add-edge! g loc (+ loc left-dir))
-     (match res
+    [eo (add-edge! g loc (+ loc left-dir))
+     (match eo
        ['empty (explore (+ loc left-dir) left-dir)]
        ['oxygen (+ loc left-dir)])]))
 
 ;; 1
-(check-eq? (sub1 (length (fewest-vertices-path g 0 (explore 0)))) 272)
+(define oxygen-loc (explore 0))
+(check-eq? (sub1 (length (fewest-vertices-path g 0 oxygen-loc))) 272)
 
+;; 2
+(define-values (path-lengths _) (bellman-ford g oxygen-loc))
+(check-eq? (apply max (hash-values path-lengths)) 398)
