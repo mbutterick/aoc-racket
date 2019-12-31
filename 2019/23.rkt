@@ -74,19 +74,24 @@
                  (async-channel-get ouch)
                  (async-channel-put inch i)
                  (list inch ouch i)))
+  (define idle-nics (make-hasheq))
   (for/fold ([packets null]
              [nat #false]
-             [idle-vals null]
+             [idle-packets null]
              #:result (packet-y nat))
             ([nicrec (in-cycle nics)]
-             #:break (break-cond nat idle-vals))
-    (define (network-idle?) (and (null? packets) #false))
+             #:break (break-cond nat idle-packets))
+    (define (network-idle?) (and (null? packets)
+                                 (= 50 (length (hash-values idle-nics)))
+                                 (for/and ([val (in-hash-values idle-nics)])
+                                   (> val 10))))
     (cond
       [(network-idle?)
        (match-define (list inch _ _) (car nics))
        (async-channel-put inch (packet-x nat))
        (async-channel-put inch (packet-y nat))
-       (values packets nat (cons (packet-y nat) idle-vals))]
+       (set! idle-nics (make-hasheq))
+       (values packets nat (cons nat idle-packets))]
       [else
        (match-define (list inch ouch nic-address) nicrec)
        (match (async-channel-get ouch)
@@ -98,12 +103,20 @@
                   (match-define (list _ x y) p)
                   (async-channel-put inch x)
                   (async-channel-put inch y))])
-          (values other-ps nat idle-vals)]
+          (hash-update! idle-nics nic-address add1 0)
+          (values other-ps nat idle-packets)]
          [dest
+          (hash-set! idle-nics nic-address 0)
           (define next-packet (list dest (async-channel-get ouch) (async-channel-get ouch)))
           (if (eq? dest 255)
-              (values packets next-packet idle-vals)
-              (values (cons next-packet packets) nat idle-vals))])])))
+              (values packets next-packet idle-packets)
+              (values (cons next-packet packets) nat idle-packets))])])))
 
 ;; 1
 (check-eq? (solve (λ (nat idle-vals) nat)) 21089)
+
+;; 2
+(solve (λ (nat idle-packets)
+         (match idle-packets
+           [(list* (list _ _ y) (list _ _ y) _) y]
+           [_ #false])))
