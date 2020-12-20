@@ -11,7 +11,7 @@
                                (bitwise-bit-set? x b)))]
                 #:when b)
         (arithmetic-shift 1 i)))
-    (λ (x) (hash-ref cache x (λ () (edge-flipper x))))))
+    (λ (x) (hash-ref! cache x (λ () (edge-flipper x))))))
 
 (struct tile (num edges) #:transparent)
 
@@ -39,7 +39,7 @@
   (for/list ([edge (in-list (tile-edges tile))])
     (for/first ([other-tile (in-list (remove tile tiles))]
                 #:when
-                (for*/or ([other-edge (in-list (tile-edges other-tile))])
+                (for/or ([other-edge (in-list (tile-edges other-tile))])
                   (or (eq? edge other-edge) (eq? edge (edge-flipped other-edge)))))
       other-tile)))
 
