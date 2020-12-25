@@ -1,5 +1,5 @@
 #lang br
-(require racket/file rackunit)
+(require racket/file rackunit csp racket/set racket/dict)
 
 (match-define (list fields my-ticket other-tickets)
   (string-split (file->string "16.rktd") "\n\n"))
@@ -10,50 +10,55 @@
     (match (regexp-match #px"^(.*?): (\\d+)-(\\d+) or (\\d+)-(\\d+)$" field)
       [(list* _ name numstrs)
        (match-define (list val1 val2 val3 val4) (map string->number numstrs))
-       (predicate name (λ (x) (or (<= val1 x val2) (<= val3 x val4))))])))
+       (predicate name (λ (x)
+                         (let ([h (make-hasheq)])
+                           (hash-ref! h x
+                                      (λ ()
+                                        (or (<= val1 x val2) (<= val3 x val4)))))))])))
 
-(define (t2intvec t) (list->vector (map string->number (string-split t ","))))
+(define (ticket->ints t) (map string->number (string-split t ",")))
 
 (check-equal? (for*/sum ([ticket (cdr (string-split other-tickets "\n"))]
-                         [intvec (t2intvec ticket)]
+                         [ticket-int (ticket->ints ticket)]
                          #:unless (for/or ([pred predicates])
-                                    ((predicate-func pred) intvec)))
-                intvec) 26988)
+                                    ((predicate-func pred) ticket-int)))
+                ticket-int) 26988)
 
 (define all-tickets (cdr (string-split other-tickets "\n")))
 
 (define (ticket-valid? ticket)
-  (for/and ([intvec (t2intvec ticket)])
+  (for/and ([intvec (ticket->ints ticket)])
     (for/or ([pred predicates])
       ((predicate-func pred) intvec))))
 
 (define valid-tickets (filter ticket-valid? all-tickets))
 
-(define-values (departure-predicates other-predicates)
-  (partition (λ (p) (string-prefix? (predicate-name p) "departure")) predicates))
+(define cols (apply map list (map ticket->ints valid-tickets)))
 
-(define winning-idxss
-  (let loop ([extra-count 0])
-    (define predicates-to-test
-      (append departure-predicates (take other-predicates extra-count)))
-    (define possible-winning-idxss
-      (let ([valid-ticket-vecs (map t2intvec valid-tickets)])
-        (for/list ([idxs (in-combinations (range (length predicates))
-                                          (length predicates-to-test))]
-                   #:when (for/and ([intvec valid-ticket-vecs])
-                            (for/and ([idx idxs]
-                                      [pred departure-predicates])
-                              ((predicate-func pred) (vector-ref intvec idx)))))
-          idxs)))
-    (match possible-winning-idxss
-      [(list winner) (drop-right winner extra-count)]
-      [_ (loop (add1 extra-count))])))
+(define col-preds (make-hasheq))
+(for ([(col colidx) (in-indexed cols)])
+  (hash-set! col-preds colidx
+             (apply mutable-set (for/list ([(pred predidx) (in-indexed predicates)]
+                                           #:when (andmap (predicate-func pred) col))
+                                  predidx))))
 
-;; too many possibilities
-winning-idxss
+(define assignment (make-hasheq))
 
-#;(define my-ticket-intvec (t2intvec (cadr (string-split my-ticket "\n"))))
-#;(for/product ([idx winning-idxs]
-                [pred departure-predicates])
-    (vector-ref my-ticket-intvec idx))
+(let loop ()
+  (define unique-pairs (for/list ([(colidx predidx) (in-dict (hash->list col-preds))]
+                                  #:when (eq? (set-count predidx) 1))
+                         (cons colidx (car (set->list predidx)))))
+  (when (pair? unique-pairs)
+    (for ([(colidx predidx) (in-dict unique-pairs)])
+      (hash-set! assignment colidx predidx)
+      (hash-remove! col-preds colidx)
+      (for ([k (in-hash-keys col-preds)])
+        (hash-update! col-preds k (λ (vs) (set-remove! vs predidx) vs))))
+    (loop)))
 
+(check-equal?
+ (for*/product ([(colidx predidx) (in-hash assignment)]
+                [pred (in-value (list-ref predicates predidx))]
+                #:when (regexp-match "departure" (predicate-name pred)))
+   (list-ref (ticket->ints my-ticket) colidx))
+ 426362917709)
