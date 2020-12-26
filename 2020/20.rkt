@@ -1,5 +1,5 @@
 #lang br
-(require racket/file rackunit racket/dict)
+(require racket/file rackunit racket/set)
 
 (define edge-flipped
   (let ()
@@ -50,48 +50,16 @@
 (define (edge-tile? tile) (matching-edge-count tile 3))
 (define (corner-tile? tile) (matching-edge-count tile 2))
 
-(check-equal? (apply * (map tile-num (filter corner-tile? tiles))) 15405893262491)
-
 (define corners (filter corner-tile? tiles))
-(define first-corner (car corners))
+(check-equal? (apply * (map tile-num corners)) 15405893262491)
 
-(require racket/set)
-(define tileset (apply mutable-set (map tile-num tiles)))
+(define first-corner (car corners))
 (define tile-grid (make-hasheqv))
 
 (define (flip-css css) (map reverse css))
-
-(define (flip t)
-  (tile (tile-num t) (tile-edges t) (flip-css (tile-css t))))
-
-(define (rotate-css css)
-  (map reverse (apply map list css)))
-
-(define (rotate t)
-  (tile (tile-num t) (tile-edges t) (rotate-css (tile-css t))))
-
-#;(define (place-line tile coord orientation)
-    (hash-set! tile-grid coord tile)
-    (set-remove! tileset (tile-num tile))
-    (for ([(edge idx) (in-indexed (tile-edges tile))]
-          [dir '(+i 1 -i -1)]
-          [matching-tile (matching-tiles tile)]
-          #:when (and matching-tile (= dir orientation)))
-      ;; match polarity
-      (unless (memq edge (tile-edges matching-tile))
-        (flip! matching-tile))
-      ;; match rotation
-      (let loop ()
-        (rotate! matching-tile)
-        (unless (eq? (list-ref (tile-edges tile) idx)
-                     (list-ref (tile-edges matching-tile) idx))
-          (loop)))
-      ;; rotate 180
-      (rotate! matching-tile)
-      (rotate! matching-tile)
-      ;; invert polarity
-      (flip! matching-tile)
-      (place-line matching-tile (+ coord dir) orientation)))
+(define (flip t) (tile (tile-num t) (tile-edges t) (flip-css (tile-css t))))
+(define (rotate-css css) (map reverse (apply map list css)))
+(define (rotate t) (tile (tile-num t) (tile-edges t) (rotate-css (tile-css t))))
 
 (define (top tile) (first (tile-css tile)))
 (define (bottom tile) (last (tile-css tile)))
@@ -116,7 +84,6 @@
       [#false (void)]
       [joiner (hash-set! tile-grid (+ coord dir) joiner)])))
 
-
 (hash-set! tile-grid 0 first-corner)
 (for* ([imag (in-range 12)]
        [real (in-range 0 -12 -1)])
@@ -131,8 +98,6 @@
      (apply map append
             (for/list ([real (in-range -11 1)])
               (trim-edge (tile-css (hash-ref tile-grid (+ real (* imag +i))))))))))
-
-#;(for-each (λ (x) (displayln (list->string x))) actual-image)
 
 (define row-width (length (car actual-image)))
 (define (css->vec css) (list->vector (apply append css)))
@@ -168,8 +133,8 @@
 
 (define sea-monster-parts
   (set->list
-  (for*/set ([idx sea-monster-idxs]
-             [offset sea-monster-offsets])
-    (+ idx offset))))
+   (for*/set ([idx sea-monster-idxs]
+              [offset sea-monster-offsets])
+     (+ idx offset))))
 
 (check-equal? (- (count (λ (c) (char=? #\# c)) (apply append actual-image)) (length sea-monster-parts)) 2133)
