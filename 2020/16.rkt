@@ -56,9 +56,31 @@
         (hash-update! col-preds k (λ (vs) (set-remove! vs predidx) vs))))
     (loop)))
 
-(check-equal?
- (for*/product ([(colidx predidx) (in-hash assignment)]
-                [pred (in-value (list-ref predicates predidx))]
-                #:when (regexp-match "departure" (predicate-name pred)))
-   (list-ref (ticket->ints my-ticket) colidx))
- 426362917709)
+(define (test-assignment assignment)
+  (for*/product ([(colidx predidx) (in-dict assignment)]
+                 [pred (in-value (list-ref predicates predidx))]
+                 #:when (regexp-match "departure" (predicate-name pred)))
+    (list-ref (ticket->ints my-ticket) colidx)))
+
+(check-equal? (test-assignment assignment) 426362917709)
+
+;; CSP solution
+(require csp)
+(define col-pred-prob (make-csp))
+(define var-names (make-var-names "col" (range (length cols))))
+(add-vars! col-pred-prob var-names (range (length cols)))
+(add-pairwise-constraint! col-pred-prob alldiff var-names)
+(for ([(colvar colidx) (in-indexed var-names)])
+  (add-constraint! col-pred-prob
+                   (λ (predidx) (andmap (predicate-func (list-ref predicates predidx))
+                                        (list-ref cols colidx))) (list colvar)))
+
+(define csp-assignment
+  (parameterize ([current-select-variable mrv-degree-hybrid]
+                 [current-order-values shuffle]
+                 [current-node-consistency #t])
+    (for/list ([(col predidx) (in-dict (solve col-pred-prob))])
+      (define colidx (string->number (car (regexp-match #px"\\d+" (~a col)))))
+      (cons colidx predidx))))
+
+(check-equal? (test-assignment csp-assignment) 426362917709)
