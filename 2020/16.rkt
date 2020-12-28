@@ -4,7 +4,8 @@
 (match-define (list fields my-ticket other-tickets)
   (string-split (file->string "16.rktd") "\n\n"))
 
-(struct predicate (name func) #:transparent)
+(struct predicate (name func) #:transparent
+  #:property prop:procedure 1)
 (define predicates
   (for/list ([field (string-split fields "\n")])
     (match (regexp-match #px"^(.*?): (\\d+)-(\\d+) or (\\d+)-(\\d+)$" field)
@@ -21,7 +22,7 @@
 (check-equal? (for*/sum ([ticket (cdr (string-split other-tickets "\n"))]
                          [ticket-int (ticket->ints ticket)]
                          #:unless (for/or ([pred predicates])
-                                    ((predicate-func pred) ticket-int)))
+                                    (pred ticket-int)))
                 ticket-int) 26988)
 
 (define all-tickets (cdr (string-split other-tickets "\n")))
@@ -29,7 +30,7 @@
 (define (ticket-valid? ticket)
   (for/and ([intvec (ticket->ints ticket)])
     (for/or ([pred predicates])
-      ((predicate-func pred) intvec))))
+      (pred intvec))))
 
 (define valid-tickets (filter ticket-valid? all-tickets))
 
@@ -39,7 +40,7 @@
 (for ([(col colidx) (in-indexed cols)])
   (hash-set! col-preds colidx
              (apply mutable-set (for/list ([(pred predidx) (in-indexed predicates)]
-                                           #:when (andmap (predicate-func pred) col))
+                                           #:when (andmap pred col))
                                   predidx))))
 
 (define assignment (make-hasheq))
@@ -66,21 +67,20 @@
 
 ;; CSP solution
 (require csp)
-(define col-pred-prob (make-csp))
-(define var-names (make-var-names "col" (range (length cols))))
-(add-vars! col-pred-prob var-names (range (length cols)))
-(add-pairwise-constraint! col-pred-prob alldiff var-names)
-(for ([(colvar colidx) (in-indexed var-names)])
-  (add-constraint! col-pred-prob
-                   (λ (predidx) (andmap (predicate-func (list-ref predicates predidx))
-                                        (list-ref cols colidx))) (list colvar)))
+(define prob (make-csp))
+(define colidxs (range (length cols)))
+(add-vars! prob colidxs (range (length predicates)))
+(add-all-diff-constraint! prob #:proc eq?)
+(for ([colidx (in-list colidxs)])
+  (add-constraint! prob
+                   (λ (predidx) (andmap (list-ref predicates predidx)
+                                        (list-ref cols colidx))) (list colidx)))
 
 (define csp-assignment
   (parameterize ([current-select-variable mrv-degree-hybrid]
                  [current-order-values shuffle]
                  [current-node-consistency #t])
-    (for/list ([(col predidx) (in-dict (solve col-pred-prob))])
-      (define colidx (string->number (car (regexp-match #px"\\d+" (~a col)))))
-      (cons colidx predidx))))
+    (solve prob)))
+(print-debug-info)
 
 (check-equal? (test-assignment csp-assignment) 426362917709)
