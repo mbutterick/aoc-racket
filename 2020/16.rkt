@@ -70,7 +70,7 @@
 (define prob (make-csp))
 (define colidxs (range (length cols)))
 (add-vars! prob colidxs (range (length predicates)))
-(add-all-diff-constraint! prob #:proc eq?)
+(add-all-diff-constraint! prob #:same eq?)
 (for ([colidx (in-list colidxs)])
   (add-constraint! prob
                    (λ (predidx) (andmap (list-ref predicates predidx)
