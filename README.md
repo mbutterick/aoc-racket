@@ -52,3 +52,8 @@ Solutions in the respective annual subdirectories.
 * I like doing the Advent of Code problems because it forces me to use parts of Racket that I don’t ordinarily use. So I treat it as a chance to expand my awareness of the Racketverse.
 
 * I’m unlikely to finish every problem. Judging by past years, there is a point where the problems get sufficiently complex that I’d rather put that time into improving my other Racket projects :metal:
+
+
+## Project status
+
+I only work on this project during puzzling season.
