@@ -1,7 +1,10 @@
 #lang info
 (define collection "aoc-racket")
 (define scribblings '(("aoc-racket.scrbl" (multi-page))))
-(define deps '("graph"
+(define deps '("brag-lib"
+               "csp"
+               "srfi-lite-lib"
+               "graph"
                "base"
                "scribble-lib"
                ("sugar" #:version "0.3")
